@@ -3,19 +3,19 @@ const path = require('path');
 const fs = require('fs');
 
 const get = async (req,res) => {
-  const products = await models.Product.findAll({where: { status : 1 }, include: ['gallery',{
-        model: models.ProductCategories,
-        as: 'categories',
-        required: false,
-        include : ['category']
-      },{
-        model: models.User,
-        as: 'users',
-        required: true,
-        include : ['profile']
-      },'inventary',"days_avialable"],
-      order: [ ['id','DESC']
-    ]
+  const products = await models.Product.findAndCountAll({
+      where: { status : 1 }, 
+      include: ['gallery',
+        //{
+        //  model: models.ProductCategories,
+        // as: 'categories',
+        // required: false,
+        // include : ['category']
+        //},'inventary',"days_avialable"],
+       // order: [ ['id','DESC'],
+      ],
+      offset: 0,
+      limit: 10,
   });
   return res.status(200).send(products);
 }
@@ -168,42 +168,6 @@ async function removeImgGallery(req,res){
   }
 }
 
-function get_pagination(req,res){
-
-  let {offset,limit} = req.params
-  limit = limit ? parseInt(limit,10) : 10
-  offset = parseInt(offset)
-
-  if(!offset){
-    req.status(422).json({message: "Error, el parametro de paginación es quererido"})
-  }else if(offset === 1){
-    offset = 0
-  }else{
-    offset = ((offset * limit) - limit)
-  }
-
-  models.Product.findAll({
-    where: {status: 1, id_parent},
-    include: ['gallery',{
-      model: models.ProductCategories,
-      as: 'categories',
-      required: false,
-      include : ['category']
-    },{
-      model: models.User,
-      as: 'user',
-      required: true,
-      include : ['profile']
-    },'inventary',"days_avialable"],
-    order: [['id','DESC']],
-    offset: offset,limit : limit,
-  }).then(result => {
-    res.json({products: result})
-  }).catch(err => {
-     console.log(err)
-     res.status(500).json({message: 'Error, contacte con soporte'})
-  })
-}
 
 function getProductsByFilter(req,res){
   let where = ""
@@ -389,7 +353,6 @@ module.exports = {
   update,
   destroy,
   removeImgGallery,
-  get_pagination,
   getProductsByFilter,
   getBySeller,
   getPremium,

@@ -9,11 +9,15 @@ const get = async (req,res) => {
 }
 const create = async (req,res) => {
   const errors = validationResult(req);
+  const  user = await returnUserByToken(req);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  const address = await models.UserAddress.create({...req.body});
-  return res.send(address);
+  const address = await models.UserAddress.create({
+    ...req.body,
+    id_user:user.id
+  });
+  return res.status(200).send(address);
 }
 
 const update =  async (req,res) => {

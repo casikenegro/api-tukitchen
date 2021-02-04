@@ -44,7 +44,7 @@ module.exports = (Sequelize,DataTypes) => {
 
     User.hasMany(model.UserAddress,{
       foreignKey: 'id_user',
-      as: 'addresess'
+      as: 'user_address'
     })
   }
 
