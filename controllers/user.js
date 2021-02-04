@@ -51,7 +51,7 @@ const create = async (req,res) => {
       rut,
       dv,
       password: req.body.password,
-      id_rol: req.body.rol || 2,
+      id_rol: req.body.id_rol || 2,
       id_parent
     }
   }).then(([user,created]) => {
