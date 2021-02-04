@@ -386,7 +386,7 @@ INSERT INTO `roles` (`id`, `name`, `createdAt`, `updatedAt`) VALUES
 -- Estructura de tabla para la tabla `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `rut` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
   `dv` varchar(255) COLLATE utf8mb4_spanish_ci NOT NULL,
@@ -401,7 +401,7 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id`, `rut`, `dv`, `password`, `id_rol`, `id_parent`, `createdAt`, `updatedAt`) VALUES
+INSERT INTO `user` (`id`, `rut`, `dv`, `password`, `id_rol`, `id_parent`, `createdAt`, `updatedAt`) VALUES
 (1, '12', '3', '$2b$10$CW4Gn7vVPSiZwn6zAzD6xuwlxUXvmGZyW8FVEdA3yE6XyPyB7dfda', 1, NULL, '2021-01-11 21:07:01', '2021-01-11 21:07:01'),
 (2, '34', '5', '$2b$10$CW4Gn7vVPSiZwn6zAzD6xuwlxUXvmGZyW8FVEdA3yE6XyPyB7dfda', 2, NULL, '2021-01-11 21:07:01', '2021-01-11 21:07:01'),
 (3, '56', '7', '$2b$10$CW4Gn7vVPSiZwn6zAzD6xuwlxUXvmGZyW8FVEdA3yE6XyPyB7dfda', 3, NULL, '2021-01-11 21:07:01', '2021-01-11 21:07:01');
@@ -537,7 +537,7 @@ ALTER TABLE `roles`
 --
 -- Indices de la tabla `users`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_rol` (`id_rol`);
 
@@ -639,7 +639,7 @@ ALTER TABLE `roles`
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -662,7 +662,7 @@ ALTER TABLE `carrier_addresses`
 -- Filtros para la tabla `coupons`
 --
 ALTER TABLE `coupons`
-  ADD CONSTRAINT `coupons_ibfk_1` FOREIGN KEY (`id_store`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `coupons_ibfk_1` FOREIGN KEY (`id_store`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `inventaries`
@@ -674,8 +674,8 @@ ALTER TABLE `inventaries`
 -- Filtros para la tabla `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`id_seller`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`id_buyer`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`id_seller`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`id_buyer`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `payments_ibfk_3` FOREIGN KEY (`id_carrier`) REFERENCES `carriers` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
@@ -688,7 +688,7 @@ ALTER TABLE `payment_products`
 -- Filtros para la tabla `products`
 --
 ALTER TABLE `products`
-  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `products_days_availables`
@@ -713,19 +713,19 @@ ALTER TABLE `product_galleries`
 -- Filtros para la tabla `profiles`
 --
 ALTER TABLE `profiles`
-  ADD CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `profiles_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `users`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `user_addresses`
 --
 ALTER TABLE `user_addresses`
-  ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_addresses_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
