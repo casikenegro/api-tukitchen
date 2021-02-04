@@ -47,16 +47,15 @@ router.post('/payment_confirmation_flow_url',paymentController.getConfirmationFl
 
 
 router.get('/products',productController.get)
-router.get('/products_by_seller/:id',[verifyToken],productController.getBySeller)
-router.get('/products_by_category/:id',[verifyToken],productController.getByCategory)
-router.get('/products_premium',[verifyToken],productController.getPremium)
-router.get('/products_by_word/:word',[verifyToken],productController.getByWord)
-router.post('/product',[verifyToken],productController.create)
-router.post('/product_by_filter',[verifyToken],productController.getProductsByFilter)
-router.put('/product/:id',[verifyToken],productController.update)
-router.put('/product_change_status/:id',[verifyToken],productController.updateStatus)
-router.delete('/product/:id',[verifyToken],productController.destroy)
-router.delete('/product_remove_img/:id/:filename',[verifyToken],productController.removeImgGallery)
+router.post('/products',[
+  verifyToken,
+  check("name","the name is required").not().isEmpty(),
+  check("price","the price is required").not().isEmpty(),
+  check("description","the description is required").not().isEmpty(),
+  check("time_for_preparation","the time_for_preparation is required").not().isEmpty(),
+],productController.create)
+router.put('/products/:id',[verifyToken],productController.update)
+router.delete('/products/:id',[verifyToken],productController.destroy)
 
 router.get('/profile',[verifyToken],profileController.get)
 router.post('/profile',[
@@ -82,6 +81,7 @@ router.get('/user_sellers',userController.get_sellers)
 
 router.get('/user-addresses',[verifyToken],userAddressController.get)
 router.post('/user-addresses',[
+  verifyToken,
   check("latitude","the latitude is required").not().isEmpty(),
   check("longitude","the longitude is required").not().isEmpty(),
   check("address","the address is required").not().isEmpty(),
