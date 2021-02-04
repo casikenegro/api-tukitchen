@@ -1,5 +1,4 @@
 const models = require('../models');
-const func = require('../utils/functions');
 
 async function get(req,res){
   const id = req.params.id

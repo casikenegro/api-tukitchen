@@ -9,18 +9,18 @@ async function login(req,res){
   const rut = req.body.rut.split('-')[0]
   const dv = req.body.rut.split('-')[1]
   const password = req.body.password
-  
   const user = await models.User.findOne({ where: {rut,dv }});
+  if(!user) return res.status(404).send({message:"rut not exist"});
   if(bcrypt.compareSync(password,user.password)){
     delete user.dataValues.password;
     return res.status(200).send({
       user, 
-      token: jwt.sign(user.id,utils.secretTokenKey)
+      token:jwt.sign({ id: user.id},utils.secretTokenKey,{
+        expiresIn: 86400, // 24 hours
+      }),
     });
   }
-
   return res.status(403).send({message:"Forbidden"});
-
 }
 
 async function recover_password(req,res){

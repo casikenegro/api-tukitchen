@@ -6,8 +6,7 @@ const returnUserByToken = async (req) => {
   let token = req.headers["x-access-token"];
   try {
     const decoded = jwt.verify(token, constants.secretTokenKey);
-    const user = await models.User.findOne({_id: decoded.id});
-    return user;
+    return models.User.findOne({ where:{id: decoded.id}});
   } catch (error) {
     return false;
   }
