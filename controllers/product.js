@@ -3,20 +3,21 @@ const path = require('path');
 const fs = require('fs');
 
 const get = async (req,res) => {
-  const products = await models.Product.findAll({where, include: ['gallery',{
+  const products = await models.Product.findAll({where: { status : 1 }, include: ['gallery',{
         model: models.ProductCategories,
         as: 'categories',
         required: false,
         include : ['category']
       },{
         model: models.User,
-        as: 'user',
+        as: 'users',
         required: true,
         include : ['profile']
       },'inventary',"days_avialable"],
       order: [ ['id','DESC']
-    ]});
-  return res.send(products);
+    ]
+  });
+  return res.status(200).send(products);
 }
 
 async function create(req,res){

@@ -17,7 +17,8 @@ const getAll = async (req,res) => {
   const users = await models.User.findAll({include: ['roles','profile','addresess'], attributes: fields.userFields});
   return res.status(200).send(users);
 }
-function get_sellers(req,res){  models.User.findAll({include: ['roles',{
+function get_sellers(req,res){  
+  models.User.findAll({include: ['roles',{
     model : models.Profile,
     as : "profile",
     required:  false,
@@ -66,7 +67,7 @@ const create = async (req,res) => {
 }
 
 const update =  async (req,res) => {
-  const { id } = await returnUserByToken(req);
+  let  user = await returnUserByToken(req);
   if(req.body.password){
     req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
   }
@@ -74,20 +75,21 @@ const update =  async (req,res) => {
     req.body.dv = req.body.rut.split('-')[1];
     req.body.rut = req.body.rut.split('-')[0];
   }
-  await models.User.update(
-    { ...req.body },
-    { where: { id } }
-    );
+  if(req.body.id_rol){
+    if(user.id_rol !== 1) return res.status(403).json({message: 'Forbidden, the rol not update' })
+  }
+  user.update({...req.body });
+  user.save();
   return res.status(200).send({message:"success"});
 }
 
 async function destroy(req,res){
-  const id_user = req.params.id
+  const payload = await returnUserByToken(req);
   const t = await models.sequelize.transaction()
   try {
-    await models.UserAddress.destroy({where: {id_user}, transaction: t})
-    await models.Profile.destroy({where: {id_user}, transaction: t})
-    await models.User.destroy({where: {id: id_user}, transaction: t})
+    await models.UserAddress.destroy({where: {id_user:payload.id}, transaction: t})
+    await models.Profile.destroy({where: {id_user:payload.id}, transaction: t})
+    await models.User.destroy({where: {id: payload.id}, transaction: t})
     await t.commit()
     res.json({message: "Usuario eliminado con éxito"})
   } catch (e) {
