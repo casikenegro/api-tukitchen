@@ -10,7 +10,7 @@ const attributes = [
 
 const get = async (req,res) => {
     const payload = await returnUserByToken(req);
-    const user = await models.User.findOne({where: { id: payload.id }, include: ['roles','profile','addresess'], attributes: fields.userFields});
+    const user = await models.User.findOne({where: { id: payload.id }, include: ['roles','profile','user_address'], attributes: fields.userFields});
     return res.send(user);
 }
 const getAll = async (req,res) => {
