@@ -80,7 +80,7 @@ router.get('/user_sellers',userController.get_sellers)
 
 
 router.get('/users-addresses',[verifyToken],userController.get)
-router.post('/users-addresses/:id',[
+router.post('/users-addresses',[
   check("latitude","the latitude is required").not().isEmpty(),
   check("longitude","the longitude is required").not().isEmpty(),
   check("address","the address is required").not().isEmpty(),
