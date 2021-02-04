@@ -9,8 +9,8 @@ const attributes = [
 ]
 
 const get = async (req,res) => {
-    const { id } = await returnUserByToken(req);
-    const user = await models.User.findOne({where: {id}, include: ['roles','profile','addresess'], attributes: fields.userFields});
+    const payload = await returnUserByToken(req);
+    const user = await models.User.findOne({where: { id: payload.id }, include: ['roles','profile','addresess'], attributes: fields.userFields});
     return res.send(user);
 }
 const getAll = async (req,res) => {
@@ -31,7 +31,7 @@ function get_sellers(req,res){  models.User.findAll({include: ['roles',{
   })
 }
 
-function create(req,res){
+const create = async (req,res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
@@ -40,13 +40,17 @@ function create(req,res){
   const rut = req.body.rut.split('-')[0]
   const dv = req.body.rut.split('-')[1]
   const id_parent = null
+  if(req.body.id_rol == 1 || req.body.id_rol == 3 ){
+    const user = await returnUserByToken(req);
+    if(!user) return res.status(403).json({message: 'Forbidden' })
+  }
   models.User.findOrCreate({
     where: {rut, dv},
     defaults: {
       rut,
       dv,
       password: req.body.password,
-      id_rol: req.body.id_rol,
+      id_rol: req.body.rol || 2,
       id_parent
     }
   }).then(([user,created]) => {

@@ -12,31 +12,8 @@ const profileController = require('../controllers/profile');
 const rolesController = require('../controllers/roles');
 const userController = require('../controllers/user');
 const router  = express.Router();
-const path = require('path');
+
 const { check } = require("express-validator");
-
-var storageGalleryProducts = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const routeImg = path.join(__dirname,'../public/img/product')
-    cb(null, routeImg)
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now()+'-'+file.originalname)
-  }
-})
-
-var storageProfileImg = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const routeImg = path.join(__dirname,'../public/img/profile')
-    cb(null, routeImg)
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now()+'-'+file.originalname)
-  }
-})
-
-const uploadGalleryProduct = multer({storage : storageGalleryProducts}).any('gallery')
-const uploadImgProfile = multer({storage : storageProfileImg}).single('file')
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
@@ -74,18 +51,22 @@ router.get('/products_by_seller/:id',[verifyToken],productController.getBySeller
 router.get('/products_by_category/:id',[verifyToken],productController.getByCategory)
 router.get('/products_premium',[verifyToken],productController.getPremium)
 router.get('/products_by_word/:word',[verifyToken],productController.getByWord)
-router.post('/product',[verifyToken],uploadGalleryProduct,productController.create)
+router.post('/product',[verifyToken],productController.create)
 router.post('/product_by_filter',[verifyToken],productController.getProductsByFilter)
-router.put('/product/:id',[verifyToken],uploadGalleryProduct,productController.update)
+router.put('/product/:id',[verifyToken],productController.update)
 router.put('/product_change_status/:id',[verifyToken],productController.updateStatus)
 router.delete('/product/:id',[verifyToken],productController.destroy)
 router.delete('/product_remove_img/:id/:filename',[verifyToken],productController.removeImgGallery)
 
 router.get('/profile',[verifyToken],profileController.get)
-router.post('/profile',[verifyToken],uploadImgProfile,profileController.create)
-router.put('/profile/:id',[verifyToken],uploadImgProfile,profileController.update)
-router.post('/profile_admin',[verifyToken],profileController.updateAdmin)
+router.post('/profile',[
+  verifyToken,
+  check("name","the name is required").not().isEmpty(),
+  check("last_name","the last_name is required").not().isEmpty(), 
+  check("email","the email is required").not().isEmpty(),
+],profileController.create)
 
+router.put('/profile',[verifyToken],profileController.update)
 
 router.get('/roles',[verifyToken],rolesController.get)
 
