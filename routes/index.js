@@ -45,7 +45,7 @@ router.put('/payment_change_status/:id',[verifyToken],paymentController.changeSt
 router.post('/payment_confirmation_flow_url',paymentController.getConfirmationFlow)
 
 
-router.get('/product/:id?',[verifyToken],productController.get)
+router.get('/product',[verifyToken],productController.get)
 router.get('/product_by_pagination/:offset/:limit?',[verifyToken],productController.get_pagination)
 router.get('/products_by_seller/:id',[verifyToken],productController.getBySeller)
 router.get('/products_by_category/:id',[verifyToken],productController.getByCategory)

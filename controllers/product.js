@@ -1,48 +1,9 @@
 const models = require('../models');
-const func = require('../utils/functions');
 const path = require('path');
 const fs = require('fs');
 
-function get(req,res){
-  const id = req.params.id
-  //const id_parent = func.getIdPadre(req.user)
-
-  if(id){
-    let where = {status : 1}
-    where.id = id
-    if(req.user.id_rol !== 2){
-      where.id_parent = id_parent
-    }
-    models.Product.findOne({
-      where,
-      include: ['gallery',
-      {
-        model: models.ProductCategories,
-        as: 'categories',
-        required: false,
-        include : ['category']
-      },{
-        model: models.User,
-        as: 'user',
-        required: true,
-        include : ['profile']
-      },
-      'inventary',"days_avialable"],
-      order: [ ['id','DESC'] ]
-    }).then(result => {
-      res.json({product: result})
-    }).catch(err => {
-     	 console.log(err)
-     	 res.status(500).json({message: 'Error, contacte con soporte'})
-    })
-  }else{
-
-    let where = {status : 1}
-    if(req.user.id_rol === 3){
-      where.id_parent = id_parent
-    }
-
-    models.Product.findAll({where, include: ['gallery',{
+const get = async (req,res) => {
+  const products = await models.Product.findAll({where, include: ['gallery',{
         model: models.ProductCategories,
         as: 'categories',
         required: false,
@@ -54,14 +15,8 @@ function get(req,res){
         include : ['profile']
       },'inventary',"days_avialable"],
       order: [ ['id','DESC']
-    ]
-    }).then(result => {
-      res.json({products: result})
-    }).catch(err => {
-     	 console.log(err)
-     	 res.status(500).json({message: 'Error, contacte con soporte'})
-    })
-  }
+    ]});
+  return res.send(products);
 }
 
 async function create(req,res){

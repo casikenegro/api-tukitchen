@@ -40,9 +40,9 @@ const create = async (req,res) => {
   const rut = req.body.rut.split('-')[0]
   const dv = req.body.rut.split('-')[1]
   const id_parent = null
-  if(req.body.id_rol == 1 || req.body.id_rol == 3 ){
+  if(req.body.id_rol == 1 ){
     const user = await returnUserByToken(req);
-    if(!user) return res.status(403).json({message: 'Forbidden' })
+    if(user.id_rol !== 1) return res.status(403).json({message: 'Forbidden' })
   }
   models.User.findOrCreate({
     where: {rut, dv},
