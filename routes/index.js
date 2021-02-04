@@ -10,6 +10,8 @@ const productController = require('../controllers/product');
 const profileController = require('../controllers/profile');
 const rolesController = require('../controllers/roles');
 const userController = require('../controllers/user');
+const userAddressController = require('../controllers/userAdress');
+
 const router  = express.Router();
 
 const { check } = require("express-validator");
@@ -45,7 +47,6 @@ router.post('/payment_confirmation_flow_url',paymentController.getConfirmationFl
 
 
 router.get('/products',productController.get)
-router.get('/product_by_pagination/:offset/:limit?',[verifyToken],productController.get_pagination)
 router.get('/products_by_seller/:id',[verifyToken],productController.getBySeller)
 router.get('/products_by_category/:id',[verifyToken],productController.getByCategory)
 router.get('/products_premium',[verifyToken],productController.getPremium)
@@ -79,15 +80,15 @@ router.delete('/users',[verifyToken],userController.destroy)
 router.get('/user_sellers',userController.get_sellers)
 
 
-router.get('/users-addresses',[verifyToken],userController.get)
-router.post('/users-addresses',[
+router.get('/user-addresses',[verifyToken],userAddressController.get)
+router.post('/user-addresses',[
   check("latitude","the latitude is required").not().isEmpty(),
   check("longitude","the longitude is required").not().isEmpty(),
   check("address","the address is required").not().isEmpty(),
   check("description","the description is required").not().isEmpty(),
   check("city","the city is required").not().isEmpty(),
-],userController.create)
-router.put('/users-addresses/:id',[verifyToken],userController.update)
-router.delete('/users-addresses/:id',[verifyToken],userController.destroy)
+],userAddressController.create)
+router.put('/user-addresses/:id',[verifyToken],userAddressController.update)
+router.delete('/user-addresses/:id',[verifyToken],userAddressController.destroy)
 
 module.exports = router

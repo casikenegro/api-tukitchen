@@ -24,8 +24,14 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-  })
 
+  })
+  UserAddress.associate = model => {
+    UserAddress.belongsTo(model.User,{
+      foreignKey: 'id_user',
+      as : 'users'
+    })
+  }
 
   return UserAddress;
 }
