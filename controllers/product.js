@@ -3,14 +3,14 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
-  const { status, id_parent, is_premium, id_category , word, get_categories , page} = req.query;
+  const { status, id_parent, is_premium, id_category , word, get_categories , page, id} = req.query;
   let whereProducts = {
     status: status || 1,
   };
 
   let categories = null ; 
   let include = ['gallery' ];
-
+  if(id)whereProducts = { ...whereProducts, id };
   if(id_parent) whereProducts = { ...whereProducts, id_parent };
   if(is_premium) whereProducts = { ...whereProducts,is_premium};
   if(word) whereProducts = {
