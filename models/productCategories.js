@@ -1,22 +1,30 @@
 module.exports = (Sequelize,DataTypes) => {
   const ProductCategories = Sequelize.define('product_categories',{
-    id_category: {
+    category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    id_product: {
+    product_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP() ')
     }
   })
 
   ProductCategories.associate = model => {
-    ProductCategories.belongsTo(model.Category,{
-      foreignKey: "id_category",
-      as: "category"
+    ProductCategories.belongsTo(model.Categories,{
+      foreignKey: "category_id",
+      as: "categories"
     });
-    ProductCategories.belongsTo(model.Category,{
-      foreignKey: "id_product",
+    ProductCategories.belongsTo(model.Product,{
+      foreignKey: "product_id",
       as: "product"
     });
   }

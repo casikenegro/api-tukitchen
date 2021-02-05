@@ -14,7 +14,7 @@ const returnUserByToken = async (req) => {
 
 const isAdmin = async (req,res,next) => {
   const user = await returnUserByToken(req);
-  if( user.rol === 1 ) next();
+  if( user.rol === 'ADMINISTRADOR' ) next();
   return res.status(401).json({ message: "Unauthorized!" });
 
 }

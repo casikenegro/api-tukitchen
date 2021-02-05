@@ -7,7 +7,6 @@ const multer  = require('multer');
 const router = require('./routes');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const createRegisters = require('./createRegisters');
 const app = express();
 
 // Settings
@@ -43,7 +42,6 @@ app.use(bodyParser.json({limit: '100mb', extended: true}));
 app.use(bodyParser.urlencoded({limit: '100mb', extended: true, paramsLimit: 10000000 }));
 
 app.use(express.static(path.join(__dirname, 'public/uploads')));
-createRegisters.createRegisters();
 // Welcome Routes
 app.get("/", (req, res) => {
   res.json({

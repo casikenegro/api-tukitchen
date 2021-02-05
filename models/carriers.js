@@ -1,5 +1,5 @@
 module.exports = (Sequelize,DataTypes) => {
-  const Carrier = Sequelize.define('carrier',{ //transportistas
+  const Carrier = Sequelize.define('carriers',{ //transportistas
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,7 +24,7 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    id_parent: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     }
@@ -32,8 +32,8 @@ module.exports = (Sequelize,DataTypes) => {
 
   Carrier.associate = models => {
     Carrier.hasMany(models.CarrierAddress,{
-      foreignKey: 'id_carrier',
-      as : 'addreses'
+      foreignKey: 'carrie_id',
+      as : 'carrier_addresses'
     })
   }
 

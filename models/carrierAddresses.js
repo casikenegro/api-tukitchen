@@ -1,6 +1,6 @@
 module.exports = (Sequelize,DataTypes) => {
-  const CarrierAddress = Sequelize.define('carrier_address',{
-    id_carrier: {
+  const CarrierAddress = Sequelize.define('carrier_addresses',{
+    carrier_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -15,7 +15,7 @@ module.exports = (Sequelize,DataTypes) => {
     address: {
       type: DataTypes.TEXT,
       allowNull: false,
-    },
+    }
   })
 
 

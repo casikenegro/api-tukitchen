@@ -4,13 +4,9 @@ const { verifyToken } = require('../middleware');
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
 const categoryController = require('../controllers/category');
-const couponController = require('../controllers/coupons');
-const inventaryController = require('../controllers/inventary');
-const paymentController = require('../controllers/payment');
 const productController = require('../controllers/product');
 const productCategoriesController = require('../controllers/productCategories');
 const profileController = require('../controllers/profile');
-const rolesController = require('../controllers/roles');
 const userController = require('../controllers/user');
 const userAddressController = require('../controllers/userAdress');
 
@@ -25,27 +21,10 @@ router.post('/category',[verifyToken],categoryController.create)
 router.put('/category/:id',[verifyToken],categoryController.update)
 router.delete('/category/:id',[verifyToken],categoryController.destroy)
 
-router.get('/coupon/:id?',[verifyToken],couponController.get)
-router.get('/coupon_veryfi/:code',[verifyToken],couponController.verifyToken)
-router.post('/coupon',[verifyToken],couponController.create)
-router.put('/coupon/:id',[verifyToken],couponController.update)
-router.delete('/coupon/:id',[verifyToken],couponController.destroy)
-
 router.get('/carrier/:id?',[verifyToken],carrierController.get)
 router.post('/carrier',[verifyToken],carrierController.create)
 router.put('/carrier/:id',[verifyToken],carrierController.update)
 router.delete('/carrier/:id',[verifyToken],carrierController.destroy)
-
-router.get('/inventary/:id?',[verifyToken],inventaryController.get)
-router.put('/inventary/:id',[verifyToken],inventaryController.update)
-
-router.get('/payment/:id?',[verifyToken],paymentController.get)
-router.get('/payment_by_status/:status',[verifyToken],paymentController.getByStatus)
-router.post('/payment',[verifyToken],paymentController.create)
-router.put('/payment_change_status/:id',[verifyToken],paymentController.changeStatus)
-//  router.get('/payment_confirmation_flow_url',paymentController.getConfirmationFlow)
-router.post('/payment_confirmation_flow_url',paymentController.getConfirmationFlow)
-
 
 router.get('/products',productController.get)
 router.post('/products',[
@@ -75,17 +54,14 @@ router.post('/profile',[
 
 router.put('/profile',[verifyToken],profileController.update)
 
-router.get('/roles',[verifyToken],rolesController.get)
-
 router.get('/users',[verifyToken],userController.get)
 router.post('/users',[
   check("rut","the rut is required").not().isEmpty(),
+  check("role","the role is required").not().isEmpty(),
   check("password","the password is required").not().isEmpty()
 ],userController.create)
 router.put('/users',[verifyToken],userController.update)
 router.delete('/users',[verifyToken],userController.destroy)
-router.get('/user_sellers',userController.get_sellers)
-
 
 router.get('/user-addresses',[verifyToken],userAddressController.get)
 router.post('/user-addresses',[

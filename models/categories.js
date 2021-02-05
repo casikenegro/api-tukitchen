@@ -1,20 +1,20 @@
 module.exports = (Sequelize,DataTypes) => {
-  const Category = Sequelize.define('category',{
+  const Categories = Sequelize.define('categories',{
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    id_parent: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
     }
   })
 
-  Category.associate = model => {
-    Category.hasMany(model.ProductCategories,{
-      foreignKey: "id_category",
+  Categories.associate = model => {
+    Categories.hasMany(model.ProductCategories,{
+      foreignKey: "category_id",
       as: "product_categories"
     })
   }
-  return Category;
+  return Categories;
 }
