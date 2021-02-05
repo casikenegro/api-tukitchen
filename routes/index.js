@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
@@ -15,7 +16,6 @@ const userAddressController = require('../controllers/userAdress');
 
 const router  = express.Router();
 
-const { check } = require("express-validator");
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)

@@ -43,7 +43,6 @@ const get = async (req,res) => {
 async function create(req,res){
   const errors = validationResult(req);
   const  { id } = await returnUserByToken(req);
-  console.log(id);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
