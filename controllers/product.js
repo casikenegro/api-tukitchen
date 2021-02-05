@@ -3,8 +3,7 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
-  const { status, id_parent, is_premium, id_category , word, get_categories} = req.query;
-  const offset = req.query.offset > 0 ? req.query.offset- 1 : 0;
+  const { status, id_parent, is_premium, id_category , word, get_categories , page} = req.query;
   let whereProducts = {
     status: status || 1,
   };
@@ -26,18 +25,17 @@ const get = async (req,res) => {
     if(id_category) whereCategory = { ...whereCategory, id_category };
     categories = {
       model: models.ProductCategories,
-      as: 'categories',
+      as: 'product_categories',
       where: { ...whereCategory },
       include : ['category']
     }
     include.push(categories);
   }
   
-  const products = await models.Product.findAndCountAll({
+  const products = await models.Product.paginate({
       where : { ...whereProducts },
       include,
-      offset,
-      limit: 15,
+      page : page || 1
   });
   return res.status(200).send(products);
 }
