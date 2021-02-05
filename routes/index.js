@@ -1,4 +1,5 @@
 const express = require('express');
+const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
@@ -7,6 +8,7 @@ const couponController = require('../controllers/coupons');
 const inventaryController = require('../controllers/inventary');
 const paymentController = require('../controllers/payment');
 const productController = require('../controllers/product');
+const productCategoriesController = require('../controllers/productCategories');
 const profileController = require('../controllers/profile');
 const rolesController = require('../controllers/roles');
 const userController = require('../controllers/user');
@@ -14,7 +16,6 @@ const userAddressController = require('../controllers/userAdress');
 
 const router  = express.Router();
 
-const { check } = require("express-validator");
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
@@ -56,6 +57,13 @@ router.post('/products',[
 ],productController.create)
 router.put('/products/:id',[verifyToken],productController.update)
 router.delete('/products/:id',[verifyToken],productController.destroy)
+
+router.get('/product-categories',[verifyToken],productCategoriesController.get)
+router.post('/product-categories',[
+  verifyToken,
+  check("id_product","the id_product is required").not().isEmpty(),
+  check("categories","the categories is required").not().isEmpty(),
+],productCategoriesController.create)
 
 router.get('/profile',[verifyToken],profileController.get)
 router.post('/profile',[

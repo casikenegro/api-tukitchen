@@ -32,6 +32,7 @@
     "nodemailer": "^6.4.16",
     "save": "^2.4.0",
     "sequelize": "^6.3.5",
+    "sequelize-paginate": "^1.1.6",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
