@@ -1,10 +1,6 @@
 const { validationResult } = require("express-validator");
 const models = require('../models');
 
-const get = async (req,res) => {
-    const productCategories = await models.ProductCategories.findAll({where:{ product_id: req.params.id }});
-    return res.status(200).send(productCategories);
-}
 const create = async (req,res) => {
   const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -20,6 +16,5 @@ const create = async (req,res) => {
 }
 
 module.exports = {
-  get,
   create,
 }

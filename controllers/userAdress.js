@@ -23,6 +23,7 @@ const create = async (req,res) => {
 const update =  async (req,res) => {
   const { id } = req.params;
   const address = await models.UserAddress.findOne({where:{ id }});
+  if(!address) return res.status(404).send({ message:"bad id" });
   address.update({
       ...req.body
   })

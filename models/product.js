@@ -40,22 +40,27 @@ module.exports = (Sequelize,DataTypes) => {
   Product.associate = model => {
     Product.hasMany(model.ProductCategories,{
       foreignKey: 'product_id',
-      as : 'product_categories'
+      as : 'product_categories',
+      onDelete: 'CASCADE'
+      
     })
 
     Product.hasMany(model.ProductGallery,{
       foreignKey: 'product_id',
-      as : 'gallery'
+      as : 'gallery',
+      onDelete: 'CASCADE'
     })
 
     Product.hasMany(model.ProductDaysAvailable,{
       foreignKey: 'product_id',
-      as : 'days_avialable'
+      as : 'days_avialable',
+      onDelete: 'CASCADE'
     })
 
     Product.belongsTo(model.User,{
       foreignKey: 'user_id',
-      as : 'users'
+      as : 'users',
+      onDelete: 'CASCADE'
     })
   }
   sequelizePaginate.paginate(Product)

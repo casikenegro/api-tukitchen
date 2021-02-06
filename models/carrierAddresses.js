@@ -19,5 +19,11 @@ module.exports = (Sequelize,DataTypes) => {
   })
 
 
+  CarrierAddress.associate = models => {
+    CarrierAddress.belongsTo(models.Carrier,{
+      foreignKey: 'carrier_id',
+      as : 'carrier'
+    })
+  }
   return CarrierAddress;
 }

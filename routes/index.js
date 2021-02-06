@@ -3,9 +3,11 @@ const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
-const categoryController = require('../controllers/category');
+const categoriesController = require('../controllers/categories');
 const productController = require('../controllers/product');
 const productCategoriesController = require('../controllers/productCategories');
+const productGelerryController = require('../controllers/productGallery');
+
 const profileController = require('../controllers/profile');
 const userController = require('../controllers/user');
 const userAddressController = require('../controllers/userAdress');
@@ -16,12 +18,15 @@ const router  = express.Router();
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
 
-router.get('/category/:id?',[verifyToken],categoryController.get)
-router.post('/category',[verifyToken],categoryController.create)
-router.put('/category/:id',[verifyToken],categoryController.update)
-router.delete('/category/:id',[verifyToken],categoryController.destroy)
+router.get('/categories',categoriesController.get)
+router.post('/categories',[
+  verifyToken,
+  check("name","the name is required").not().isEmpty(),
+],categoriesController.create)
+router.put('/categories/:id',[verifyToken],categoriesController.update)
+router.delete('/categories/:id',[verifyToken],categoriesController.destroy)
 
-router.get('/carrier/:id?',[verifyToken],carrierController.get)
+router.get('/carrier',[verifyToken],carrierController.get)
 router.post('/carrier',[verifyToken],carrierController.create)
 router.put('/carrier/:id',[verifyToken],carrierController.update)
 router.delete('/carrier/:id',[verifyToken],carrierController.destroy)
@@ -37,12 +42,20 @@ router.post('/products',[
 router.put('/products/:id',[verifyToken],productController.update)
 router.delete('/products/:id',[verifyToken],productController.destroy)
 
-router.get('/product-categories',[verifyToken],productCategoriesController.get)
 router.post('/product-categories',[
   verifyToken,
   check("id_product","the id_product is required").not().isEmpty(),
   check("categories","the categories is required").not().isEmpty(),
 ],productCategoriesController.create)
+
+
+router.post('/products-gallery',[
+  verifyToken,
+  check("product_id","the product_id is required").not().isEmpty(),
+],productGelerryController.create)
+router.put('/products-gallery/:id',[verifyToken],productGelerryController.update)
+router.delete('/products-gallery/:id',[verifyToken],productGelerryController.destroy)
+
 
 router.get('/profile',[verifyToken],profileController.get)
 router.post('/profile',[
@@ -51,14 +64,13 @@ router.post('/profile',[
   check("last_name","the last_name is required").not().isEmpty(), 
   check("email","the email is required").not().isEmpty(),
 ],profileController.create)
-
 router.put('/profile',[verifyToken],profileController.update)
 
 router.get('/users',[verifyToken],userController.get)
 router.post('/users',[
   check("rut","the rut is required").not().isEmpty(),
   check("role","the role is required").not().isEmpty(),
-  check("password","the password is required").not().isEmpty()
+  check("password","the password is required").not().isEmpty(),
 ],userController.create)
 router.put('/users',[verifyToken],userController.update)
 router.delete('/users',[verifyToken],userController.destroy)
