@@ -5,7 +5,6 @@ const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
   const { status, user_id, is_premium, product_id , word, get_products , page, id} = req.query;
-
   if(get_products){
     let products = null ; 
     let whereProducts = {

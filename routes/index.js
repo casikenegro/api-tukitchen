@@ -1,9 +1,12 @@
 const express = require('express');
 const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
+
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
+const carrierAddressController = require("../controllers/carrierAdresses")
 const categoriesController = require('../controllers/categories');
+
 const productController = require('../controllers/product');
 const productCategoriesController = require('../controllers/productCategories');
 const productGelerryController = require('../controllers/productGallery');
@@ -12,11 +15,25 @@ const profileController = require('../controllers/profile');
 const userController = require('../controllers/user');
 const userAddressController = require('../controllers/userAdress');
 
+const inventariesControler = require("../controllers/inventaries");
+
 const router  = express.Router();
 
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
+
+router.get('/inventaries',inventariesControler.get)
+router.post('/inventaries',[
+  verifyToken,
+  check("product_id","is required").not().isEmpty(),
+  check("user_id","is required").not().isEmpty(),
+  check("day","is required").not().isEmpty(),
+  check("time_init","is required").not().isEmpty(),
+  check("time_final","is required").not().isEmpty(),
+],inventariesControler.create)
+router.put('/inventaries/:id',[verifyToken],inventariesControler.update)
+router.delete('/inventaries/:id',[verifyToken],inventariesControler.destroy)
 
 router.get('/categories',categoriesController.get)
 router.post('/categories',[
@@ -30,6 +47,17 @@ router.get('/carrier',[verifyToken],carrierController.get)
 router.post('/carrier',[verifyToken],carrierController.create)
 router.put('/carrier/:id',[verifyToken],carrierController.update)
 router.delete('/carrier/:id',[verifyToken],carrierController.destroy)
+
+router.post('/carrier-addresses',[
+  verifyToken,
+  check("carrier_id","the carrier_id is required").not().isEmpty(),
+  check("latitude","the latitude is required").not().isEmpty(),
+  check("longitude","the longitude is required").not().isEmpty(),
+  check("address","the address is required").not().isEmpty(),
+
+],carrierAddressController.create)
+router.put('/carrier-addresses/:id',[verifyToken],carrierAddressController.update)
+router.delete('/carrier-addresses/:id',[verifyToken],carrierAddressController.destroy)
 
 router.get('/products',productController.get)
 router.post('/products',[
