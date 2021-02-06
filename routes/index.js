@@ -1,9 +1,12 @@
 const express = require('express');
 const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
+
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
+const carrierAddressController = require("../controllers/carrierAdresses")
 const categoriesController = require('../controllers/categories');
+
 const productController = require('../controllers/product');
 const productCategoriesController = require('../controllers/productCategories');
 const productGelerryController = require('../controllers/productGallery');
@@ -30,6 +33,17 @@ router.get('/carrier',[verifyToken],carrierController.get)
 router.post('/carrier',[verifyToken],carrierController.create)
 router.put('/carrier/:id',[verifyToken],carrierController.update)
 router.delete('/carrier/:id',[verifyToken],carrierController.destroy)
+
+router.post('/carrier-addresses',[
+  verifyToken,
+  check("carrier_id","the carrier_id is required").not().isEmpty(),
+  check("latitude","the latitude is required").not().isEmpty(),
+  check("longitude","the longitude is required").not().isEmpty(),
+  check("address","the address is required").not().isEmpty(),
+
+],carrierAddressController.create)
+router.put('/carrier-addresses/:id',[verifyToken],carrierAddressController.update)
+router.delete('/carrier-addresses/:id',[verifyToken],carrierAddressController.destroy)
 
 router.get('/products',productController.get)
 router.post('/products',[
