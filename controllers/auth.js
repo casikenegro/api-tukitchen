@@ -6,7 +6,7 @@ const mail = require('../utils/mail');
 const utils = require('../utils/constants');
 
 async function login(req,res){
-  const password = req.body.password
+  const { rut,password } = req.body
   const user = await models.User.findOne({ where: {rut}});
   if(bcrypt.compareSync(password,user.password)){
     delete user.dataValues.password;

@@ -50,8 +50,8 @@ async function destroy(req,res){
   const payload = await returnUserByToken(req);
   const t = await models.sequelize.transaction()
   try {
-    await models.UserAddress.destroy({where: {id_user:payload.id}, transaction: t})
-    await models.Profile.destroy({where: {id_user:payload.id}, transaction: t})
+    await models.UserAddress.destroy({where: {user_id:payload.id}, transaction: t})
+    await models.Profile.destroy({where: {user_id:payload.id}, transaction: t})
     await models.User.destroy({where: {id: payload.id}, transaction: t})
     await t.commit()
     res.json({message: "success"})
