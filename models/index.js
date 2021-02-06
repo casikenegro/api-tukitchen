@@ -13,6 +13,7 @@ let models = {
   Profile  : require('./profile')(sequelize, Sequelize),
   User : require('./user')(sequelize, Sequelize),
   UserAddress : require('./userAddress')(sequelize, Sequelize),
+  Inventaries: require("./inventaries")(sequelize, Sequelize)
 };
 
 Object.keys(models).forEach((modelName) => {

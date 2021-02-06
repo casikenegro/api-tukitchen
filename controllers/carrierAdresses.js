@@ -36,7 +36,6 @@ async function destroy(req,res){
 
 
 module.exports = {
-  get,
   create,
   update,
   destroy,
