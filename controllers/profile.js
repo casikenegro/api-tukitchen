@@ -8,7 +8,7 @@ const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
   const { id } = await returnUserByToken(req);
-  const profile = await models.Profile.findOne({where: {id_user : id}});
+  const profile = await models.Profile.findOne({where: {user_id : id}});
   if(!profile) return res.status(404).send("profile not exist");
   return res.send(profile);
 }
@@ -24,13 +24,13 @@ const create = async (req,res) => {
     }
   }
   const { id } = await returnUserByToken(req);
-  let profile = await models.Profile.findOne({where: {id_user : id}});
+  let profile = await models.Profile.findOne({where: {user_id : id}});
   if(!req.file) res.status(400).send("image is required"); 
   if(!profile){
     let profile = await models.Profile.create({
       ...req.body,
       img_profile: req.file.filename,
-      id_user: id,
+      user_id: id,
     });
     return res.send(profile);
   }
@@ -46,7 +46,7 @@ async function update(req,res){
     }
   }
   const { id } = await returnUserByToken(req);
-  let profile = await models.Profile.findOne({ where: { id_user: id } });
+  let profile = await models.Profile.findOne({ where: { user_id: id } });
   if(req.file) {
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${profile.img_profile}`))
     req.body.img_profile = req.file.filename;

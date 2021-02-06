@@ -3,7 +3,7 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
-  const { status, id_parent, is_premium, id_category , word, get_categories , page, id} = req.query;
+  const { status, user_id, is_premium, category_id , word, get_categories , page, id} = req.query;
   let whereProducts = {
     status: status || 1,
   };
@@ -11,7 +11,7 @@ const get = async (req,res) => {
   let categories = null ; 
   let include = ['gallery' ];
   if(id)whereProducts = { ...whereProducts, id };
-  if(id_parent) whereProducts = { ...whereProducts, id_parent };
+  if(user_id) whereProducts = { ...whereProducts, user_id };
   if(is_premium) whereProducts = { ...whereProducts,is_premium};
   if(word) whereProducts = {
     ...whereProducts,
@@ -22,12 +22,12 @@ const get = async (req,res) => {
 
   if(get_categories){
     let whereCategory = {};
-    if(id_category) whereCategory = { ...whereCategory, id_category };
+    if(category_id) whereCategory = { ...whereCategory, category_id };
     categories = {
       model: models.ProductCategories,
       as: 'product_categories',
       where: { ...whereCategory },
-      include : ['category']
+      include : ['categories']
     }
     include.push(categories);
   }
@@ -48,14 +48,14 @@ async function create(req,res){
   }
   const product = await models.Product.create({
     ...req.body,
-    id_parent: id
+    user_id: id
   });
   return res.status(200).send(product);  
 }
 
 async function update(req,res){
   const user = await returnUserByToken(req);
-  let product = await models.Product.findOne({ where: { id_parent: user.id, id: req.params.id } });
+  let product = await models.Product.findOne({ where: { user_id: user.id, id: req.params.id } });
   if(!product) return res.status(400).send({message:"bad request"});
   product.update({ ...req.body });
   product.save();
@@ -65,7 +65,7 @@ async function update(req,res){
 async function destroy(req,res){
   try {
     const user = await returnUserByToken(req);
-    await models.Product.destroy({ where: { id_parent: user.id, id: req.params.id } });
+    await models.Product.destroy({ where: { user_id: user.id, id: req.params.id } });
     return res.send({message:"success"});
   } catch (error) {
    return res.status(500).send("oh no, bad request"); 

@@ -4,7 +4,7 @@ const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => {
     const  user = await returnUserByToken(req);
-    const addresses = await models.UserAddress.findAll({where:{ id_user : user.id}});
+    const addresses = await models.UserAddress.findAll({where:{ user_id : user.id}});
     return res.status(200).send(addresses);
 }
 const create = async (req,res) => {
@@ -15,7 +15,7 @@ const create = async (req,res) => {
   }
   const address = await models.UserAddress.create({
     ...req.body,
-    id_user:user.id
+    user_id:user.id
   });
   return res.status(200).send(address);
 }

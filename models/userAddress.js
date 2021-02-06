@@ -23,8 +23,7 @@ module.exports = (Sequelize,DataTypes) => {
     city : {
       type: DataTypes.STRING,
       allowNull: true,
-    },
-
+    }
   })
   UserAddress.associate = model => {
     UserAddress.belongsTo(model.User,{

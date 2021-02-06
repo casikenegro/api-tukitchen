@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const constants = require("../utils/constants");
 
 module.exports = (Sequelize,DataTypes) => {
   const User = Sequelize.define('users',{
@@ -6,49 +7,37 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    dv: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    id_rol: {
-      type: DataTypes.INTEGER,
+    role: {
+      type: DataTypes.ENUM(constants.roles),
       allowNull: false,
     },
-    id_parent:{
-      type: DataTypes.INTEGER,
-      allowNull: true,
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
     },
-  },{
-    freezeTableName: true,
-    instanceMethods: {
-        generateHash(password) {
-            return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
     }
-  })
+  });
   User.associate = model => {
 
-    User.belongsTo(model.Roles,{
-      foreignKey: 'id_rol',
-      as: 'roles'
-    })
-
     User.hasOne(model.Profile,{
-      foreignKey: 'id_user',
+      foreignKey: 'user_id',
       as: 'profile'
     })
 
     User.hasMany(model.UserAddress,{
-      foreignKey: 'id_user',
+      foreignKey: 'user_id',
       as: 'user_address'
     })
 
     User.hasMany(model.Product,{
-      foreignKey: 'id_parent',
+      foreignKey: 'user_id',
       as: 'products'
     })
   }

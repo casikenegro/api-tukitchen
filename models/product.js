@@ -1,6 +1,6 @@
 const sequelizePaginate = require('sequelize-paginate')
 module.exports = (Sequelize,DataTypes) => {
-  const Product = Sequelize.define('product',{ //transportistas
+  const Product = Sequelize.define('product',{ 
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -31,7 +31,7 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
-    id_parent: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     }
@@ -39,27 +39,22 @@ module.exports = (Sequelize,DataTypes) => {
 
   Product.associate = model => {
     Product.hasMany(model.ProductCategories,{
-      foreignKey: 'id_product',
+      foreignKey: 'product_id',
       as : 'product_categories'
     })
 
     Product.hasMany(model.ProductGallery,{
-      foreignKey: 'id_product',
+      foreignKey: 'product_id',
       as : 'gallery'
     })
 
-    Product.hasOne(model.Inventary,{
-      foreignKey: 'id_product',
-      as : 'inventary'
-    })
-
     Product.hasMany(model.ProductDaysAvailable,{
-      foreignKey: 'id_product',
+      foreignKey: 'product_id',
       as : 'days_avialable'
     })
 
     Product.belongsTo(model.User,{
-      foreignKey: 'id_parent',
+      foreignKey: 'user_id',
       as : 'users'
     })
   }
