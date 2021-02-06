@@ -32,7 +32,7 @@ module.exports = (Sequelize,DataTypes) => {
 
   Carrier.associate = models => {
     Carrier.hasMany(models.CarrierAddress,{
-      foreignKey: 'carrie_id',
+      foreignKey: 'carrier_id',
       as : 'carrier_addresses'
     })
   }

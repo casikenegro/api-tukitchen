@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      img_product: {
         type: DataTypes.STRING,
         allowNull: false,
       },

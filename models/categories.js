@@ -1,3 +1,5 @@
+const sequelizePaginate = require('sequelize-paginate')
+
 module.exports = (Sequelize,DataTypes) => {
   const Categories = Sequelize.define('categories',{
     name: {
@@ -16,5 +18,7 @@ module.exports = (Sequelize,DataTypes) => {
       as: "product_categories"
     })
   }
+  sequelizePaginate.paginate(Categories)
+
   return Categories;
 }

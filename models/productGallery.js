@@ -1,6 +1,6 @@
 module.exports = (Sequelize,DataTypes) => {
   const ProductGallery = Sequelize.define('product_gallery',{
-    name: {
+    img_product: {
       type: DataTypes.STRING,
       allowNull: false,
     },

@@ -20,6 +20,7 @@ const create = async (req,res) => {
   }
   if(req.body.email){
     if(!emailValidator.validate(req.body.email)){
+      fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
       return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
     }
   }
@@ -34,6 +35,7 @@ const create = async (req,res) => {
     });
     return res.send(profile);
   }
+  fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
   res.status(400).send("profile exist");
 
 }

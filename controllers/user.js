@@ -20,15 +20,21 @@ const create = async (req,res) => {
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  req.body.password = bcrypt.hashSync(req.body.password,10);  
+  req.body.password = bcrypt.hashSync(req.body.password,10);
   if(constants.roles.indexOf(req.body.role) === -1){
     return res.status(404).send("role not exist");
   }
-  if(constants.roles.indexOf(req.body.role) === 0){
-    const user = await returnUserByToken(req);
-    if(user.role !== "ADMINISTRADOR") return res.status(403).json({message: 'Forbidden' })
+  let user = {};
+  if(await models.User.findOne({where:{ rut: req.body.rut }})){
+    return res.status(401).json({message: 'rut exist' })
   }
-  const user = await models.User.create({...req.body});
+  if(constants.roles.indexOf(req.body.role) === 0){
+     user = await returnUserByToken(req);
+    if(user.role !== "ADMINISTRADOR") return res.status(401).json({message: 'Forbidden' })
+  }
+  user = await models.User.create({
+      ...req.body
+  });
   return res.send(user);
 }
 
