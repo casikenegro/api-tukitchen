@@ -15,11 +15,25 @@ const profileController = require('../controllers/profile');
 const userController = require('../controllers/user');
 const userAddressController = require('../controllers/userAdress');
 
+const inventariesControler = require("../controllers/inventaries");
+
 const router  = express.Router();
 
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
+
+router.get('/inventaries',inventariesControler.get)
+router.post('/inventaries',[
+  verifyToken,
+  check("product_id","is required").not().isEmpty(),
+  check("user_id","is required").not().isEmpty(),
+  check("day","is required").not().isEmpty(),
+  check("time_init","is required").not().isEmpty(),
+  check("time_final","is required").not().isEmpty(),
+],inventariesControler.create)
+router.put('/inventaries/:id',[verifyToken],inventariesControler.update)
+router.delete('/inventaries/:id',[verifyToken],inventariesControler.destroy)
 
 router.get('/categories',categoriesController.get)
 router.post('/categories',[
