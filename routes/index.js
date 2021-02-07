@@ -72,7 +72,7 @@ router.delete('/products/:id',[verifyToken],productController.destroy)
 
 router.post('/product-categories',[
   verifyToken,
-  check("id_product","the id_product is required").not().isEmpty(),
+  check("product_id","the product_id is required").not().isEmpty(),
   check("categories","the categories is required").not().isEmpty(),
 ],productCategoriesController.create)
 
