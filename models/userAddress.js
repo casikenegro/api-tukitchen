@@ -1,6 +1,6 @@
 module.exports = (Sequelize,DataTypes) => {
   const UserAddress = Sequelize.define('user_address',{
-    id_user: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -27,7 +27,7 @@ module.exports = (Sequelize,DataTypes) => {
   })
   UserAddress.associate = model => {
     UserAddress.belongsTo(model.User,{
-      foreignKey: 'id_user',
+      foreignKey: 'user_id',
       as : 'users'
     })
   }
