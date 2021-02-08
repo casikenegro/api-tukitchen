@@ -31,7 +31,6 @@ const get = async (req,res) => {
   if(user_id) whereCategories = {...whereCategories, user_id }
   const categories = await models.Categories.paginate({
       where : { ...whereCategories },
-      include,
       page : page || 1
   });
   return res.status(200).send(categories);
