@@ -9,7 +9,7 @@ const categoriesController = require('../controllers/categories');
 
 const productController = require('../controllers/product');
 const productCategoriesController = require('../controllers/productCategories');
-const productGelerryController = require('../controllers/productGallery');
+const productGalerryController = require('../controllers/productGallery');
 
 const profileController = require('../controllers/profile');
 const userController = require('../controllers/user');
@@ -77,12 +77,12 @@ router.post('/product-categories',[
 ],productCategoriesController.create)
 
 
-router.post('/products-gallery',[
+router.post('/product-galleries',[
   verifyToken,
   check("product_id","the product_id is required").not().isEmpty(),
-],productGelerryController.create)
-router.put('/products-gallery/:id',[verifyToken],productGelerryController.update)
-router.delete('/products-gallery/:id',[verifyToken],productGelerryController.destroy)
+],productGalerryController.create)
+router.put('/product-galleries/:id',[verifyToken],productGalerryController.update)
+router.delete('/product-galleries/:id',[verifyToken],productGalerryController.destroy)
 
 
 router.get('/profile',[verifyToken],profileController.get)

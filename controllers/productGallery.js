@@ -10,12 +10,12 @@ const create = async (req,res) => {
     }
     let product = await models.Product.findOne({where: {id : req.body.product_id }});
     if(!req.file) res.status(400).send("image is required"); 
-    if(!product){
+    if(product){
         product = await models.ProductGallery.create({
         ...req.body,
         img_product: req.file.filename,
       });
-      return res.send(profile);
+      return res.send(product);
     }
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
     res.status(400).send("product not  exist");
