@@ -1,6 +1,7 @@
 const express = require('express');
 const { check } = require("express-validator");
 const { verifyToken } = require('../middleware');
+const router  = express.Router();
 
 const authController = require('../controllers/auth');
 const carrierController = require('../controllers/carrier');
@@ -16,12 +17,19 @@ const userController = require('../controllers/user');
 const userAddressController = require('../controllers/userAdress');
 
 const inventariesControler = require("../controllers/inventaries");
-
-const router  = express.Router();
+const cuponsController = require("../controllers/cupons");
 
 
 router.post('/login',authController.login)
 router.post('/auth_recovery_pass',authController.recover_password)
+
+router.get('/cupons',[verifyToken],cuponsController.get)
+router.post('/cupons',[
+  verifyToken,
+  check("discount","is required").not().isEmpty(),
+],cuponsController.create)
+router.put('/cupons/:id',[verifyToken],cuponsController.update)
+router.delete('/cupons/:id',[verifyToken],cuponsController.destroy)
 
 router.get('/inventaries',inventariesControler.get)
 router.post('/inventaries',[

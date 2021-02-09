@@ -68,7 +68,7 @@ async function destroy(req,res){
     await models.Product.destroy({ where: { user_id: user.id, id: req.params.id } });
     return res.send({message:"success"});
   } catch (error) {
-   return res.status(500).send("oh no, bad request"); 
+   return res.status(500).send({ message:"oh no, bad request"}); 
   }
 }
 

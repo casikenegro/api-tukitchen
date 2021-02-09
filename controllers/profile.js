@@ -9,7 +9,7 @@ const { returnUserByToken } = require("../middleware");
 const get = async (req,res) => {
   const { id } = await returnUserByToken(req);
   const profile = await models.Profile.findOne({where: {user_id : id}});
-  if(!profile) return res.status(404).send("profile not exist");
+  if(!profile) return res.status(404).send({message:"profile not exist"});
   return res.send(profile);
 }
 
@@ -26,7 +26,7 @@ const create = async (req,res) => {
   }
   const { id } = await returnUserByToken(req);
   let profile = await models.Profile.findOne({where: {user_id : id}});
-  if(!req.file) res.status(400).send("image is required"); 
+  if(!req.file) res.status(400).send({message:"image is required"}); 
   if(!profile){
     let profile = await models.Profile.create({
       ...req.body,
@@ -36,7 +36,7 @@ const create = async (req,res) => {
     return res.send(profile);
   }
   fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
-  res.status(400).send("profile exist");
+  res.status(400).send({message:"profile exist"});
 
 }
 
