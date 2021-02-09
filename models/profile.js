@@ -40,8 +40,17 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     }
-  })
-
+  });
+  Profile.associate = model => {
+    Profile.hasMany(model.Orders,{
+      foreignKey: "profile_id",
+      as: "orders"
+    })
+    Profile.hasMany(model.Cupons,{
+      foreignKey: "profile_id",
+      as: "cupons"
+    })
+  }
 
   return Profile;
 }
