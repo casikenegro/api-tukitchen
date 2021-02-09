@@ -9,7 +9,7 @@ const create = async (req,res) => {
       return res.status(422).send({ errors: errors.array()})
     }
     let product = await models.Product.findOne({where: {id : req.body.product_id }});
-    if(!req.file) res.status(400).send("image is required"); 
+    if(!req.file) res.status(400).send({message:"image is required"}); 
     if(product){
         product = await models.ProductGallery.create({
         ...req.body,
@@ -18,7 +18,7 @@ const create = async (req,res) => {
       return res.send(product);
     }
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
-    res.status(400).send("product not  exist");
+    res.status(400).send({ message: "product not  exist"});
 }
 
 const update =  async (req,res) => {

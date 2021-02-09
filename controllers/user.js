@@ -22,7 +22,7 @@ const create = async (req,res) => {
   }
   req.body.password = bcrypt.hashSync(req.body.password,10);
   if(constants.roles.indexOf(req.body.role) === -1){
-    return res.status(404).send("role not exist");
+    return res.status(404).send({message:"role not exist"});
   }
   let user = {};
   if(await models.User.findOne({where:{ rut: req.body.rut }})){
