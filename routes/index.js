@@ -4,7 +4,7 @@ const { verifyToken, isAdmin } = require('../middleware');
 const router  = express.Router();
 
 const authController = require('../controllers/auth');
-const carrierController = require('../controllers/carrier');
+const carrierController = require('../controllers/carriers');
 const carrierAddressController = require("../controllers/carrierAdresses")
 const categoriesController = require('../controllers/categories');
 
@@ -51,10 +51,18 @@ router.post('/categories',[
 router.put('/categories/:id',[verifyToken],categoriesController.update)
 router.delete('/categories/:id',[verifyToken],categoriesController.destroy)
 
-router.get('/carrier',[verifyToken],carrierController.get)
-router.post('/carrier',[verifyToken],carrierController.create)
-router.put('/carrier/:id',[verifyToken],carrierController.update)
-router.delete('/carrier/:id',[verifyToken],carrierController.destroy)
+router.get('/carriers',[verifyToken],carrierController.get)
+router.post('/carriers',[
+  verifyToken,
+  check("name","the is required").not().isEmpty(),
+  check("phone","the is required").not().isEmpty(),
+  check("radio","the is required").not().isEmpty(),
+  check("base_price","the is required").not().isEmpty(),
+  check("extra_price","the is required").not().isEmpty(),
+  check("extra_distance","the is required").not().isEmpty(),
+],carrierController.create)
+router.put('/carriers/:id',[verifyToken],carrierController.update)
+router.delete('/carriers/:id',[verifyToken],carrierController.destroy)
 
 router.post('/carrier-addresses',[
   verifyToken,
