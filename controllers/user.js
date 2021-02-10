@@ -15,7 +15,7 @@ const get = async (req,res) => {
     return res.send(user);
 }
 const getAll = async (req,res) => {
-  const user = await models.User.findOne({include: ['profile','user_address'], attributes});
+  const user = await models.User.findAll({include: ['profile','user_address'], attributes});
   return res.send(user);
 }
 
