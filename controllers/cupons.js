@@ -35,6 +35,21 @@ async function create(req,res){
   return res.status(200).send(cupon);  
 }
 
+async function createByAdmin(req,res){
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    return res.status(422).send({ errors: errors.array()})
+  }
+  const profile = await models.Profile.findOne({where: {user_id: req.params.user_id}});
+  if(!profile) return res.status(403).send({message:"profile not create"});
+  const cupon = await models.Cupons.create({
+    discount:req.body.discount /100,
+    profile_id: profile.id, 
+    is_used:false,
+  });
+  return res.status(200).send(cupon);  
+}
+
 async function update(req,res){
   let cupon = await models.Cupons.findOne({ where: { id: req.params.id } });
   if(!cupon) return res.status(400).send({message:"bad request"});
@@ -56,6 +71,7 @@ async function destroy(req,res){
 module.exports = {
   get,
   create,
+  createByAdmin,
   update,
   destroy,
 }

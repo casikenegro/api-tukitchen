@@ -3,11 +3,26 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const multer  = require('multer');
-const router = require('./routes');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const app = express();
+
+const auth = require('./routes/auth');
+const carrierAdresses = require('./routes/carrier-addreses');
+const carriers = require('./routes/carriers');
+const categories = require('./routes/categories');
+const cupons = require('./routes/cupons');
+const inventaries = require('./routes/inventaries');
+const orders = require('./routes/orders');
+const productCategories = require('./routes/product-categories');
+const productGallery = require('./routes/product-gallery');
+const products = require('./routes/products');
+const profile = require('./routes/profile');
+const userAdress = require('./routes/user-addresses');
+const users = require('./routes/users');
+
+
 
 // Settings
 app.set("port", process.env.PORT || 4000);
@@ -46,6 +61,18 @@ app.get("/", (req, res) => {
     message: "ok"
   });
 });
+app.use(auth);
+app.use(carrierAdresses);
+app.use(carriers);
+app.use(categories);
+app.use(cupons);
+app.use(inventaries);
+app.use(orders);
+app.use(productCategories);
+app.use(productGallery);
+app.use(products);
+app.use(profile);
+app.use(userAdress);
+app.use(users);
 
-app.use(router)
 module.exports = app;
