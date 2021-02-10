@@ -12,6 +12,7 @@ const get = async (req,res) => {
     model: models.User,
     as: 'users',
     where: { status: true },
+    include: [ "profile"]
   }
   ];
   if(id)whereProducts = { ...whereProducts, id };
