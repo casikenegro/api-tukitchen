@@ -44,7 +44,7 @@ const update =  async (req,res) => {
 
 async function destroy(req,res){
   const { id } = req.params;
-  await models.Carrier.delete({where:{ id }});
+  await models.Carrier.destroy({where:{ id }});
   return res.status(200).send({ message:"success" });
 }
 
