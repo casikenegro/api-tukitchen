@@ -7,9 +7,13 @@ const get = async (req,res) => {
   let whereProducts = {
     status: status || 1,
   };
-
   let categories = null ; 
-  let include = ['gallery' ];
+  let include = ['gallery', {
+    model: models.User,
+    as: 'users',
+    where: { status: true },
+  }
+  ];
   if(id)whereProducts = { ...whereProducts, id };
   if(user_id) whereProducts = { ...whereProducts, user_id };
   if(is_premium) whereProducts = { ...whereProducts,is_premium};

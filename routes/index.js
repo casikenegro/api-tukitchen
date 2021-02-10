@@ -118,6 +118,8 @@ router.post('/users',[
   check("password","the password is required").not().isEmpty(),
 ],userController.create)
 router.put('/users',[verifyToken],userController.update)
+router.put('/users/id',[verifyToken,isAdmin],userController.updateByAdmin)
+
 router.delete('/users',[verifyToken],userController.destroy)
 
 router.get('/user-addresses',[verifyToken],userAddressController.get);
