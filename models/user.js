@@ -15,6 +15,11 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.ENUM(constants.roles),
       allowNull: false,
     },
+    status:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
