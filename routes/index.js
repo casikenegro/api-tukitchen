@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require("express-validator");
-const { verifyToken } = require('../middleware');
+const { verifyToken, isAdmin } = require('../middleware');
 const router  = express.Router();
 
 const authController = require('../controllers/auth');
@@ -103,6 +103,7 @@ router.post('/profile',[
 router.put('/profile',[verifyToken],profileController.update)
 
 router.get('/users',[verifyToken],userController.get)
+router.get('/users-all',[verifyToken,isAdmin,userController.getAll()])
 router.post('/users',[
   check("rut","the rut is required").not().isEmpty(),
   check("role","the role is required").not().isEmpty(),
@@ -111,7 +112,7 @@ router.post('/users',[
 router.put('/users',[verifyToken],userController.update)
 router.delete('/users',[verifyToken],userController.destroy)
 
-router.get('/user-addresses',[verifyToken],userAddressController.get)
+router.get('/user-addresses',[verifyToken],userAddressController.get);
 router.post('/user-addresses',[
   verifyToken,
   check("latitude","the latitude is required").not().isEmpty(),
