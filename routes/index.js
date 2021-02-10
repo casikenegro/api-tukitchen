@@ -86,6 +86,9 @@ router.post('/products',[
 router.put('/products/:id',[verifyToken],productController.update)
 router.delete('/products/:id',[verifyToken],productController.destroy)
 
+router.put('/admin-update-product/:id',[verifyToken, isAdmin],productController.updateByAdmin)
+router.delete('/admin-delete-product/:id',[verifyToken,isAdmin],productController.destroyByAdmin)
+
 router.post('/product-categories',[
   verifyToken,
   check("product_id","the product_id is required").not().isEmpty(),
