@@ -6,13 +6,17 @@ const { returnUserByToken } = require("../middleware");
 const constants = require("../utils/constants");
 
 const attributes = [
-  'rut','role','id'
+  'rut','role','id','status'
 ]
 
 const get = async (req,res) => {
     const payload = await returnUserByToken(req);
     const user = await models.User.findOne({where: { id: payload.id }, include: ['profile','user_address'], attributes});
     return res.send(user);
+}
+const getAll = async (req,res) => {
+  const user = await models.User.findOne({include: ['profile','user_address'], attributes});
+  return res.send(user);
 }
 
 const create = async (req,res) => {
@@ -70,6 +74,7 @@ async function destroy(req,res){
 
 module.exports = {
   get,
+  getAll,
   create,
   update,
   destroy,
