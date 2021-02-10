@@ -65,7 +65,7 @@ const update =  async (req,res) => {
 
 async function destroy(req,res){
     const { id } = req.params;
-    await models.Orders.delete({where:{ id }});
+    await models.Orders.destroy({where:{ id }});
     return res.status(200).send({ message:"success" });
 }
 

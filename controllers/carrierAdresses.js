@@ -30,7 +30,7 @@ const update =  async (req,res) => {
 
 async function destroy(req,res){
   const { id } = req.params;
-  await models.CarrierAddress.delete({where:{ id }});
+  await models.CarrierAddress.destroy({where:{ id }});
   return res.status(200).send({ message:"success" });
 }
 
