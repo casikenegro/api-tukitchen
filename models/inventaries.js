@@ -10,6 +10,9 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.ENUM(constants.days), 
       allowNull: false,
     },
+    stock:{
+      type: DataTypes.INTEGER,
+    },
     time_init:{
       type: DataTypes.TIME,
       allowNull: false,
