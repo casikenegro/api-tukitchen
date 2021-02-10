@@ -8,13 +8,13 @@ const get = async (req,res) => {
   if(req.query.id){
     const carrier = await models.Carrier.findOne({
       where:{ user_id : user.id, id}, 
-      include: ["carrie_addresses"]
+      include: ["carrier_addresses"]
     });
     return res.status(200).send(carrier);
   }
   const carriers = await models.Carrier.findAll({
     where:{ user_id : user.id }, 
-    include: ["carrie_addresses"]
+    include: ["carrier_addresses"]
   });
   return res.status(200).send(carriers);
 }
