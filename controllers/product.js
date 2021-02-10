@@ -60,6 +60,7 @@ async function create(req,res){
 
 async function update(req,res){
   const user = await returnUserByToken(req);
+  if(user.role === "ADMINISTRADOR" ){}
   let product = await models.Product.findOne({ where: { user_id: user.id, id: req.params.id } });
   if(!product) return res.status(400).send({message:"bad request"});
   product.update({ ...req.body });
@@ -77,9 +78,30 @@ async function destroy(req,res){
   }
 }
 
+
+
+async function updateByAdmin(req,res){
+  let product = await models.Product.findOne({ where: { id: req.params.id } });
+  if(!product) return res.status(400).send({message:"bad request"});
+  product.update({ ...req.body });
+  product.save();
+  return res.send(product);
+}
+
+async function destroyByAdmin(req,res){
+  try {
+    await models.Product.destroy({ where: { id: req.params.id } });
+    return res.send({message:"success"});
+  } catch (error) {
+   return res.status(500).send({ message:"oh no, bad request"}); 
+  }
+}
+
 module.exports = {
   get,
   create,
   update,
   destroy,
+  updateByAdmin,
+  destroyByAdmin
 }
