@@ -103,7 +103,7 @@ router.post('/profile',[
 router.put('/profile',[verifyToken],profileController.update)
 
 router.get('/users',[verifyToken],userController.get)
-router.get('/users-all',[verifyToken,isAdmin,userController.getAll()])
+router.get('/users-all',[verifyToken,isAdmin],userController.getAll)
 router.post('/users',[
   check("rut","the rut is required").not().isEmpty(),
   check("role","the role is required").not().isEmpty(),
