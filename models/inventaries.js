@@ -24,7 +24,7 @@ module.exports = (Sequelize,DataTypes) => {
     is_repeat:{
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defauld: false
+      defaultValue: false,
     },
   })
 
