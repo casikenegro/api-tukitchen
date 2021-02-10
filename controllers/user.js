@@ -60,6 +60,13 @@ const update =  async (req,res) => {
   return res.status(200).send({message:"success"});
 }
 
+const updateByAdmin =  async (req,res) => {
+  if(req.body.password){
+    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+  }
+  await models.User.update({...req.body},{where: {id : req.params.id}})
+  return res.status(200).send({message:"success"});
+}
 async function destroy(req,res){
   const payload = await returnUserByToken(req);
   const t = await models.sequelize.transaction()
@@ -81,5 +88,6 @@ module.exports = {
   getAll,
   create,
   update,
+  updateByAdmin,
   destroy,
 }
