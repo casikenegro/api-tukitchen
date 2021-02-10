@@ -15,7 +15,11 @@ const get = async (req,res) => {
     return res.send(user);
 }
 const getAll = async (req,res) => {
-  const user = await models.User.findAll({include: ['profile','user_address'], attributes});
+  let where = {}; 
+  const { rut, role} = req.query;
+  if(rut) where = { ...where, rut };
+  if(role) where = { ...where, role };
+  const user = await models.User.findAll({where,include: ['profile','user_address'], attributes});
   return res.send(user);
 }
 
