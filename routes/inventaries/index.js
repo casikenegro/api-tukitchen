@@ -6,11 +6,14 @@ const router  = express.Router();
 const inventariesControler = require("../../controllers/inventaries");
 
 
-router.get('/inventaries',inventariesControler.get)
+router.get('/inventaries',[
+  verifyToken,
+],inventariesControler.get);
+router.get('/sell-in-week',inventariesControler.sellInWeek);
+
 router.post('/inventaries',[
   verifyToken,
   check("product_id","is required").not().isEmpty(),
-  check("user_id","is required").not().isEmpty(),
   check("day","is required").not().isEmpty(),
   check("time_init","is required").not().isEmpty(),
   check("time_final","is required").not().isEmpty(),
