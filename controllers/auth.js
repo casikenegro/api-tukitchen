@@ -8,6 +8,7 @@ const utils = require('../utils/constants');
 async function login(req,res){
   const { rut,password } = req.body
   const user = await models.User.findOne({ where: {rut}});
+  if(!user)  return res.status(404).send({message:"User not exist"});
   if(bcrypt.compareSync(password,user.password)){
     delete user.dataValues.password;
     return res.status(200).send({

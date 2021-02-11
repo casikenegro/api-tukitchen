@@ -8,7 +8,7 @@ const create = async (req,res) => {
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  if(!await models.Carrier.findOne({where:{id: carrier_id}})){
+  if(!await models.Carrier.findOne({where:{id: req.body.carrier_id}})){
     return res.status(404).send({ message:"bad carrier_id" });
   }
   const carrierAddresses = await models.CarrierAddress.create({
