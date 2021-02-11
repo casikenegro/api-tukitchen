@@ -3,40 +3,38 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
-const get = async (req,res) => {
+const get = async (req,res) => { 
+    const { page, profile_id, user_id} = req.query;
     const  user = await returnUserByToken(req);
-    const { status, is_premium, product_id , word, get_products , page, id} = req.query;
-    if(get_products){
-        let products = null ; 
-        let whereProducts = { status: status || 1, user_id : user.id }
-        if(product_id)
-            whereProducts = { ...whereProducts, product_id };
-        if(is_premium) 
-            whereProducts = { ...whereProducts,is_premium};
-        if(word) {
-            whereProducts = {
-                ...whereProducts,
-                [models.Op.or] : [
-                    {name : {[models.Op.substring] : word} }, {description : {[models.Op.substring] : word} }
-                ],
-            }
-        }
-        products = {
-            model: models.Product,
-            as: 'product',
-            where: { ...whereProducts },
-            include : ['gallery']
+    if(!user_id && !profile_id && !(user.role != "ADMINISTRADOR")){
+        return res.status(400).send({ message:"difine your role" });
+    }
+    let where = {};
+    if(profile_id){
+        const profile = await models.Profile.findOne({where: { user_id : user.id }})
+        if(!profile) return res.status(400).send({ message:"user not is VENDEDOR" });
+        where = {
+            ...where,
+            profile_id: profile.id
         }
     }
-    let whereInventaries = {}
-    if(id) 
-        whereInventaries = {...whereInventaries, id }
-    const inventaries = await models.Inventaries.paginate({
-        where : { ...whereInventaries },
+    if(user_id){
+        where = {
+            ...where,
+            user_id: user.id
+        }
+    }
+    const include = [{
+        model: models.OrderProducts,
+        as: 'orderProducts',
+        include : ['products']
+    }]
+    const orders = await models.Orders.paginate({
+        where,
         include,
         page : page || 1
     });
-    return res.status(200).send(inventaries);
+    return res.status(200).send(orders);
 }
 
 const create = async (req,res) => {
@@ -45,11 +43,27 @@ const create = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).send({ errors: errors.array()})
     }
-    const orders = await models.Orders.create({
+    if(!req.body.products.length){
+        return res.status(400).send({message:"products is void"});
+    }
+    const order = await models.Orders.create({
         ...req.body,
         user_id:user.id
     });
-    return res.status(200).send(orders);
+    const products = await Promise.all(req.body.products.map( async (item)=>{
+            const  product = await models.Product.findOne({ where: {
+                id: item.product_id, 
+                profile_id:req.body.profile_id
+            }})
+            if (!product) return null;
+            return { 
+                ...item,
+                price: product.price, 
+                order_id: order.id
+            }
+        })); 
+    await models.OrderProducts.bulkCreate(products);
+    return res.status(200).send(order);
 }
 
 const update =  async (req,res) => {

@@ -21,7 +21,7 @@ const get = async (req,res) => {
 
 async function create(req,res){
   const errors = validationResult(req);
-  const  { id } = await returnUserByToken(req);
+  const  user = await returnUserByToken(req);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
@@ -60,8 +60,7 @@ async function update(req,res){
 
 async function destroy(req,res){
   try {
-    const user = await returnUserByToken(req);
-    await models.Cupons.destroy({ where: { user_id: user.id, id: req.params.id } });
+    await models.Cupons.destroy({ where: { id: req.params.id } });
     return res.send({message:"success"});
   } catch (error) {
    return res.status(500).send({message: "oh no, bad request"}); 

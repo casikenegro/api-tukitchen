@@ -31,7 +31,7 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
-    user_id: {
+    profile_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     }
@@ -57,9 +57,9 @@ module.exports = (Sequelize,DataTypes) => {
       onDelete: 'CASCADE'
     })
 
-    Product.belongsTo(model.User,{
-      foreignKey: 'user_id',
-      as : 'users',
+    Product.belongsTo(model.Profile,{
+      foreignKey: 'profile_id',
+      as : 'profile',
       onDelete: 'CASCADE'
     })
   }

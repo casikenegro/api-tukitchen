@@ -6,11 +6,26 @@ const emailValidator = require('email-validator');
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
+const attributes = [ 
+    "id", "name",
+    "last_name", "name_store",
+    "img_profile","api_key",
+    "secret_key","email",
+    "phone","address"
+  ];
+
 const get = async (req,res) => {
   const { id } = await returnUserByToken(req);
   const profile = await models.Profile.findOne({where: {user_id : id}});
   if(!profile) return res.status(404).send({message:"profile not exist"});
   return res.send(profile);
+}
+
+const getAll = async (req,res) => {
+  let where = {};
+  if(req.query.id) where = { ...where, id: req.query.id }
+  const profiles = await models.Profile.paginate({where,attributes});
+  return res.send(profiles);
 }
 
 const create = async (req,res) => {
@@ -60,6 +75,7 @@ async function update(req,res){
 
 module.exports = {
   get,
+  getAll,
   create,
   update,
 }
