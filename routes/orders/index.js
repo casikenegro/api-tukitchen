@@ -10,6 +10,8 @@ router.post('/orders',[
   check("profile_id","the is required").not().isEmpty(),
   check("reference","the is required").not().isEmpty(),
   check("method","the is required").not().isEmpty(),
+  check("total","the is required").not().isEmpty(),
+  check("products","the is required").not().isEmpty(),
 ],ordersController.create)
 router.put('/orders/:id',[verifyToken],ordersController.update)
 router.delete('/orders/:id',[verifyToken],ordersController.destroy)
