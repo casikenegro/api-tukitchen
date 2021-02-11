@@ -3,20 +3,29 @@ const sequelizePaginate = require('sequelize-paginate')
 module.exports = (Sequelize,DataTypes) => {
   const Orders = Sequelize.define('orders',{
     user_id: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     profile_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
     },
     status: {
       type: DataTypes.ENUM("IN-PROGRESS",'SUCCESS',"FAIL"), 
-      default: "IN-PROGRESS"
+      defaultValue: "IN-PROGRESS",
+      allowNull: false,
+    },
+    total:{
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false,
     },
     reference: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     method: {
       type: DataTypes.ENUM("FLOW","CASH"),
+      allowNull: false,
     },
   })
   Orders.associate = model => {

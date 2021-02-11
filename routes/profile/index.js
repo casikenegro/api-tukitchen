@@ -11,8 +11,7 @@ router.post('/profile',[
   check("last_name","the last_name is required").not().isEmpty(), 
   check("email","the email is required").not().isEmpty(),
 ],profileController.create)
-router.put('/profile',[verifyToken],profileController.update)
-
-router.get('/api/stores',profileController.getAll)
+router.put('/profile',[verifyToken],profileController.update);
+router.get('/api/stores',profileController.getAll);
 
 module.exports = router

@@ -4,13 +4,13 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 
 const get = async (req,res) => { 
-    const { page, profile_id, user_id} = req.query;
+    const { page, is_buyer, is_seller, id} = req.query;
     const  user = await returnUserByToken(req);
-    if(!user_id && !profile_id && !(user.role != "ADMINISTRADOR")){
+    if(!is_seller && !is_buyer && user.role !== "ADMINISTRADOR"){
         return res.status(400).send({ message:"difine your role" });
     }
     let where = {};
-    if(profile_id){
+    if(is_seller){
         const profile = await models.Profile.findOne({where: { user_id : user.id }})
         if(!profile) return res.status(400).send({ message:"user not is VENDEDOR" });
         where = {
@@ -18,10 +18,16 @@ const get = async (req,res) => {
             profile_id: profile.id
         }
     }
-    if(user_id){
+    if(is_seller){
         where = {
             ...where,
             user_id: user.id
+        }
+    }
+    if(id){
+        where = {
+            ...where,
+            id,
         }
     }
     const include = [{
@@ -62,6 +68,14 @@ const create = async (req,res) => {
                 order_id: order.id
             }
         })); 
+    if(req.body.cupons){
+        await models.Cupons.update({ is_used: true},{ where: { id: req.body.cupons } });
+        const cupons = req.body.cupons.map((cupon)=>{
+            return {order_id:order.id, cupon_id: cupon}
+        });
+        await models.OrderCupons.bulkCreate(cupons);
+
+    }
     await models.OrderProducts.bulkCreate(products);
     return res.status(200).send(order);
 }

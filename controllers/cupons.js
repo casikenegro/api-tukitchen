@@ -18,6 +18,10 @@ const get = async (req,res) => {
   });
   return res.status(200).send(cupons);
 }
+const isCouponValid = async (req,res) =>{
+  const cupon = await models.Cupons.findOne({ where: { id: req.params.id }});
+  return res.send({ status: cupon.is_used});
+}
 
 async function create(req,res){
   const errors = validationResult(req);
@@ -25,7 +29,7 @@ async function create(req,res){
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  const profile = await models.Profile.findOne({where: {user_id: id}});
+  const profile = await models.Profile.findOne({where: {user_id: user.id }});
   if(!profile) return res.status(403).send({message:"profile not create"});
   const cupon = await models.Cupons.create({
     discount:req.body.discount /100,
@@ -73,4 +77,5 @@ module.exports = {
   createByAdmin,
   update,
   destroy,
+  isCouponValid
 }

@@ -5,6 +5,8 @@ const router  = express.Router();
 const cuponsController = require("../../controllers/cupons");
 
 router.get('/cupons',[verifyToken],cuponsController.get)
+router.get('/is-cupon-valid/:id',[verifyToken],cuponsController.isCouponValid)
+
 router.post('/cupons',[
   verifyToken,
   check("discount","is required").not().isEmpty(),
