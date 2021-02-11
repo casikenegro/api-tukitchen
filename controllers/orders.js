@@ -6,7 +6,7 @@ const { returnUserByToken } = require("../middleware");
 const get = async (req,res) => { 
     const { page, profile_id, user_id} = req.query;
     const  user = await returnUserByToken(req);
-    if(!user_id && !profile_id){
+    if(!user_id && !profile_id && !(user.role != "ADMINISTRADOR")){
         return res.status(400).send({ message:"difine your role" });
     }
     let where = {};
