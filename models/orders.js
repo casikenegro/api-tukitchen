@@ -12,7 +12,7 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.ENUM("IN-PROGRESS",'SUCCESS',"FAIL"), 
       default: "IN-PROGRESS"
     },
-    refence: {
+    reference: {
       type: DataTypes.STRING
     },
     method: {
