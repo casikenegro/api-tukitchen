@@ -9,7 +9,7 @@ router.post('/cupons',[
   verifyToken,
   check("discount","is required").not().isEmpty(),
 ],cuponsController.create)
-router.post('/cupons/:user_id',[
+router.post('/create-cupons-by-admin/:user_id',[
   verifyToken,
   isAdmin,
   check("discount","is required").not().isEmpty(),
