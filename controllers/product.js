@@ -1,22 +1,17 @@
 const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
+const profile = require("../models/profile");
 
 const get = async (req,res) => {
-  const { status, user_id, is_premium, category_id , word, get_categories , page, id} = req.query;
+  const { status, profile_id, is_premium, category_id , word, get_categories , page, id} = req.query;
   let whereProducts = {
     status: status || 1,
   };
   let categories = null ; 
-  let include = ['gallery', {
-    model: models.User,
-    as: 'users',
-    where: { status: true },
-    include: [ "profile"]
-  }
-  ];
+  let include = ['gallery','profile' ];
   if(id)whereProducts = { ...whereProducts, id };
-  if(user_id) whereProducts = { ...whereProducts, user_id };
+  if(profile_id) whereProducts = { ...whereProducts, profile_id };
   if(is_premium) whereProducts = { ...whereProducts,is_premium};
   if(word) whereProducts = {
     ...whereProducts,
@@ -51,17 +46,19 @@ async function create(req,res){
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
+  const profile = await models.Profile.findOne({user_id: id});
+  if(!profile)  return res.status(404).send({message:"profile not exist "});
   const product = await models.Product.create({
     ...req.body,
-    user_id: id
+    profile_id: profile.id
   });
   return res.status(200).send(product);  
 }
 
 async function update(req,res){
-  const user = await returnUserByToken(req);
-  if(user.role === "ADMINISTRADOR" ){}
-  let product = await models.Product.findOne({ where: { user_id: user.id, id: req.params.id } });
+  const { id } = await returnUserByToken(req);
+  const profile = await models.Profile.findOne({user_id: id});
+  let product = await models.Product.findOne({ where: { profile_id: profile.id, id: req.params.id } });
   if(!product) return res.status(400).send({message:"bad request"});
   product.update({ ...req.body });
   product.save();

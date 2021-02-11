@@ -13,4 +13,6 @@ router.post('/profile',[
 ],profileController.create)
 router.put('/profile',[verifyToken],profileController.update)
 
+router.get('/api/stores',profileController.getAll)
+
 module.exports = router

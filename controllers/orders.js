@@ -45,11 +45,29 @@ const create = async (req,res) => {
     if(!errors.isEmpty()){
         return res.status(422).send({ errors: errors.array()})
     }
-    const orders = await models.Orders.create({
-        ...req.body,
-        user_id:user.id
-    });
-    return res.status(200).send(orders);
+    if(!req.body.products.length)
+        return res.status(400).send({message:"products is void"});
+        const order = await models.Orders.create({
+            ...req.body,
+            user_id:user.id
+        });
+
+    const products = await Promise.all(req.body.products.map( async (item)=>{
+            const  product = await models.Product.findOne({ where: {
+                id: item.id, 
+                profile_id:req.body.profile_id
+            }})
+            if (!product) return null;
+            return { 
+                ...item,
+                price: product.price, 
+                order_id: order.id
+            }
+        })); 
+        
+    
+    await models.OrderProducts.bulkCreate(products);
+    return res.status(200).send(order);
 }
 
 const update =  async (req,res) => {

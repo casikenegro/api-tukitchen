@@ -1,3 +1,5 @@
+const sequelizePaginate = require('sequelize-paginate')
+
 module.exports = (Sequelize,DataTypes) => {
   const Profile = Sequelize.define('profile',{
     name: {
@@ -50,7 +52,12 @@ module.exports = (Sequelize,DataTypes) => {
       foreignKey: "profile_id",
       as: "cupons"
     })
+    Profile.hasMany(model.Product,{
+      foreignKey: 'profile_id',
+      as: 'products',
+      onDelete: 'CASCADE'
+    })
   }
-
+  sequelizePaginate.paginate(Profile)
   return Profile;
 }
