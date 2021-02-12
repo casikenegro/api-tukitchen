@@ -60,8 +60,12 @@ module.exports = (Sequelize,DataTypes) => {
     Product.belongsTo(model.Profile,{
       foreignKey: 'profile_id',
       as : 'profile',
-      onDelete: 'CASCADE'
     })
+    Product.hasMany(model.Inventaries,{
+      foreignKey: "product_id",
+      as: "inventaries",
+      onDelete: 'CASCADE'
+    });
   }
   sequelizePaginate.paginate(Product)
   return Product;

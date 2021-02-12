@@ -40,7 +40,8 @@ module.exports = (Sequelize,DataTypes) => {
 
     Orders.hasMany(model.OrderProducts,{
       foreignKey: "order_id",
-      as: "orderProducts"
+      as: "orderProducts",
+      onDelete: 'CASCADE'
     })
   }
   sequelizePaginate.paginate(Orders)

@@ -22,7 +22,9 @@ module.exports = (Sequelize,DataTypes) => {
     })
     Cupons.hasMany(model.OrderCupons,{
       foreignKey: "cupon_id",
-      as: "order_cupons"
+      as: "order_cupons",
+      onDelete: 'CASCADE'
+
     })
   }
   sequelizePaginate.paginate(Cupons)
