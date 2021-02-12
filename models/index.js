@@ -8,7 +8,6 @@ let models = {
   Categories  : require('./categories')(sequelize, Sequelize),
   Product  : require('./product')(sequelize, Sequelize),
   ProductCategories  : require('./productCategories')(sequelize, Sequelize),
-  ProductDaysAvailable : require('./product_days_available')(sequelize, Sequelize),
   ProductGallery  : require('./productGallery')(sequelize, Sequelize),
   Profile  : require('./profile')(sequelize, Sequelize),
   User : require('./user')(sequelize, Sequelize),
