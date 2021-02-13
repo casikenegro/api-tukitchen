@@ -46,11 +46,13 @@ module.exports = (Sequelize,DataTypes) => {
   Profile.associate = model => {
     Profile.hasMany(model.Orders,{
       foreignKey: "profile_id",
-      as: "orders"
+      as: "orders",
+      onDelete: 'CASCADE'
     })
     Profile.hasMany(model.Cupons,{
       foreignKey: "profile_id",
-      as: "cupons"
+      as: "cupons",
+      onDelete: 'CASCADE'
     })
     Profile.hasMany(model.Product,{
       foreignKey: 'profile_id',
