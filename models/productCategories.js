@@ -25,7 +25,8 @@ module.exports = (Sequelize,DataTypes) => {
     });
     ProductCategories.belongsTo(model.Product,{
       foreignKey: "product_id",
-      as: "product"
+      as: "product",
+      onDelete: 'CASCADE'
     });
   }
   return ProductCategories;

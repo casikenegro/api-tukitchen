@@ -24,10 +24,8 @@ const get = async (req,res) => {
     });
     return res.status(200).send(inventaries);
 }
-const sellInWeek = async (req,res) =>{
-    const date = new Date();
-    return res.send({ ...date });
-}
+
+
 const create = async (req,res) => {
     const errors = validationResult(req);
     const  user = await returnUserByToken(req);
@@ -64,5 +62,4 @@ module.exports = {
   create,
   update,
   destroy,
-  sellInWeek
 }

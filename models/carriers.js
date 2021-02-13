@@ -33,7 +33,8 @@ module.exports = (Sequelize,DataTypes) => {
   Carrier.associate = models => {
     Carrier.hasMany(models.CarrierAddress,{
       foreignKey: 'carrier_id',
-      as : 'carrier_addresses'
+      as : 'carrier_addresses',
+      onDelete: 'CASCADE'
     })
   }
 

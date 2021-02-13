@@ -15,7 +15,8 @@ module.exports = (Sequelize,DataTypes) => {
   Categories.associate = model => {
     Categories.hasMany(model.ProductCategories,{
       foreignKey: "category_id",
-      as: "categories_products"
+      as: "categories_products",
+      onDelete: 'CASCADE'
     })
   }
   sequelizePaginate.paginate(Categories)

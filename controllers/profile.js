@@ -64,6 +64,8 @@ async function update(req,res){
   }
   const { id } = await returnUserByToken(req);
   let profile = await models.Profile.findOne({ where: { user_id: id } });
+  if(!profile)  return res.status(404).send({message: "profile not exist"});
+
   if(req.file) {
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${profile.img_profile}`))
     req.body.img_profile = req.file.filename;
