@@ -1,7 +1,7 @@
 const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (Sequelize,DataTypes) => {
-  const Profile = Sequelize.define('profile',{
+  const Profile = Sequelize.define('profiles',{
     name: {
       type: DataTypes.STRING,
       allowNull: false,

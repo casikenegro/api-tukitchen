@@ -4,7 +4,7 @@ const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
 
 const get = async (req,res) => {
-  const { status, profile_id, is_premium, category_id , word, get_categories , page, id} = req.query;
+  const { status, profile_id, is_premium, category_id , word, get_categories , get_inventaries, page, id} = req.query;
   let whereProducts = {
     status: status || 1,
   };
@@ -19,7 +19,7 @@ const get = async (req,res) => {
       {name : {[models.Op.substring] : word} }, {description : {[models.Op.substring] : word} }
     ],
   }
-
+  if(get_inventaries) include.push('inventaries');
   if(get_categories){
     let whereCategory = {};
     if(category_id) whereCategory = { ...whereCategory, category_id };
