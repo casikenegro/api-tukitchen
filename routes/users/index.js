@@ -8,6 +8,7 @@ const userController = require('../../controllers/user');
 
 router.get('/users',[verifyToken],userController.get)
 router.get('/users-all',[verifyToken,isAdmin],userController.getAll)
+router.get('/users-sellers',userController.getSeller)
 router.post('/users',[
   check("rut","the rut is required").not().isEmpty(),
   check("role","the role is required").not().isEmpty(),

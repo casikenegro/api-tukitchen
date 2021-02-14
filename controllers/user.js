@@ -14,12 +14,25 @@ const get = async (req,res) => {
     const user = await models.User.findOne({where: { id: payload.id }, include: ['profile','user_address'], attributes});
     return res.send(user);
 }
+
 const getAll = async (req,res) => {
   let where = {}; 
   const { rut, role} = req.query;
   if(rut) where = { ...where, rut };
   if(role) where = { ...where, role };
   const user = await models.User.findAll({where,include: ['profile','user_address'], attributes});
+  return res.send(user);
+}
+
+const getSeller = async (req,res) => {
+  let where = {
+    role :"VENDEDOR"
+  }; 
+  const user = await models.User.findAll({where,include: [{
+    model: models.Profile,
+    as: 'profile',
+    include : ['products']
+  }], attributes});
   return res.send(user);
 }
 
@@ -90,4 +103,5 @@ module.exports = {
   update,
   updateByAdmin,
   destroy,
+  getSeller
 }
