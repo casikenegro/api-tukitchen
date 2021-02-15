@@ -17,6 +17,20 @@ module.exports = {
         price: 15.2,
         time_for_preparation: 6,
         profile_id: 3
+      },
+      {
+        name: "Hamburguer (MC Combo)",
+        description: "Hamburguesa de mc donals",
+        price: 10.2,
+        time_for_preparation: 6,
+        profile_id: 4
+      },
+      {
+        name: "Hamburguer (King Combo)",
+        description: "Hamburguesa de mc burguer king",
+        price: 13.2,
+        time_for_preparation: 6,
+        profile_id: 5
       }
     ], {});
   },
