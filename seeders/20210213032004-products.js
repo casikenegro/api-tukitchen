@@ -9,14 +9,14 @@ module.exports = {
         description: "comida",
         price: 15.2,
         time_for_preparation: 6,
-        profile_id: 2
+        profile_id: 3
       }, 
       {
         name: "carne con papas",
         description: "comida",
         price: 15.2,
         time_for_preparation: 6,
-        profile_id: 2
+        profile_id: 3
       }
     ], {});
   },
