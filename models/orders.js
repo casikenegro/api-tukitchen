@@ -23,6 +23,10 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    flowToken:{
+      type: DataTypes.TEXT,
+      default:null,
+    },
     method: {
       type: DataTypes.ENUM("FLOW","CASH"),
       allowNull: false,
