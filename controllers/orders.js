@@ -58,7 +58,7 @@ const create = async (req,res) => {
     });
     const products = await Promise.all(req.body.products.map( async (item)=>{
             const  product = await models.Product.findOne({ where: {
-                id: item.product_id, 
+                id: item.product_id,
                 profile_id:req.body.profile_id
             }})
             if (!product) return null;
@@ -74,7 +74,6 @@ const create = async (req,res) => {
             return {order_id:order.id, cupon_id: cupon}
         });
         await models.OrderCupons.bulkCreate(cupons);
-
     }
     await models.OrderProducts.bulkCreate(products);
     return res.status(200).send(order);
