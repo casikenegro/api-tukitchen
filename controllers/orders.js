@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
+const { default: axios } = require("axios");
 
 const get = async (req,res) => { 
     const { page, is_buyer, is_seller, id} = req.query;
@@ -42,7 +43,45 @@ const get = async (req,res) => {
     });
     return res.status(200).send(orders);
 }
-
+const updateStatusOrderByFlow = async (req,res) => {
+    const { token, opcional } = req.body;
+    const profile = await models.Profile.findOne({id: opcional.profile_id});
+    const response = await axios({
+        method: 'get',
+        url: 'https://www.flow.cl/api/payment/getStatus',
+        params:{
+            token,
+            apiKey: profile.api_key,
+            s,
+        }, 
+    });
+    let order = await models.Orders.findOne({
+        where: {
+            profile_id: profile.id,
+            status: "IN-PROGRESS",
+            user_id: opcional.user_id,
+            total: opcional.total
+        }
+    });
+    let payload = {
+        reference: response.flowOrder
+    }
+    if(response.status > 2 ) {
+        payload = {
+            ...payload,
+            status: "FAIL"
+        }
+    }
+    if ( response.status === 2) {
+        payload = {
+            ...payload,
+            status: "SUCCESS"
+        }
+    }
+    order.update({ ...payload });
+    order.save();
+    return res.send({ message:"received"});
+}
 const create = async (req,res) => {
     const errors = validationResult(req);
     const  user = await returnUserByToken(req);
@@ -81,13 +120,13 @@ const create = async (req,res) => {
 
 const update =  async (req,res) => {
     const { id } = req.params;
-    const orders = await models.Orders.findOne({where:{ id }});
-    if(!orders) return res.status(404).send({ message:"bad id" });
-    orders.update({
+    let order = await models.Orders.findOne({where:{ id }});
+    if(!order) return res.status(404).send({ message:"bad id" });
+    order.update({
         ...req.body
     })
-    orders.save()
-    return res.status(200).send(orders);
+    order.save()
+    return res.status(200).send(order);
 }
 
 async function destroy(req,res){
@@ -102,4 +141,5 @@ module.exports = {
   create,
   update,
   destroy,
+  updateStatusOrderByFlow
 }
