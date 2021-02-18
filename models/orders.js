@@ -21,11 +21,7 @@ module.exports = (Sequelize,DataTypes) => {
     },
     reference: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    flowToken:{
-      type: DataTypes.TEXT,
-      default:null,
+      allowNull: true,
     },
     method: {
       type: DataTypes.ENUM("FLOW","CASH"),
