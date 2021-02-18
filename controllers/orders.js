@@ -107,12 +107,14 @@ const create = async (req,res) => {
                 order_id: order.id
             }
         })); 
-    if(req.body.cupons.length > 0){
-        await models.Cupons.update({ is_used: true},{ where: { id: req.body.cupons } });
-        const cupons = req.body.cupons.map((cupon)=>{
-            return {order_id:order.id, cupon_id: cupon}
-        });
-        await models.OrderCupons.bulkCreate(cupons);
+    if(req.body.cupons){
+        if(req.body.cupons.length > 0){
+            await models.Cupons.update({ is_used: true},{ where: { id: req.body.cupons } });
+            const cupons = req.body.cupons.map((cupon)=>{
+                return {order_id:order.id, cupon_id: cupon}
+            });
+            await models.OrderCupons.bulkCreate(cupons);
+        }
     }
     await models.OrderProducts.bulkCreate(products);
     return res.status(200).send(order);
