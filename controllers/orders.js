@@ -135,11 +135,28 @@ async function destroy(req,res){
     return res.status(200).send({ message:"success" });
 }
 
+const flowRedirect = (req,res) => {
+
+    console.log({
+        ...req,
+    })
+
+    const redirectURL = (req.query || {}).redirect_app 
+
+    if(redirectURL)
+        return res.redirect(redirectURL)
+
+    return res.status(200).send({ 
+        message:"Could not redirect, try to go to the app manually",
+    });
+}
+
 
 module.exports = {
   get,
   create,
   update,
   destroy,
-  updateStatusOrderByFlow
+  updateStatusOrderByFlow,
+    flowRedirect
 }
