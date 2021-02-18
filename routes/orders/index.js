@@ -13,7 +13,7 @@ router.post('/orders',[
   check("total","the is required").not().isEmpty(),
   check("products","the is required").not().isEmpty(),
 ],ordersController.create)
-router.post('flow/update-status',ordersController.create)
+router.post('flow/update-status',ordersController.updateStatusOrderByFlow)
 router.put('/orders/:id',[verifyToken],ordersController.update)
 router.delete('/orders/:id',[verifyToken],ordersController.destroy)
 module.exports = router;
