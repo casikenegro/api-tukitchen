@@ -21,7 +21,7 @@ module.exports = (Sequelize,DataTypes) => {
     },
     reference: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     method: {
       type: DataTypes.ENUM("FLOW","CASH"),
