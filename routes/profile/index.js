@@ -8,6 +8,7 @@ router.get('/profile',[verifyToken],profileController.get)
 router.post('/profile',[
   verifyToken,
   check("name","the name is required").not().isEmpty(),
+  check("name_store","is required"),
   check("last_name","the last_name is required").not().isEmpty(), 
   check("email","the email is required").not().isEmpty(),
   check("api_key","is required").not().isEmpty(),
