@@ -10,6 +10,9 @@ router.post('/profile',[
   check("name","the name is required").not().isEmpty(),
   check("last_name","the last_name is required").not().isEmpty(), 
   check("email","the email is required").not().isEmpty(),
+  check("api_key","is required").not().isEmpty(),
+  check("secret_key","is required").not().isEmpty(),
+
 ],profileController.create)
 router.put('/profile',[verifyToken],profileController.update);
 router.get('/api/stores',profileController.getAll);
