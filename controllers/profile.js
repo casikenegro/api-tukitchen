@@ -40,7 +40,7 @@ const create = async (req,res) => {
     }
   }
   const user = await returnUserByToken(req);
-  let profile = await models.Profile.findOne({where: {user_id : id}});
+  let profile = await models.Profile.findOne({where: {user_id : user.id}});
   if(user.role !== "COMPRADOR"){
     if(!req.file) res.status(400).send({message:"image is required"}); 
   }
