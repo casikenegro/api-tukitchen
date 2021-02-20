@@ -44,6 +44,10 @@ const create = async (req,res) => {
   if(user.role !== "COMPRADOR"){
     if(!req.file) res.status(400).send({message:"image is required"}); 
   }
+  if(user.role === "VENDEDOR"){
+    if(!req.body.api_key || !req.body.secret_key)
+      return res.status(400).send({message: `api_key or secret_key not null`});
+  }
   if(!profile){
     let profile = await models.Profile.create({
       ...req.body,
