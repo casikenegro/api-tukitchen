@@ -5,15 +5,15 @@ module.exports = {
     return queryInterface.bulkInsert('categories', 
     [
       {
-        name: "carne",
+        name: "Comida Rapida",
         user_id: 2
       }, 
       {
-        name: "sopa",
+        name: "Mexicana",
         user_id: 2
       },
       {
-        name: "papas",
+        name: "Bebidas",
         user_id: 2
       }
     ], {});

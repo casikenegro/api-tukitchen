@@ -19,6 +19,14 @@ module.exports = {
       {
         product_id: 2,//carne con papas
         category_id: 3, //papas
+      },
+      {
+        product_id: 3,//carne con papas
+        category_id: 1, //papas
+      },
+      {
+        product_id: 4,//carne con papas
+        category_id: 1, //papas
       }
     ], {});
   },

@@ -39,14 +39,16 @@ const create = async (req,res) => {
       return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
     }
   }
-  const { id } = await returnUserByToken(req);
+  const user = await returnUserByToken(req);
   let profile = await models.Profile.findOne({where: {user_id : id}});
-  if(!req.file) res.status(400).send({message:"image is required"}); 
+  if(user.role !== "COMPRADOR"){
+    if(!req.file) res.status(400).send({message:"image is required"}); 
+  }
   if(!profile){
     let profile = await models.Profile.create({
       ...req.body,
       img_profile: req.file.filename,
-      user_id: id,
+      user_id: user.id,
     });
     return res.send(profile);
   }
