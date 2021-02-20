@@ -46,7 +46,7 @@ const get = async (req,res) => {
     
 }
 
-export const prepareFlowRequest = (params,secretKey, config) => {
+const prepareFlowRequest = (params,secretKey, config) => {
     const toSign = Object
         .keys(params)
         .sort()
