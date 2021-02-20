@@ -30,6 +30,11 @@ const getSeller = async (req,res) => {
   }; 
   const user = await models.User.findAll({where,include: [{
     model: models.Profile,
+    where: {
+      user_id: {
+        [models.Op.ne]: null
+      }
+    },
     as: 'profile',
     include : ['products']
   }], attributes});
@@ -90,7 +95,18 @@ async function destroy(req,res){
     await t.commit()
     res.json({message: "success"})
   } catch (e) {
-    console.log(e);
+    await t.rollback()
+    res.status(500).json({message : "error"})
+  }
+}
+async function destroyByAdmin(req,res){
+  const t = await models.sequelize.transaction()
+  try {
+    if(!req.body.id) return res.status(404).send({message: "user not exist "});
+    await models.User.destroy({where: {id: req.body.id}, transaction: t})
+    await t.commit()
+    res.json({message: "success"})
+  } catch (e) {
     await t.rollback()
     res.status(500).json({message : "error"})
   }
@@ -103,5 +119,6 @@ module.exports = {
   update,
   updateByAdmin,
   destroy,
-  getSeller
+  getSeller,
+  destroyByAdmin
 }

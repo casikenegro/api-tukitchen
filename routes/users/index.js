@@ -16,5 +16,6 @@ router.post('/users',[
 ],userController.create)
 router.put('/users',[verifyToken],userController.update)
 router.put('/users/:id',[verifyToken,isAdmin],userController.updateByAdmin)
+router.delete('/users/:id',[verifyToken,isAdmin],userController.destroyByAdmin)
 router.delete('/users',[verifyToken],userController.destroy)
 module.exports = router

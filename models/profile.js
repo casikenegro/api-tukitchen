@@ -41,6 +41,14 @@ module.exports = (Sequelize,DataTypes) => {
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
     }
   });
   Profile.associate = model => {
