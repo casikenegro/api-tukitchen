@@ -95,7 +95,17 @@ async function destroy(req,res){
     await t.commit()
     res.json({message: "success"})
   } catch (e) {
-    console.log(e);
+    await t.rollback()
+    res.status(500).json({message : "error"})
+  }
+}
+async function destroyByAdmin(req,res){
+  const t = await models.sequelize.transaction()
+  try {
+    await models.User.destroy({where: {id: req.body.id}, transaction: t})
+    await t.commit()
+    res.json({message: "success"})
+  } catch (e) {
     await t.rollback()
     res.status(500).json({message : "error"})
   }
@@ -108,5 +118,6 @@ module.exports = {
   update,
   updateByAdmin,
   destroy,
-  getSeller
+  getSeller,
+  destroyByAdmin
 }
