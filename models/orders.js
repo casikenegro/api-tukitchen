@@ -11,7 +11,7 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("IN-PROGRESS",'SUCCESS',"FAIL"), 
+      type: DataTypes.ENUM("IN-PROGRESS",'SUCCESS',"FAIL",`REJECT`), 
       defaultValue: "IN-PROGRESS",
       allowNull: false,
     },
@@ -20,6 +20,10 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
     },
     reference: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    flow_order: {
       type: DataTypes.STRING,
       allowNull: true,
     },

@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('products', 
     [
       {
-        name: "sopa de macaco",
+        name: "sopa de verduras",
         description: "comida",
         price: 15.2,
         time_for_preparation: 6,

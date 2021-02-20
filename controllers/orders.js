@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
+const { objectToFormData } = require("../utils/functions");
 
 const get = async (req,res) => { 
     const { page, is_buyer, is_seller, id} = req.query;
@@ -44,72 +45,55 @@ const get = async (req,res) => {
     return res.status(200).send(orders);
     
 }
-/*
-export const prepareFlowRequest = (params,secretKey, config = initConfig) => {
 
-    const {
-        as: type
-    } = config
-
-    //https://www.flow.cl/docs/api.html#section/Introduccion/Como-firmar-con-su-SecretKey
+export const prepareFlowRequest = (params,secretKey, config) => {
     const toSign = Object
         .keys(params)
         .sort()
         .map( key => `${key}${params[key]}`)
         .join("");
-    //Create signature for payment
     const hash = crypto.HmacSHA256(
         toSign,
         secretKey
     );
-
     const s = hash.toString(crypto.enc.Hex);
-
-    if( type === "formData" ) return objectToFormData({...params,s});
-    if( type === "queryParameters") return {...params,s};
-
+    if(config === `GET` ) return objectToFormData({...params,s});
     return {...params,s}
 
 }
-*/
+
 const updateStatusOrderByFlow = async (req,res) => {
-    const { token, opcional } = req.body;
-    const profile = await models.Profile.findOne({id: opcional.profile_id});
+    const { order_id } = req.body;
+    const order = await models.Order.findOne({ where : { id : order_id}});
+    if(!order) return res.status(400).send({ message: `order_id not exist `});
+    const profile = await models.Profile.findOne({id: order.profile_id});
+    const params = prepareFlowRequest({ apiKey: profile.api_key,flowOrder: order.flow_order },profile.secretKey,`GET`);
     const response = await axios({
         method: 'get',
         url: 'https://www.flow.cl/api/payment/getStatus',
-        params:{
-            token,
-            apiKey: profile.api_key,
-            s,
-        }, 
+        params, 
     });
-    let order = await models.Orders.findOne({
-        where: {
-            profile_id: profile.id,
-            status: "IN-PROGRESS",
-            user_id: opcional.user_id,
-            total: opcional.total
-        }
-    });
-    let payload = {
-        reference: response.flowOrder
-    }
-    if(response.status > 2 ) {
-        payload = {
-            ...payload,
-            status: "FAIL"
-        }
-    }
-    if ( response.status === 2) {
-        payload = {
-            ...payload,
+    if(response.code == 400 || response.code == 400 )    
+        return res.status(400).send({ message:"bad request"});
+    if(response.status === 2 ){
+        order.update({
             status: "SUCCESS"
-        }
+        });
+        order.save();
     }
-    order.update({ ...payload });
-    order.save();
-    return res.send({ message:"received"});
+    if(response.status === 3 ){
+        order.update({
+            status: "FAIL"
+        });
+        order.save();
+    }
+    if(response.status === 4 ){
+        order.update({
+            status: "REJECT"
+        });
+        order.save();
+    }
+    return res.status(200).send(order);
 }
 const create = async (req,res) => {
     const errors = validationResult(req);
