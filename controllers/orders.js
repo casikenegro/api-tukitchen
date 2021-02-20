@@ -4,7 +4,7 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
-
+const crypto = require("crypto-js");
 const get = async (req,res) => { 
     const { page, is_buyer, is_seller, id} = req.query;
     const  user = await returnUserByToken(req);
@@ -46,7 +46,7 @@ const get = async (req,res) => {
     
 }
 
-export const prepareFlowRequest = (params,secretKey, config) => {
+const prepareFlowRequest = (params,secretKey, config) => {
     const toSign = Object
         .keys(params)
         .sort()
