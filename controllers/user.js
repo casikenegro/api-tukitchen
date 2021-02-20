@@ -30,6 +30,11 @@ const getSeller = async (req,res) => {
   }; 
   const user = await models.User.findAll({where,include: [{
     model: models.Profile,
+    where: {
+      user_id: {
+        [models.Op.ne]: null
+      }
+    },
     as: 'profile',
     include : ['products']
   }], attributes});
