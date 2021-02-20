@@ -42,7 +42,36 @@ const get = async (req,res) => {
         page : page || 1
     });
     return res.status(200).send(orders);
+    
 }
+/*
+export const prepareFlowRequest = (params,secretKey, config = initConfig) => {
+
+    const {
+        as: type
+    } = config
+
+    //https://www.flow.cl/docs/api.html#section/Introduccion/Como-firmar-con-su-SecretKey
+    const toSign = Object
+        .keys(params)
+        .sort()
+        .map( key => `${key}${params[key]}`)
+        .join("");
+    //Create signature for payment
+    const hash = crypto.HmacSHA256(
+        toSign,
+        secretKey
+    );
+
+    const s = hash.toString(crypto.enc.Hex);
+
+    if( type === "formData" ) return objectToFormData({...params,s});
+    if( type === "queryParameters") return {...params,s};
+
+    return {...params,s}
+
+}
+*/
 const updateStatusOrderByFlow = async (req,res) => {
     const { token, opcional } = req.body;
     const profile = await models.Profile.findOne({id: opcional.profile_id});
@@ -138,10 +167,6 @@ async function destroy(req,res){
 }
 
 const flowRedirect = (req,res) => {
-
-    console.log({
-        ...req,
-    })
 
     const redirectURL = (req.query || {}).redirect_app 
 
