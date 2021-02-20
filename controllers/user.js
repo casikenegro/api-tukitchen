@@ -102,6 +102,7 @@ async function destroy(req,res){
 async function destroyByAdmin(req,res){
   const t = await models.sequelize.transaction()
   try {
+    if(!req.body.id) return res.status(404).send({message: "user not exist "});
     await models.User.destroy({where: {id: req.body.id}, transaction: t})
     await t.commit()
     res.json({message: "success"})
