@@ -4,7 +4,7 @@ const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
 
 const get = async (req,res) => {
-  const { status, profile_id, is_premium, category_id , word, get_categories , get_inventaries, page, id} = req.query;
+  const { not_paginate,status, profile_id, is_premium, category_id , word, get_categories , get_inventaries, page, id} = req.query;
   let whereProducts = {
     status: status || 1,
   };
@@ -31,12 +31,19 @@ const get = async (req,res) => {
     }
     include.push(categories);
   }
-  
-  const products = await models.Product.paginate({
+  let products;
+  if(!!not_paginate){
+      products = await models.Product.findAll({
       where : { ...whereProducts },
       include,
-      page : page || 1
   });
+  }else{
+      products = await models.Product.paginate({
+        where : { ...whereProducts },
+        include,
+        page : page || 1
+    });
+  }
   return res.status(200).send(products);
 }
 
