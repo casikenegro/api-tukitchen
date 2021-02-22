@@ -27,12 +27,11 @@ const get = async (req,res) => {
       model: models.ProductCategories,
       as: 'product_categories',
       where: { ...whereCategory },
-      include : ['categories']
+      include : ['categories_products']
     }
     include.push(categories);
   }
   let products;
-  console.log(whereProducts)
   if(!!not_paginate){
       products = await models.Product.findAll({
       where : { ...whereProducts },
