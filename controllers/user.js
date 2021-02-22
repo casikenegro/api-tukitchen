@@ -36,7 +36,11 @@ const getSeller = async (req,res) => {
       }
     },
     as: 'profile',
-    include : ['products']
+    include : [{
+      model: models.Product,
+      as: 'products',
+      include: "gallery"
+    }]
   }], attributes});
   return res.send(user);
 }

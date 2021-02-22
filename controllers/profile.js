@@ -48,10 +48,12 @@ const create = async (req,res) => {
     if(!req.body.api_key || !req.body.secret_key)
       return res.status(400).send({message: `api_key or secret_key not null`});
   }
+  if(!!req.file) {
+    req.body.img_profile = req.file.filename;
+  }
   if(!profile){
     let profile = await models.Profile.create({
       ...req.body,
-      img_profile: req.file.filename,
       user_id: user.id,
     });
     return res.send(profile);

@@ -33,6 +33,11 @@ module.exports = {
         rut: "123456-6",
         password:  bcrypt.hashSync("123456",10),
         role: "VENDEDOR",
+      },
+      {
+        rut: "123456-7",
+        password:  bcrypt.hashSync("123456",10),
+        role: "COMPRADOR",
       }
     ], 
     {
