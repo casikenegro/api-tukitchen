@@ -6,7 +6,7 @@ const { paginate } = require("../utils/functions");
 
 const get = async (req,res) => {
   const {
-    not_paginate, status, profile_id, 
+    not_paginate, status, stores, 
     category_id , word, get_categories , 
     get_inventaries, page, id,is_premium, 
     size,maxPrice = 1000000,minPrice = 0 } = req.query;
@@ -25,7 +25,9 @@ const get = async (req,res) => {
     }
   }
   if(id)whereProducts = { ...whereProducts, id };
-  if(profile_id) whereProducts = { ...whereProducts, profile_id };
+  if(stores) {
+    whereProducts = { ...whereProducts, profile_id: { [models.Op.in] : stores.split(',') } };
+  }
   if(is_premium) whereProducts = { ...whereProducts,is_premium: is_premium == 'true'? true : false };
   if(word) whereProducts = {
     ...whereProducts,

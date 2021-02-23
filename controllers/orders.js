@@ -5,22 +5,21 @@ const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
+const { paginate } = require("../utils/functions");
+
 const get = async (req,res) => { 
-    const { page, is_buyer, is_seller, id} = req.query;
-    const  user = await returnUserByToken(req);
-    if(!is_seller && !is_buyer && user.role !== "ADMINISTRADOR"){
-        return res.status(400).send({ message:"difine your role" });
-    }
+    const { page, id,not_paginate,size} = req.query;
+    const  user = await returnUserByToken(req);  
     let where = {};
-    if(is_seller){
+    if(user.role === "VENDEDOR"){
         const profile = await models.Profile.findOne({where: { user_id : user.id }})
-        if(!profile) return res.status(400).send({ message:"user not is VENDEDOR" });
+        if(!profile) return res.status(400).send({ message:"user not profile" });
         where = {
             ...where,
-            profile_id: profile.id
+            profile_id: profile.id,
         }
     }
-    if(is_seller){
+    if(user.role === "COMPRADOR"){
         where = {
             ...where,
             user_id: user.id
@@ -37,11 +36,15 @@ const get = async (req,res) => {
         as: 'orderProducts',
         include : ['products']
     }]
-    const orders = await models.Orders.paginate({
-        where,
-        include,
-        page : page || 1
-    });
+    let orders;
+    if(!!not_paginate){
+        orders = await models.Orders.findAll({
+            where,
+            include,
+        });
+    }else{
+        orders = await paginate(models.Orders,page,size,where,include);
+    }
     return res.status(200).send(orders);
     
 }
@@ -64,7 +67,7 @@ const prepareFlowRequest = (params,secretKey, config) => {
 
 const updateStatusOrderByFlow = async (req,res) => {
     const { order_id } = req.body;
-    const order = await models.Order.findOne({ where : { id : order_id}});
+    const order = await models.Orders.findOne({ where : { id : order_id}});
     if(!order) return res.status(400).send({ message: `order_id not exist `});
     const profile = await models.Profile.findOne({id: order.profile_id});
     const params = prepareFlowRequest({ apiKey: profile.api_key,flowOrder: order.flow_order },profile.secretKey,`GET`);
