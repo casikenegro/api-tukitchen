@@ -8,7 +8,7 @@ const get = async (req,res) => {
   const {
     not_paginate, status, stores, 
     category_id , word, get_categories , 
-    get_inventaries, page, id,is_premium, 
+    get_inventaries, page, id,is_premium,profile_id,
     size,maxPrice = 1000000,minPrice = 0 } = req.query;
 
   let whereProducts = {
@@ -25,6 +25,7 @@ const get = async (req,res) => {
     }
   }
   if(id)whereProducts = { ...whereProducts, id };
+  if(profile_id) whereProducts = { ...whereProducts, profile_id };
   if(stores) {
     whereProducts = { ...whereProducts, profile_id: { [models.Op.in] : stores.split(',') } };
   }
