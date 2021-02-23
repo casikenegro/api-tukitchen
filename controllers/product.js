@@ -61,11 +61,11 @@ const get = async (req,res) => {
 
 async function create(req,res){
   const errors = validationResult(req);
-  const  { id } = await returnUserByToken(req);
+  const user = await returnUserByToken(req);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  const profile = await models.Profile.findOne({user_id: id});
+  const profile = await models.Profile.findOne({ where: {user_id: user.id} });
   if(!profile)  return res.status(404).send({message:"profile not exist "});
   const product = await models.Product.create({
     ...req.body,
