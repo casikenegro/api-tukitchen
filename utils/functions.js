@@ -17,7 +17,7 @@ const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) =>
           previousPage: getPreviousPage(page),
           currentPage: page,
           nextPage: getNextPage(page, limit, rows.length),
-          lastPage:parseInt(rows.length/limit, 10),
+          lastPage:parseInt(rows.length/limit, 10) > 0 ? parseInt(rows.length/limit, 10) :1  ,
           totalResult: rows.length,
           limit: limit,
           data

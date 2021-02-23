@@ -3,6 +3,7 @@ const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
 const { paginate } = require("../utils/functions");
+const user = require("../models/user");
 
 const get = async (req,res) => {
   const {
@@ -76,8 +77,8 @@ async function create(req,res){
 }
 
 async function update(req,res){
-  const { id } = await returnUserByToken(req);
-  const profile = await models.Profile.findOne({user_id: id});
+  const user = await returnUserByToken(req);
+  const profile = await models.Profile.findOne({where:{user_id: user.id}});
   let product = await models.Product.findOne({ where: { profile_id: profile.id, id: req.params.id } });
   if(!product) return res.status(400).send({message:"bad request"});
   product.update({ ...req.body });
