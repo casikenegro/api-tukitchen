@@ -87,7 +87,7 @@ async function update(req,res){
 async function destroy(req,res){
   try {
     const user = await returnUserByToken(req);
-    const profile = await models.Profile.findOne({user_id: user.id});
+    const profile = await models.Profile.findOne({where: {user_id: user.id} });
     if(!profile) return res.status(400).send({message:"bad request"});
     await models.Product.destroy({ where: {profile_id:profile.id, id: req.params.id } });
     return res.send({message:"success"});
