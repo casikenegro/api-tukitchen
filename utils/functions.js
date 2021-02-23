@@ -1,34 +1,48 @@
+const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) => {
+  try {
+      const limit = parseInt(pageLimit, 10);
+      const page = parseInt(currentPage, 10);
 
-const objectToFormData = obj => { 
-
-  const form = new FormData();
-
-  Object.entries(obj).forEach( () => { 
-    form.append(key,value);
-  } );
-
-  return form;
-
+      // create an options object
+      let options = {
+          offset: getOffset(page, pageLimit),
+          limit: limit,
+          where,
+          include
+      };   
+      let rows = await model.findAll({where,include});
+      let data = await model.findAll({...options});
+      
+      return {
+          previousPage: getPreviousPage(page),
+          currentPage: page,
+          nextPage: getNextPage(page, limit, rows.length),
+          totalResult: rows.length,
+          limit: limit,
+          data
+      }
+  } catch (error) {
+      console.log(error);
+  }
 }
-
+const getOffset = (page, limit) => {
+  return (page * limit) - limit;
+ }
+ 
+ const getNextPage = (page, limit, total) => {
+     if ((total/limit) > page) {
+         return page + 1;
+     }
+ 
+     return null
+ }
+ 
+ const getPreviousPage = (page) => {
+     if (page <= 1) {
+         return null
+     }
+     return page - 1;
+ }
 module.exports = {
-  objectToFormData,
-}
-const getPagination = (page, size) => {
-  const limit = size ? +size : 10;
-  const offset = page > 0 ? page  * limit : 0;
-
-  return { limit, offset };
-};
-
-const getPagingData = (data, page, limit) => {
-  const { count: totalItems, rows: tutorials } = data;
-  const currentPage = page ? +page : 0;
-  const totalPages = Math.ceil(totalItems / limit);
-
-  return { totalItems, tutorials, totalPages, currentPage };
-};
-module.exports = {
-  getPagination,
-  getPagingData
+  paginate
 }

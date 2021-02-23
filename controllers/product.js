@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
-const { getPagingData, getPagination } = require("../utils/functions");
+const { getPagingData, getPagination,paginate } = require("../utils/functions");
 
 const get = async (req,res) => {
   const { not_paginate,status, profile_id, category_id , word, get_categories , get_inventaries, page, id,is_premium, size} = req.query;
@@ -33,20 +33,22 @@ const get = async (req,res) => {
     include.push(categories);
   }
   let products;
-  const offset = page > 0 ? page - 1 : 0; 
   if(!!not_paginate){
     products = await models.Product.findAll({
     where : { ...whereProducts },
     include,
   });
   }else{
-    const { limit, offset } = getPagination(page, size);
-    products = await models.Product.findAndCountAll({
-      where : { ...whereProducts },
-      limit, 
-      offset
-    });
-    products = getPagingData(products, page, limit);
+    // products = await models.Product.findAll({
+    //   where : { ...whereProducts },
+    //   include,
+    //   offset:+page,
+    //   limit:3
+
+    //  // paginate:size, 
+    //   //page,
+    // });
+    products = await paginate(models.Product,page,size,whereProducts,include);
   }
   return res.status(200).send(products);
 }
