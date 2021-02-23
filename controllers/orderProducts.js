@@ -1,7 +1,4 @@
-const { validationResult } = require("express-validator");
-
 const models = require('../models');
-const { returnUserByToken } = require("../middleware");
 
 const getMonday = (init)=>{
     const d = init ? new Date(init) : new Date(); 

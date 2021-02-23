@@ -2,16 +2,32 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
+const { paginate } = require("../utils/functions");
 
 const get = async (req,res) => {
-  const { not_paginate,status, profile_id, category_id , word, get_categories , get_inventaries, page, id,is_premium} = req.query;
+  const {
+    not_paginate, status, stores, 
+    category_id , word, get_categories , 
+    get_inventaries, page, id,is_premium, 
+    size,maxPrice = 1000000,minPrice = 0 } = req.query;
+
   let whereProducts = {
     status: status || 1,
   };
   let categories = null ; 
   let include = ['gallery','profile' ];
+  if(maxPrice || minPrice ){
+    whereProducts = {
+      ...whereProducts,
+      price: {
+        [models.Op.between]: [+minPrice, +maxPrice] 
+      }
+    }
+  }
   if(id)whereProducts = { ...whereProducts, id };
-  if(profile_id) whereProducts = { ...whereProducts, profile_id };
+  if(stores) {
+    whereProducts = { ...whereProducts, profile_id: { [models.Op.in] : stores.split(',') } };
+  }
   if(is_premium) whereProducts = { ...whereProducts,is_premium: is_premium == 'true'? true : false };
   if(word) whereProducts = {
     ...whereProducts,
@@ -27,23 +43,18 @@ const get = async (req,res) => {
       model: models.ProductCategories,
       as: 'product_categories',
       where: { ...whereCategory },
-      include : ['categories']
+      include : ['categories_products']
     }
     include.push(categories);
   }
   let products;
-  console.log(whereProducts)
   if(!!not_paginate){
-      products = await models.Product.findAll({
-      where : { ...whereProducts },
-      include,
+    products = await models.Product.findAll({
+    where : { ...whereProducts },
+    include,
   });
   }else{
-      products = await models.Product.paginate({
-        where : { ...whereProducts },
-        include,
-        page : page || 1
-    });
+    products = await paginate(models.Product,page,size,whereProducts,include);
   }
   return res.status(200).send(products);
 }
