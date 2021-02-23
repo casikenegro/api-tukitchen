@@ -61,11 +61,11 @@ const get = async (req,res) => {
 
 async function create(req,res){
   const errors = validationResult(req);
-  const  { id } = await returnUserByToken(req);
+  const user = await returnUserByToken(req);
   if(!errors.isEmpty()){
     return res.status(422).send({ errors: errors.array()})
   }
-  const profile = await models.Profile.findOne({user_id: id});
+  const profile = await models.Profile.findOne({ where: {user_id: user.id} });
   if(!profile)  return res.status(404).send({message:"profile not exist "});
   const product = await models.Product.create({
     ...req.body,
@@ -87,7 +87,7 @@ async function update(req,res){
 async function destroy(req,res){
   try {
     const user = await returnUserByToken(req);
-    const profile = await models.Profile.findOne({user_id: user.id});
+    const profile = await models.Profile.findOne({where: {user_id: user.id} });
     if(!profile) return res.status(400).send({message:"bad request"});
     await models.Product.destroy({ where: {profile_id:profile.id, id: req.params.id } });
     return res.send({message:"success"});
