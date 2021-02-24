@@ -5,6 +5,11 @@ const router  = express.Router();
 const userAddressController = require('../../controllers/userAdress');
 
 router.get('/user-addresses',[verifyToken],userAddressController.get);
+router.post('/calculate-distance',[
+  check("latitude","the latitude is required").not().isEmpty(),
+  check("longitude","the longitude is required").not().isEmpty(),
+  check("profile_id","the is required").not().isEmpty(),
+],userAddressController.calculateDistance)
 router.post('/user-addresses',[
   verifyToken,
   check("latitude","the latitude is required").not().isEmpty(),

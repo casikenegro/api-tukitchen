@@ -12,12 +12,12 @@ const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) =>
       };   
       let rows = await model.findAll({where,include});
       let data = await model.findAll({...options});
-      
+      const lastPage = parseInt(rows.length/limit) > 0 ? parseInt(rows.length/limit) :1
       return {
           previousPage: getPreviousPage(page),
           currentPage: page,
           nextPage: getNextPage(page, limit, rows.length),
-          lastPage:parseInt(rows.length/limit, 10) > 0 ? parseInt(rows.length/limit, 10) :1  ,
+          lastPage,
           totalResult: rows.length,
           limit: limit,
           data
@@ -45,6 +45,10 @@ const getOffset = (page, limit) => {
      }
      return page - 1;
  }
+const rad = (x)=>{
+    return (x * Math.PI) / 180;
+}
 module.exports = {
-  paginate
+  paginate, 
+  rad
 }
