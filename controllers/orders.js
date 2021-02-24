@@ -178,5 +178,5 @@ module.exports = {
   update,
   destroy,
   updateStatusOrderByFlow,
-    flowRedirect
+  flowRedirect
 }
