@@ -41,7 +41,7 @@ const getSeller = async (req,res) => {
       as: 'products',
       include: "gallery"
     }]
-  }], attributes});
+  },"user_address"], attributes});
   return res.send(user);
 }
 
