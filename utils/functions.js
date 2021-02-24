@@ -12,12 +12,12 @@ const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) =>
       };   
       let rows = await model.findAll({where,include});
       let data = await model.findAll({...options});
-      const lastPage = parseInt(rows.length/limit) > 0 ? parseInt(rows.length/limit) :1
+      
       return {
           previousPage: getPreviousPage(page),
           currentPage: page,
           nextPage: getNextPage(page, limit, rows.length),
-          lastPage,
+          lastPage:Math.ceil(rows.length/limit),
           totalResult: rows.length,
           limit: limit,
           data
