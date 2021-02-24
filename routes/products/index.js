@@ -5,6 +5,7 @@ const router  = express.Router();
 const productController = require('../../controllers/product');
 
 router.get('/products',productController.get)
+router.get('/products/:id',productController.getOne)
 router.post('/products',[
   verifyToken,
   check("name","the name is required").not().isEmpty(),

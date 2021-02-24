@@ -61,6 +61,18 @@ const get = async (req,res) => {
   return res.status(200).send(products);
 }
 
+
+const getOne = async (req,res) => {
+  let include = ['gallery','profile','inventaries',{
+    model: models.ProductCategories,
+    as: 'product_categories',
+    include : ['categories_products']
+  }];
+  products = await models.Product.findOne({where: {id: req.params.id}});
+  if(!products) return res.status(404).send({message:"id not exists"});
+  return res.status(200).send(products);
+}
+
 async function create(req,res){
   const errors = validationResult(req);
   const user = await returnUserByToken(req);
@@ -117,6 +129,7 @@ async function destroyByAdmin(req,res){
 
 module.exports = {
   get,
+  getOne,
   create,
   update,
   destroy,

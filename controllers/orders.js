@@ -8,7 +8,7 @@ const crypto = require("crypto-js");
 const { paginate } = require("../utils/functions");
 
 const get = async (req,res) => { 
-    const { page, id,not_paginate,size} = req.query;
+    const { page, id,not_paginate,size, status} = req.query;
     const  user = await returnUserByToken(req);  
     let where = {};
     if(user.role === "VENDEDOR"){
@@ -29,6 +29,12 @@ const get = async (req,res) => {
         where = {
             ...where,
             id,
+        }
+    }
+    if(status){
+        where = {
+            ...where,
+            status,
         }
     }
     const include = [{

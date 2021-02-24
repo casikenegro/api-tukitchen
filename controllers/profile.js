@@ -18,7 +18,8 @@ const get = async (req,res) => {
   const { id } = await returnUserByToken(req);
   const profile = await models.Profile.findOne({where: {user_id : id}});
   if(!profile) return res.status(404).send({message:"profile not exist"});
-  return res.send(profile);
+  const addresses =  await models.UserAddress.findAll({where:{user_id:id}});
+  return res.send({...profile.dataValues,addresses});
 }
 
 const getAll = async (req,res) => {
