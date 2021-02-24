@@ -47,6 +47,11 @@ module.exports = (Sequelize,DataTypes) => {
       as: 'inventaries',
       onDelete: 'CASCADE'
     })
+    User.hasMany(model.Carrier,{
+      foreignKey: 'user_id',
+      as: 'carriers',
+      onDelete: 'CASCADE'
+    })
   }
 
   return User;

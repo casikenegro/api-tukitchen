@@ -41,7 +41,14 @@ const getSeller = async (req,res) => {
       as: 'products',
       include: "gallery"
     }]
-  },"user_address"], attributes});
+  },{
+    model: models.Carrier,
+    as: 'carriers',
+    include : [{
+      model: models.CarrierAddress,
+      as: 'carrier_addresses',
+    }]
+  },"user_address",], attributes});
   return res.send(user);
 }
 

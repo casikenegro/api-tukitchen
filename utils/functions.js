@@ -48,7 +48,16 @@ const getOffset = (page, limit) => {
 const rad = (x)=>{
     return (x * Math.PI) / 180;
 }
+const objectToFormData = (item)=>{
+    var form_data = new FormData();
+
+    for ( var key in item ) {
+        form_data.append(key, item[key]);
+    }
+    return form_data;
+}
 module.exports = {
   paginate, 
-  rad
+  rad,
+  objectToFormData
 }
