@@ -36,6 +36,11 @@ module.exports = (Sequelize,DataTypes) => {
       as : 'carrier_addresses',
       onDelete: 'CASCADE'
     })
+    Carrier.belongsTo(models.User,{
+      foreignKey: 'user_id',
+      as : 'user',
+      onDelete: 'CASCADE'
+    })
   }
 
   return Carrier;

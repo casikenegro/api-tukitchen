@@ -1,3 +1,6 @@
+const models = require('../models');
+const webPush = require('../webpush');
+
 const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) => {
   try {
       const limit = parseInt(pageLimit, 10);
@@ -48,7 +51,43 @@ const getOffset = (page, limit) => {
 const rad = (x)=>{
     return (x * Math.PI) / 180;
 }
+const objectToFormData = (item)=>{
+    var form_data = new FormData();
+
+    for ( var key in item ) {
+        form_data.append(key, item[key]);
+    }
+    return form_data;
+}
+
+const sendMessage = async (user_id)=>{
+    // Payload Notification
+    try {
+    const channels = await models.Channels.findAll({where:{user_id}});
+    if(channels.length === 0) return null;
+    const payload = JSON.stringify({
+      title: "Ha recibido un pedido",
+      message:"Tienes un nuevo pedido" 
+    });
+    Promise.all(channels.map( async (item)=>{
+        await webPush.sendNotification({
+            endpoint:item.endpoint,
+            expirationTime: item,expirationTime,
+            keys:{
+                p256dh:item.p256dh,
+                auth:item.auth
+            }
+        }, payload);
+        return null;
+    })); 
+    } catch (error) {
+      console.log(error);
+    }
+};
+
 module.exports = {
   paginate, 
-  rad
+  rad,
+  objectToFormData, 
+  sendMessage
 }

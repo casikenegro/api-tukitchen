@@ -35,16 +35,25 @@ module.exports = (Sequelize,DataTypes) => {
       foreignKey: 'user_id',
       as: 'profile',
       onDelete: 'CASCADE'
-    })
-
+    }),
     User.hasMany(model.UserAddress,{
       foreignKey: 'user_id',
       as: 'user_address',
       onDelete: 'CASCADE'
-    })
+    }),
+    User.hasMany(model.Channels,{
+      foreignKey: 'user_id',
+      as: 'channels',
+      onDelete: 'CASCADE'
+    }),
     User.hasMany(model.Inventaries,{
       foreignKey: 'user_id',
       as: 'inventaries',
+      onDelete: 'CASCADE'
+    }),
+    User.hasMany(model.Carrier,{
+      foreignKey: 'user_id',
+      as: 'carriers',
       onDelete: 'CASCADE'
     })
   }

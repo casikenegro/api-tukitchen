@@ -22,7 +22,7 @@ const products = require('./routes/products');
 const profile = require('./routes/profile');
 const userAdress = require('./routes/user-addresses');
 const users = require('./routes/users');
-
+const channels = require('./routes/channels');
 
 
 // Settings
@@ -76,5 +76,6 @@ app.use(products);
 app.use(profile);
 app.use(userAdress);
 app.use(users);
+app.use(channels);
 
 module.exports = app;

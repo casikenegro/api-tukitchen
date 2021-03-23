@@ -5,7 +5,8 @@ const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
-const { paginate } = require("../utils/functions");
+const { paginate, sendMessage} = require("../utils/functions");
+
 
 const get = async (req,res) => { 
     const { page, id,not_paginate,size, status} = req.query;
@@ -76,10 +77,10 @@ const updateStatusOrderByFlow = async (req,res) => {
     const order = await models.Orders.findOne({ where : { id : order_id}});
     if(!order) return res.status(400).send({ message: `order_id not exist `});
     const profile = await models.Profile.findOne({id: order.profile_id});
-    const params = prepareFlowRequest({ apiKey: profile.api_key,flowOrder: order.flow_order },profile.secretKey,`GET`);
+    const params = prepareFlowRequest({ apiKey: profile.api_key,commerceId: order.reference },profile.secretKey,`GET`);
     const response = await axios({
         method: 'get',
-        url: 'https://www.flow.cl/api/payment/getStatus',
+        url: 'https://www.flow.cl/api/payment/getStatusByCommerceId',
         params, 
     });
     if(response.code == 400 || response.code == 400 )    
@@ -139,6 +140,7 @@ const create = async (req,res) => {
         }
     }
     await models.OrderProducts.bulkCreate(products);
+    await sendMessage(user.id);
     return res.status(200).send(order);
 }
 
