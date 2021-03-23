@@ -6,19 +6,23 @@ const mail = require('../utils/mail');
 const utils = require('../utils/constants');
 
 async function login(req,res){
-  const { rut,password } = req.body
-  const user = await models.User.findOne({ where: {rut}, include:['profile']});
-  if(!user)  return res.status(404).send({message:"User not exist"});
-  if(bcrypt.compareSync(password,user.password)){
-    delete user.dataValues.password;
-    return res.status(200).send({
-      user, 
-      token:jwt.sign({ id: user.id},utils.secretTokenKey,{
-        expiresIn: 86400, // 24 hours
-      }),
-    });
+  try {
+    const { rut,password } = req.body
+    const user = await models.User.findOne({ where: {rut}, include:['profile']});
+    if(!user)  return res.status(404).send({message:"User not exist"});
+    if(bcrypt.compareSync(password,user.password)){
+      delete user.dataValues.password;
+      return res.status(200).send({
+        user, 
+        token:jwt.sign({ id: user.id},utils.secretTokenKey,{
+          expiresIn: 86400, // 24 hours
+        }),
+      });
+    }
+    return res.status(403).send({message:"Forbidden"});
+  } catch (error) {
+    return res.status(500).send(error);
   }
-  return res.status(403).send({message:"Forbidden"});
 }
 
 async function recover_password(req,res){
