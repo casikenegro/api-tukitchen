@@ -1,5 +1,7 @@
 'use strict';
-const sequelizePaginate = require('sequelize-paginate')
+const sequelizePaginate = require('sequelize-paginate');
+const constants = require("../utils/constants");
+
 module.exports = (Sequelize,DataTypes) => {
   const Orders = Sequelize.define('orders',{
     user_id: {
@@ -11,8 +13,12 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM("IN-PROGRESS",'SUCCESS',"FAIL",`REJECT`), 
+      type: DataTypes.ENUM(constants.orderStatus), 
       defaultValue: "IN-PROGRESS",
+      allowNull: false,
+    },
+    stage:{
+      type: DataTypes.ENUM(constants.orderStage), 
       allowNull: false,
     },
     total:{

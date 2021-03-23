@@ -1,12 +1,16 @@
 const express = require('express');
-const { verifyToken } = require('../../middleware');
+const { check } = require("express-validator");
+const { verifyToken, isAdmin } = require('../../middleware');
 const router  = express.Router();
 
-const channelsController = require('../../controllers/channels');
+const categoriesController = require('../../controllers/categories');
 
-router.post('/subscription',[
+router.get('/categories',categoriesController.get)
+router.post('/categories',[
   verifyToken,
-],channelsController.subscription)
-
+  check("name","the name is required").not().isEmpty(),
+],categoriesController.create)
+router.put('/categories/:id',[verifyToken],categoriesController.update)
+router.delete('/categories/:id',[verifyToken],categoriesController.destroy)
 
 module.exports = router;

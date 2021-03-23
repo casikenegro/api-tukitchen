@@ -27,27 +27,31 @@ const addDays = function(d, date)
  }
 
 const sellInDay = async (req,res) =>{
-    let day = getMonday(req.query.initDate);
-    if(req.params.day.toUpperCase() === "MARTES")
-        day = addDays(1,day);
-    if(req.params.day.toUpperCase() === "MIERCOLES")
-        day = addDays(2,day);
-    if(req.params.day.toUpperCase() === "JUEVES")
-        day = addDays(3,day);
-    if(req.params.day.toUpperCase() === "VIERNES")
-        day = addDays(4,day);
-    if(req.params.day.toUpperCase() === "SABADO")
-        day = addDays(5,day);
-    if(req.params.day.toUpperCase() === "DOMINGO")
-        day = addDays(6,day);
-    let finalDate = addDays(1,day);
-
-    const totalSell = await models.OrderProducts.findAll({
-        where: { product_id : req.params.product_id,
-           createdAt : { $between: [day, finalDate] }
-        },
-    })
-    return res.status(200).send({totalSell});
+    try {
+        let day = getMonday(req.query.initDate);
+        if(req.params.day.toUpperCase() === "MARTES")
+            day = addDays(1,day);
+        if(req.params.day.toUpperCase() === "MIERCOLES")
+            day = addDays(2,day);
+        if(req.params.day.toUpperCase() === "JUEVES")
+            day = addDays(3,day);
+        if(req.params.day.toUpperCase() === "VIERNES")
+            day = addDays(4,day);
+        if(req.params.day.toUpperCase() === "SABADO")
+            day = addDays(5,day);
+        if(req.params.day.toUpperCase() === "DOMINGO")
+            day = addDays(6,day);
+        let finalDate = addDays(1,day);
+    
+        const totalSell = await models.OrderProducts.findAll({
+            where: { product_id : req.params.product_id,
+               createdAt : { $between: [day, finalDate] }
+            },
+        })
+        return res.status(200).send({totalSell});   
+    } catch (error) {
+        return res.status(500).send(error);      
+    }
 }
 module.exports = {
     sellInDay,

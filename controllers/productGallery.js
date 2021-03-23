@@ -4,6 +4,7 @@ const path = require('path');
 const models = require('../models');
 
 const create = async (req,res) => {
+  try {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
       return res.status(422).send({ errors: errors.array()})
@@ -18,10 +19,14 @@ const create = async (req,res) => {
       return res.send(product);
     }
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
-    res.status(400).send({ message: "product not  exist"});
+    return res.status(400).send({ message: "product not  exist"});
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 }
 
 const update =  async (req,res) => {
+  try {
     let product = await models.ProductGallery.findOne({ where: { id } });
     if(req.file) {
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${product.img_product}`))
@@ -30,16 +35,23 @@ const update =  async (req,res) => {
     product.update({ ...req.body });
     product.save();
     return res.send(product);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 }
 
 async function destroy(req,res){
-  const { id } = req.params;
-  const product = await models.UserAddress.findOne({where:{ id }});
-  if(product.img_product){
-    fs.unlinkSync(path.join(__dirname,`../public/uploads/${product.img_product}`))
+  try {
+    const { id } = req.params;
+    const product = await models.UserAddress.findOne({where:{ id }});
+    if(product.img_product){
+      fs.unlinkSync(path.join(__dirname,`../public/uploads/${product.img_product}`))
+    }
+    await product.delete()
+    return res.status(200).send({ message:"success" }); 
+  } catch (error) {
+    return res.status(500).send(error);
   }
-  await product.delete()
-  return res.status(200).send({ message:"success" });
 }
 
 module.exports = {

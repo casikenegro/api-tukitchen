@@ -1,5 +1,8 @@
+const jwt = require("jsonwebtoken");
 const models = require('../models');
-const webPush = require('../webpush');
+const webPush = require('../webPush');
+const constants = require('./constants');
+
 
 const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) => {
   try {
@@ -84,10 +87,16 @@ const sendMessage = async (user_id)=>{
       console.log(error);
     }
 };
-
+const returnExpIn = async (req) => {
+    let token = req.headers["x-access-token"];
+    if(!token) return 0;
+    return jwt.verify(token, constants.secretTokenKey);
+  
+};
 module.exports = {
   paginate, 
   rad,
   objectToFormData, 
-  sendMessage
+  sendMessage, 
+  returnExpIn
 }
