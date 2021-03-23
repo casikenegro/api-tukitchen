@@ -17,6 +17,7 @@ let models = {
   OrderCupons: require("./orderCupons")(sequelize, Sequelize),
   OrderProducts: require("./orderProducts")(sequelize, Sequelize),
   Orders: require("./orders")(sequelize, Sequelize),
+  Channels: require("./channels")(sequelize, Sequelize)
 };
 
 Object.keys(models).forEach((modelName) => {

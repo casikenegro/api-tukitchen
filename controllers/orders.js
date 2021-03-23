@@ -5,7 +5,8 @@ const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
-const { paginate } = require("../utils/functions");
+const { paginate, sendMessage} = require("../utils/functions");
+
 
 const get = async (req,res) => { 
     const { page, id,not_paginate,size, status} = req.query;
@@ -139,6 +140,7 @@ const create = async (req,res) => {
         }
     }
     await models.OrderProducts.bulkCreate(products);
+    await sendMessage(user.id);
     return res.status(200).send(order);
 }
 
