@@ -5,9 +5,9 @@ const subscription = async (req, res) => {
   try {
     const  user = await returnUserByToken(req);
     const { endpoint, expirationTime, keys } = req.body;
-    if(!(await models.Notifications.findOne({where:{ endpoint}}))){
+    if(!(await models.Channels.findOne({where:{ endpoint}}))){
         await models.Channels.create({
-            user:user.id,
+            user_id:user.id,
             endpoint,
             expirationTime,
             p256dh: keys.p256dh,
