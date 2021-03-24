@@ -6,6 +6,7 @@ const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
 const { paginate, sendMessage} = require("../utils/functions");
+const { mode } = require("crypto-js");
 
 
 const get = async (req,res) => { 
@@ -154,7 +155,8 @@ const create = async (req,res) => {
             }
         }
         await models.OrderProducts.bulkCreate(products);
-        await sendMessage(user.id);
+        const profile = await models.Profiles.findOne({where:{id:profile_id}});
+        await sendMessage(profile.user_id);
         return res.status(200).send(order);
     }catch(error){
         return res.status(500).send(error);
