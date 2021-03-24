@@ -125,16 +125,17 @@ const create = async (req,res) => {
         if(!req.body.products.length){
             return res.status(400).send({message:"products is void"});
         }
-        const profile = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
+        const product = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
+        const { profile_id } = product.dataValues;
         const order = await models.Orders.create({
             ...req.body,
-            profile_id:profile.id,
+            profile_id,
             user_id:user.id
         });
         const products = await Promise.all(req.body.products.map( async (item)=>{
                 const  product = await models.Product.findOne({ where: {
                     id: item.product_id,
-                    profile_id:profile.id,
+                    profile_id
                 }})
                 if (!product) return null;
                 return { 

@@ -26,6 +26,14 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
       defaultValue: false,
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
+    }
   })
 
   Inventaries.associate = model => {
