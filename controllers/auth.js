@@ -7,7 +7,7 @@ const utils = require('../utils/constants');
 
 async function login(req,res){
   try {
-    const { rut,password } = req.body
+    const { rut,password } = req.body;
     const user = await models.User.findOne({ where: {rut}, include:['profile']});
     if(!user)  return res.status(404).send({message:"User not exist"});
     if(bcrypt.compareSync(password,user.password)){

@@ -12,6 +12,7 @@ const get = async (req,res) => {
     try {
         const { page, id,not_paginate,size, status} = req.query;
         const  user = await returnUserByToken(req);  
+        const order =[['id', 'DESC']];
         let where = {};
         if(user.role === "VENDEDOR"){
             const profile = await models.Profile.findOne({where: { user_id : user.id }})
@@ -49,9 +50,10 @@ const get = async (req,res) => {
             orders = await models.Orders.findAll({
                 where,
                 include,
+                order
             });
         }else{
-            orders = await paginate(models.Orders,page,size,where,include);
+            orders = await paginate(models.Orders,page,size,where,include,{order});
         }
         return res.status(200).send(orders);   
     } catch (error) {
@@ -123,14 +125,16 @@ const create = async (req,res) => {
         if(!req.body.products.length){
             return res.status(400).send({message:"products is void"});
         }
+        const profile = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
         const order = await models.Orders.create({
             ...req.body,
+            profile_id:profile.id,
             user_id:user.id
         });
         const products = await Promise.all(req.body.products.map( async (item)=>{
                 const  product = await models.Product.findOne({ where: {
                     id: item.product_id,
-                    profile_id:req.body.profile_id
+                    profile_id:profile.id,
                 }})
                 if (!product) return null;
                 return { 

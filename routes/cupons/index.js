@@ -15,6 +15,7 @@ router.post('/create-cupons-by-admin/:user_id',[
   verifyToken,
   isAdmin,
   check("discount","is required").not().isEmpty(),
+  check("name","is required").not().isEmpty(),
 ],cuponsController.createByAdmin)
 router.put('/cupons/:id',[verifyToken],cuponsController.update)
 router.delete('/cupons/:id',[verifyToken],cuponsController.destroy)
