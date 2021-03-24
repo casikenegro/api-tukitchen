@@ -75,7 +75,7 @@ const sendMessage = async (user_id)=>{
       message:"Tienes un nuevo pedido" 
     });
     Promise.all(channels.map( async (item)=>{
-        await webPush.sendNotification({
+        let data = await webPush.sendNotification({
             endpoint:item.endpoint,
             expirationTime: item,expirationTime,
             keys:{
@@ -84,7 +84,7 @@ const sendMessage = async (user_id)=>{
             }
         }, payload);
         console.log("se ejecuto el mensaje");
-
+        console.log(data);
         return null;
     })); 
     } catch (error) {
