@@ -68,6 +68,7 @@ const sendMessage = async (user_id)=>{
     // Payload Notification
     try {
     const channels = await models.Channels.findAll({where:{user_id}});
+    console.log(channels);
     if(channels.length === 0) return null;
     const payload = JSON.stringify({
       title: "Ha recibido un pedido",
@@ -82,6 +83,8 @@ const sendMessage = async (user_id)=>{
                 auth:item.auth
             }
         }, payload);
+        console.log("se ejecuto el mensaje");
+
         return null;
     })); 
     } catch (error) {
