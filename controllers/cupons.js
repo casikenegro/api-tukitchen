@@ -24,8 +24,10 @@ const get = async (req,res) => {
 }
 const isCouponValid = async (req,res) =>{
   try {
-    const cupon = await models.Cupons.findOne({ where: { id: req.params.id }});
-    return res.send({ status: cupon.is_used});    
+    const { name } = req.query;
+    const cupon = await models.Cupons.findOne({ where: {  name }});
+    if(!cupon.is_used) return res.status(200).send({});
+    return res.send(cupon);    
   } catch (error) {
     return res.status(500).send(error);
   }

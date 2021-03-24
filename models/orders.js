@@ -18,7 +18,8 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
     },
     stage:{
-      type: DataTypes.ENUM(constants.orderStage), 
+      type: DataTypes.ENUM(constants.orderStage),
+      defaultValue: "IN-PROGRESS",
       allowNull: false,
     },
     total:{

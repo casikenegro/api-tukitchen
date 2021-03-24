@@ -4,20 +4,21 @@ const webPush = require('../webPush');
 const constants = require('./constants');
 
 
-const paginate = async (model, currentPage = 1, pageLimit = 10,where,include) => {
+const paginate = async (model, currentPage = 1, pageLimit = 10,where,include,options = {}) => {
   try {
       const limit = parseInt(pageLimit, 10);
       const page = parseInt(currentPage, 10);
 
       // create an options object
-      let options = {
+      let newOptions = {
           offset: getOffset(page, pageLimit),
           limit: limit,
           where,
-          include
+          include,
+          ...options
       };   
       let rows = await model.findAll({where,include});
-      let data = await model.findAll({...options});
+      let data = await model.findAll({...newOptions});
       
       return {
           previousPage: getPreviousPage(page),

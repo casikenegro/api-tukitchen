@@ -8,6 +8,9 @@ module.exports = (Sequelize,DataTypes) => {
     discount: {
       type: DataTypes.DECIMAL(2,2)
     },
+    name:{
+      type:DataTypes.STRING,
+    },
     is_used: {
       type: DataTypes.BOOLEAN, 
       allowNull: false,
