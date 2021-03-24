@@ -3,7 +3,7 @@ const emailValidator = require('email-validator');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const mail = require('../utils/mail');
-const utils = require('../utils/constants');
+const constants = require('../utils/constants');
 
 async function login(req,res){
   try {
@@ -12,11 +12,15 @@ async function login(req,res){
     if(!user)  return res.status(404).send({message:"User not exist"});
     if(bcrypt.compareSync(password,user.password)){
       delete user.dataValues.password;
+      const token = jwt.sign({ id: user.id},constants.secretTokenKey,{
+        expiresIn: 86400, // 24 hours
+      });
+      const { exp: expIn }  = jwt.verify(token, constants.secretTokenKey);
+
       return res.status(200).send({
         user, 
-        token:jwt.sign({ id: user.id},utils.secretTokenKey,{
-          expiresIn: 86400, // 24 hours
-        }),
+        token,
+        expIn
       });
     }
     return res.status(403).send({message:"Forbidden"});
