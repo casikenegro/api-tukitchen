@@ -4,6 +4,7 @@ const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
 const { paginate } = require("../utils/functions");
 const user = require("../models/user");
+const { response } = require("express");
 
 const get = async (req,res) => {
   try {
@@ -54,8 +55,18 @@ const get = async (req,res) => {
     if(days){
       whereInventaries = {...whereInventaries,day:{ [models.Op.in]: days.split(',') } };
     } 
-    if(time_final) whereInventaries = {...whereInventaries,time_final};
-    if(time_init) whereInventaries = {...whereInventaries,time_init};
+    if(time_final) {
+      if(!time_init) return res.status(400).send({message:"time_init not define"});
+      whereInventaries = {
+        ...whereInventaries,
+        time_init: { 
+          [models.Op.gte]: time_init
+        },
+        time_final: { 
+          [models.Op.lte]: time_final
+        },
+      };
+    }
     include.push({
       model: models.Inventaries,
       as: 'inventaries',
