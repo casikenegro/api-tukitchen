@@ -9,7 +9,7 @@ const subscription = async (req, res) => {
         await models.Channels.create({
             user_id:user.id,
             endpoint,
-            expirationTime,
+            expiration_time:expirationTime,
             p256dh: keys.p256dh,
             auth: keys.auth
         });
