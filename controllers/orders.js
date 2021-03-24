@@ -155,7 +155,7 @@ const create = async (req,res) => {
             }
         }
         await models.OrderProducts.bulkCreate(products);
-        const profile = await models.Profiles.findOne({where:{id:profile_id}});
+        const profile = await models.Profile.findOne({where:{id:profile_id}});
         await sendMessage(profile.user_id);
         return res.status(200).send(order);
     }catch(error){
