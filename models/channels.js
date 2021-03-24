@@ -8,9 +8,10 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    expirationTime:{
+    expiration_time:{
       type: DataTypes.STRING,
-      allowNull: false,
+      defaultValue: null,
+      allowNull: true,
     },    
     p256dh:{
       type: DataTypes.STRING,

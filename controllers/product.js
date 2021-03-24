@@ -38,7 +38,9 @@ const get = async (req,res) => {
         {name : {[models.Op.substring] : word} }, {description : {[models.Op.substring] : word} }
       ],
     }
-    if(get_inventaries) include.push('inventaries');
+    if(get_inventaries){
+      include.push('inventaries');
+    } 
     if(get_categories){
       let whereCategory = {};
       if(category_id) whereCategory = { ...whereCategory, category_id };
