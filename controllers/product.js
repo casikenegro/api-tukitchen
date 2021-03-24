@@ -4,13 +4,14 @@ const { returnUserByToken } = require("../middleware");
 const profile = require("../models/profile");
 const { paginate } = require("../utils/functions");
 const user = require("../models/user");
+const { response } = require("express");
 
 const get = async (req,res) => {
   try {
     const {
       not_paginate, status, stores, 
-      category_id , word, get_categories , 
-      get_inventaries, page, id,is_premium,profile_id,
+      category_id , word, get_categories,days,time_init,time_final,
+      page, id,is_premium,profile_id,
       size,maxPrice = 1000000,minPrice = 0 } = req.query;
   
     let whereProducts = {
@@ -38,9 +39,6 @@ const get = async (req,res) => {
         {name : {[models.Op.substring] : word} }, {description : {[models.Op.substring] : word} }
       ],
     }
-    if(get_inventaries){
-      include.push('inventaries');
-    } 
     if(get_categories){
       let whereCategory = {};
       if(category_id) whereCategory = { ...whereCategory, category_id };
@@ -53,6 +51,29 @@ const get = async (req,res) => {
       include.push(categories);
     }
     let products;
+    let whereInventaries = {};
+    if(days){
+      whereInventaries = {...whereInventaries,day:{ [models.Op.in]: days.split(',') } };
+    } 
+    if(time_final) {
+      if(!time_init) return res.status(400).send({message:"time_init not define "});
+      whereInventaries = {
+        ...whereInventaries,
+        time_init: { 
+          [models.Op.gte]: time_init,
+
+        },
+        time_final: { 
+          [models.Op.lte]: time_final,
+
+        },
+      };
+    }
+    include.push({
+      model: models.Inventaries,
+      as: 'inventaries',
+      where: { ...whereInventaries },
+    });
     if(!!not_paginate){
       products = await models.Product.findAll({
       where : { ...whereProducts },
