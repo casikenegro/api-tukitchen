@@ -94,6 +94,13 @@ const returnExpIn = async (req) => {
     return jwt.verify(token, constants.secretTokenKey);
   
 };
+const returnRole = async (req) => {
+    let token = req.headers["x-access-token"];
+    const decoded = jwt.verify(token, constants.secretTokenKey);
+    const user = await models.User.findOne({ where:{id: decoded.id}});
+    return user.role;
+  
+};
 module.exports = {
   paginate, 
   rad,

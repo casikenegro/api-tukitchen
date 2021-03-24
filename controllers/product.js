@@ -56,14 +56,12 @@ const get = async (req,res) => {
       whereInventaries = {...whereInventaries,day:{ [models.Op.in]: days.split(',') } };
     } 
     if(time_final) {
-      if(!time_init) return res.status(400).send({message:"time_init not define"});
+      if(!time_init) return res.status(400).send({message:"time_init not define "});
       whereInventaries = {
         ...whereInventaries,
         time_init: { 
-          [models.Op.gte]: time_init
-        },
-        time_final: { 
-          [models.Op.lte]: time_final
+          [models.Op.between]: [time_init,time_final],
+
         },
       };
     }
