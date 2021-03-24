@@ -60,7 +60,11 @@ const get = async (req,res) => {
       whereInventaries = {
         ...whereInventaries,
         time_init: { 
-          [models.Op.between]: [time_init,time_final],
+          [models.Op.gte]: time_init,
+
+        },
+        time_final: { 
+          [models.Op.lte]: time_final,
 
         },
       };
