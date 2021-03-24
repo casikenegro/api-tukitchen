@@ -77,7 +77,7 @@ const sendMessage = async (user_id)=>{
     Promise.all(channels.map( async (item)=>{
         let data = await webPush.sendNotification({
             endpoint:item.endpoint,
-            expirationTime: item,expirationTime,
+            expirationTime: item.expiration_time,
             keys:{
                 p256dh:item.p256dh,
                 auth:item.auth
