@@ -16,7 +16,8 @@ const get = async (req,res) => {
   try {
     const payload = await returnUserByToken(req);
     const user = await models.User.findOne({where: { id: payload.id }, include: ['profile','user_address'], attributes});
-    return res.send({...user.dataValues,expIn: returnExpIn(req)}); 
+    const expIn = await returnExpIn(req);
+    return res.send({...user.dataValues,expIn }); 
   } catch (error) {
     return res.status(500).send(error);
   }

@@ -92,7 +92,8 @@ const sendMessage = async (user_id)=>{
 const returnExpIn = async (req) => {
     let token = req.headers["x-access-token"];
     if(!token) return 0;
-    return jwt.verify(token, constants.secretTokenKey);
+    const { exp }  = jwt.verify(token, constants.secretTokenKey);
+    return exp;
   
 };
 const returnRole = async (req) => {
