@@ -13,11 +13,11 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
     },
     base_price: {
-      type: DataTypes.DECIMAL(10,2),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     extra_price: {
-      type: DataTypes.DECIMAL(10,2),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     extra_distance: {
