@@ -24,10 +24,13 @@ const get = async (req,res) => {
 }
 const isCouponValid = async (req,res) =>{
   try {
-    const { name } = req.query;
-    const cupon = await models.Cupons.findOne({ where: {  name }});
-    if(!cupon.is_used) return res.status(200).send({is_used:false});
-    return res.send(cupon);    
+    const { name } = req.params;
+    const coupon = await models.Cupons.findOne({ where: {  name }});
+    if(!coupon)return res.status(404).send({message:"not found"});
+    if(coupon.is_used) return res.status(200).send({is_used:coupon.is_used});
+    delete coupon.dataValues.id;
+    delete coupon.dataValues.profile_id;
+    return res.send(coupon);    
   } catch (error) {
     return res.status(500).send(error);
   }
@@ -42,10 +45,10 @@ async function create(req,res){
     }
     const profile = await models.Profile.findOne({where: {user_id: user.id }});
     if(!profile) return res.status(403).send({message:"profile not create"});
+    req.body.discount= req.body.discount /100;
+    req.body.profile_id = profile.id;
     const cupon = await models.Cupons.create({
-      discount:req.body.discount /100,
-      profile_id: profile.id, 
-      is_used:false,
+     ...req.body
     });
     return res.status(200).send(cupon);
   } catch (error) {
