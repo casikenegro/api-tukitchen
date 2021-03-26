@@ -63,7 +63,6 @@ async function sendMail(mailParams) {
       html,
     });
   }
-
   return null;
 }
 
