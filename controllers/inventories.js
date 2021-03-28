@@ -1,10 +1,11 @@
 const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
+const { returnProfile } = require("../utils/functions")
 
 const get = async (req,res) => {
     try {
-        const  user = await returnUserByToken(req);
+        const  profile = await returnProfile(req);
         const {  get_products , page, id} = req.query;
         let include = []
         if(get_products){   
@@ -14,15 +15,15 @@ const get = async (req,res) => {
                 include : ['gallery']
             })
         }
-        let whereInventaries = {}
+        let whereInventories = {}
         if(id) 
-            whereInventaries = {...whereInventaries, id }
-        const inventaries = await models.Inventaries.paginate({
-            where : { ...whereInventaries, user_id: user.id },
+            whereInventories = {...whereInventories, id }
+        const inventories = await models.Inventories.paginate({
+            where : { ...whereInventories, profile_id: profile.id },
             include,
             page : page || 1
         });
-        return res.status(200).send(inventaries);
+        return res.status(200).send(inventories);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -36,11 +37,11 @@ const create = async (req,res) => {
         if(!errors.isEmpty()){
             return res.status(422).send({ errors: errors.array()})
         }
-        const inventary = await models.Inventaries.create({
+        const inventory = await models.Inventories.create({
             ...req.body,
             user_id:user.id
         });
-        return res.status(200).send(inventary);
+        return res.status(200).send(inventory);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -49,13 +50,13 @@ const create = async (req,res) => {
 const update =  async (req,res) => {
     try {
         const { id } = req.params;
-        const inventary = await models.Inventaries.findOne({where:{ id }});
-        if(!inventary) return res.status(404).send({ message:"bad id" });
-        inventary.update({
+        const inventory = await models.Inventories.findOne({where:{ id }});
+        if(!inventory) return res.status(404).send({ message:"bad id" });
+        inventory.update({
             ...req.body
         })
-        inventary.save()
-        return res.status(200).send(inventary);
+        inventory.save()
+        return res.status(200).send(inventory);
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -64,7 +65,7 @@ const update =  async (req,res) => {
 async function destroy(req,res){
     try {
         const { id } = req.params;
-        await models.Inventary.destroy({where:{ id }});
+        await models.Inventory.destroy({where:{ id }});
         return res.status(200).send({ message:"success" });
     } catch (error) {
         return res.status(500).send(error);

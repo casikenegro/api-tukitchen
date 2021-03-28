@@ -12,9 +12,10 @@ let models = {
   Profile  : require('./profile')(sequelize, Sequelize),
   User : require('./user')(sequelize, Sequelize),
   UserAddress : require('./userAddress')(sequelize, Sequelize),
-  Inventaries: require("./inventaries")(sequelize, Sequelize),
-  Cupons: require("./cupons")(sequelize, Sequelize),
-  OrderCupons: require("./orderCupons")(sequelize, Sequelize),
+  Inventories: require("./inventories")(sequelize, Sequelize),
+  Coupons: require("./coupons")(sequelize, Sequelize),
+  InventoriesHours: require("./inventoriesHours")(sequelize, Sequelize),
+  OrderCoupons: require("./orderCoupons")(sequelize, Sequelize),
   OrderProducts: require("./orderProducts")(sequelize, Sequelize),
   Orders: require("./orders")(sequelize, Sequelize),
   Channels: require("./channels")(sequelize, Sequelize)

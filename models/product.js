@@ -51,18 +51,17 @@ module.exports = (Sequelize,DataTypes) => {
       as : 'product_categories',
       onDelete: 'CASCADE'
       
-    })
-
+    }),
     Product.hasMany(model.ProductGallery,{
       foreignKey: 'product_id',
       as : 'gallery',
       onDelete: 'CASCADE'
-    })
-    Product.hasMany(model.Inventaries,{
+    }),
+    Product.hasMany(model.Inventories,{
       foreignKey: "product_id",
-      as: "inventaries",
+      as: "inventories",
       onDelete: 'CASCADE'
-    })
+    }),
     Product.belongsTo(model.Profile,{
       foreignKey: 'profile_id',
       as : 'profile',

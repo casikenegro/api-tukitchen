@@ -103,10 +103,26 @@ const returnRole = async (req) => {
     return user.role;
   
 };
+const returnProfile = async (req) => {
+    let token = req.headers["x-access-token"];
+    const decoded = jwt.verify(token, constants.secretTokenKey);
+    const user = await models.User.findOne({
+        where: {id : decoded.id},
+        include: [{
+          model : models.Profile,
+          required: true,
+          as: 'profile'
+        }]
+      });
+    return user.dataValues.profile;
+  
+};
 module.exports = {
   paginate, 
   rad,
   objectToFormData, 
   sendMessage, 
-  returnExpIn
+  returnExpIn,
+  returnRole,
+  returnProfile,
 }

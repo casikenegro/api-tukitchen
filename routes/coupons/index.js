@@ -2,24 +2,24 @@ const express = require('express');
 const { check } = require("express-validator");
 const { verifyToken, isAdmin } = require('../../middleware');
 const router  = express.Router();
-const cuponsController = require("../../controllers/cupons");
+const couponsController = require("../../controllers/coupons");
 
-router.get('/cupons',[verifyToken],cuponsController.get)
-router.get('/is-coupon-valid/:name',cuponsController.isCouponValid)
+router.get('/coupons',[verifyToken],couponsController.get)
+router.get('/is-coupon-valid/:name',couponsController.isCouponValid)
 
-router.post('/cupons',[
+router.post('/coupons',[
   verifyToken,
   check("discount","is required").not().isEmpty(),
   check("name","is required").not().isEmpty(),
-],cuponsController.create)
-router.post('/create-cupons-by-admin/:user_id',[
+],couponsController.create)
+router.post('/create-coupons-by-admin/:user_id',[
   verifyToken,
   isAdmin,
   check("discount","is required").not().isEmpty(),
   check("name","is required").not().isEmpty(),
-],cuponsController.createByAdmin)
-router.put('/cupons/:id',
+],couponsController.createByAdmin)
+router.put('/coupons/:id',
 //[verifyToken],
-cuponsController.update)
-router.delete('/cupons/:id',[verifyToken],cuponsController.destroy)
+couponsController.update)
+router.delete('/coupons/:id',[verifyToken],couponsController.destroy)
 module.exports = router

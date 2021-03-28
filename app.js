@@ -9,18 +9,18 @@ require('dotenv').config();
 const app = express();
 
 const auth = require('./routes/auth');
-const carrierAdresses = require('./routes/carrier-addreses');
+const carrierAddresses = require('./routes/carrier-addresses');
 const carriers = require('./routes/carriers');
 const categories = require('./routes/categories');
-const cupons = require('./routes/cupons');
-const inventaries = require('./routes/inventaries');
+const coupons = require('./routes/coupons');
+const inventories = require('./routes/inventories');
 const orderProducts = require('./routes/oderProducts');
 const orders = require('./routes/orders');
 const productCategories = require('./routes/product-categories');
 const productGallery = require('./routes/product-gallery');
 const products = require('./routes/products');
 const profile = require('./routes/profile');
-const userAdress = require('./routes/user-addresses');
+const userAddress = require('./routes/user-addresses');
 const users = require('./routes/users');
 const channels = require('./routes/channels');
 
@@ -63,18 +63,18 @@ app.get("/", (req, res) => {
   });
 });
 app.use(auth);
-app.use(carrierAdresses);
+app.use(carrierAddresses);
 app.use(carriers);
 app.use(categories);
-app.use(cupons);
-app.use(inventaries);
+app.use(coupons);
+app.use(inventories);
 app.use(orderProducts);
 app.use(orders);
 app.use(productCategories);
 app.use(productGallery);
 app.use(products);
 app.use(profile);
-app.use(userAdress);
+app.use(userAddress);
 app.use(users);
 app.use(channels);
 

@@ -3,7 +3,7 @@ const { check } = require("express-validator");
 const { verifyToken, isAdmin } = require('../../middleware');
 const router  = express.Router();
 
-const carrierAddressController = require("../../controllers/carrierAdresses")
+const carrierAddressController = require("../../controllers/carrierAddresses")
 router.post('/carrier-addresses',[
     verifyToken,
     check("carrier_id","the carrier_id is required").not().isEmpty(),

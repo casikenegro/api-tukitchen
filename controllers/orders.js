@@ -127,7 +127,7 @@ const create = async (req,res) => {
             return res.status(400).send({message:"products is void"});
         }
         if(req.body.coupon){
-            coupon = await models.Cupons.findOne({where: { name : req.body.coupon }});  
+            coupon = await models.Coupons.findOne({where: { name : req.body.coupon }});  
             if(coupon){
                 if(coupon.is_used) return res.status(400).send({message:"coupon used"});
             }        
@@ -152,7 +152,7 @@ const create = async (req,res) => {
                 }
             })); 
         if(coupon){
-            await models.OrderCupons.create({order_id:order.id,cupon_id: coupon.id});
+            await models.OrderCoupons.create({order_id:order.id,coupon_id: coupon.id});
             coupon.update({
                 is_used:true
             });

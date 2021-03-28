@@ -3,23 +3,23 @@ const { check } = require("express-validator");
 const { verifyToken, isAdmin } = require('../../middleware');
 const router  = express.Router();
 
-const inventariesControler = require("../../controllers/inventaries");
+const inventoriesController = require("../../controllers/inventories");
 
 
-router.get('/inventaries',[
+router.get('/inventories',[
   verifyToken,
-],inventariesControler.get);
-//router.get('/sell-in-week',inventariesControler.sellInWeek);
+],inventoriesController.get);
+//router.get('/sell-in-week',inventoriesController.sellInWeek);
 
-router.post('/inventaries',[
+router.post('/inventories',[
   verifyToken,
   check("product_id","is required").not().isEmpty(),
   check("day","is required").not().isEmpty(),
   check("time_init","is required").not().isEmpty(),
   check("time_final","is required").not().isEmpty(),
-],inventariesControler.create)
-router.put('/inventaries/:id',[verifyToken],inventariesControler.update)
-router.delete('/inventaries/:id',[verifyToken],inventariesControler.destroy)
+],inventoriesController.create)
+router.put('/inventories/:id',[verifyToken],inventoriesController.update)
+router.delete('/inventories/:id',[verifyToken],inventoriesController.destroy)
 
 
 module.exports = router
