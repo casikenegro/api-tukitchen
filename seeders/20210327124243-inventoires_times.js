@@ -6,67 +6,65 @@ module.exports = {
     [
       {
         inventory_id: 1, 
-        time: 1, 
+        hour: "00:00", 
       }, 
       {
         inventory_id: 1, 
-        hour_id: 2, 
+        hour: "00:30", 
       },
       {
         inventory_id: 1, 
-        hour_id: 3, 
+        hour: "01:00", 
       }, 
       {
         inventory_id: 1, 
-        hour_id: 4, 
+        hour: "01:30", 
+      },
+      {
+        inventory_id: 1, 
+        hour: "02:00", 
+      }, 
+      {
+        inventory_id: 1, 
+        hour: "02:30", 
+      },     {
+        inventory_id: 2, 
+        hour: "12:00", 
       }, 
       {
         inventory_id: 2, 
-        hour_id: 5,       
+        hour: "12:30", 
+      },     {
+        inventory_id: 2, 
+        hour: "13:00", 
+      }, 
+      {
+        inventory_id: 2, 
+        hour: "13:30", 
+      },     {
+        inventory_id: 2, 
+        hour: "14:00", 
+      }, 
+      {
+        inventory_id: 3, 
+        hour: "14:30", 
+      },     {
+        inventory_id: 3, 
+        hour: "15:00", 
+      }, 
+      {
+        inventory_id: 4, 
+        hour: "15:30", 
+      }, 
+      {
+        inventory_id: 4, 
+        hour: "16:00", 
       },
-      {
-        inventory_id: 2,
-        hour_id: 6, 
-      },
-      {
-        inventory_id: 2,
-        hour_id: 7, 
-      },
-      {
-        inventory_id: 3,
-        hour_id: 12, 
-      },
-      {
-        inventory_id: 3,
-        hour_id: 13, 
-      },    {
-        inventory_id: 3,
-        hour_id: 14, 
-      },    
-      {
-        inventory_id: 3,
-        hour_id: 15, 
-      },
-      {
-        inventory_id: 4,
-        hour_id: 23, 
-      },
-      {
-        inventory_id: 4,
-        hour_id: 20, 
-      },  
-      {
-        inventory_id: 4,
-        hour_id: 21, 
-      },    
-      {
-        inventory_id: 4,
-        hour_id: 22, 
-      }
+     
     ], {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('inventories_time', null, {});
+    return queryInterface.bulkDelete('inventories_hours', null, {});
   }
 };
