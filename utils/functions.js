@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const moment = require('moment'); // require
 const models = require('../models');
 const webPush = require('../webPush');
 const constants = require('./constants');
@@ -117,6 +118,10 @@ const returnProfile = async (req) => {
     return user.dataValues.profile;
   
 };
+ const insertHours = async() => {
+    let moment = moment().startOf('hour');
+    return moment ;
+ };
 module.exports = {
   paginate, 
   rad,
@@ -125,4 +130,5 @@ module.exports = {
   returnExpIn,
   returnRole,
   returnProfile,
+  insertHours
 }

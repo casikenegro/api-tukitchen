@@ -63,7 +63,9 @@ const get = async (req,res) => {
           model: models.InventoriesHours,
           as: 'inventoriesHours',
           where:{
-            id:1
+            hour : {
+              [models.Op.between] : [time_init,time_final]
+            }
           }
         }
       );
@@ -77,6 +79,7 @@ const get = async (req,res) => {
     if(!!not_paginate){
       products = await models.Product.findAll({
       where : { ...whereProducts },
+      include
     });
     }else{
       products = await paginate(models.Product,page,size,whereProducts,include);

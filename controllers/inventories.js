@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
-const { returnProfile } = require("../utils/functions")
+const { returnProfile,insertHours } = require("../utils/functions")
 
 const get = async (req,res) => {
     try {
@@ -47,6 +47,11 @@ const create = async (req,res) => {
     }
 }
 
+const test = async (req,res) => {
+        const hours = await insertHours();
+        return res.status(200).send(hours);
+}
+
 const update =  async (req,res) => {
     try {
         const { id } = req.params;
@@ -78,4 +83,5 @@ module.exports = {
   create,
   update,
   destroy,
+  test
 }
