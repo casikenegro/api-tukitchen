@@ -6,8 +6,7 @@ const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
 const { paginate, sendMessage} = require("../utils/functions");
-const { mode } = require("crypto-js");
-
+const { sendMail } = require('../utils/email');
 
 const get = async (req,res) => { 
     try {
@@ -120,11 +119,18 @@ const create = async (req,res) => {
     try {
         const errors = validationResult(req);
         const  user = await returnUserByToken(req);
+        let coupon = null;
         if(!errors.isEmpty()){
             return res.status(422).send({ errors: errors.array()})
         }
         if(!req.body.products.length){
             return res.status(400).send({message:"products is void"});
+        }
+        if(req.body.coupon){
+            coupon = await models.Coupons.findOne({where: { name : req.body.coupon }});  
+            if(coupon){
+                if(coupon.is_used) return res.status(400).send({message:"coupon used"});
+            }        
         }
         const product = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
         const { profile_id } = product.dataValues;
@@ -145,18 +151,17 @@ const create = async (req,res) => {
                     order_id: order.id
                 }
             })); 
-        if(req.body.cupons){
-            if(req.body.cupons.length > 0){
-                await models.Cupons.update({ is_used: true},{ where: { id: req.body.cupons } });
-                const cupons = req.body.cupons.map((cupon)=>{
-                    return {order_id:order.id, cupon_id: cupon}
-                });
-                await models.OrderCupons.bulkCreate(cupons);
-            }
+        if(coupon){
+            await models.OrderCoupons.create({order_id:order.id,coupon_id: coupon.id});
+            coupon.update({
+                is_used:true
+            });
+            coupon.save();
         }
         await models.OrderProducts.bulkCreate(products);
         const profile = await models.Profile.findOne({where:{id:profile_id}});
-        await sendMessage(profile.user_id);
+        const userProfile = await models.Profile.findOne({where:{user_id:user.id}});
+        await sendMessage(profile.user_id,userProfile.name);
         return res.status(200).send(order);
     }catch(error){
         return res.status(500).send(error);
@@ -171,7 +176,40 @@ const update =  async (req,res) => {
         order.update({
             ...req.body
         })
-        order.save()
+        order.save();
+        if(req.body.stage){
+            const shop = await models.Profile.findOne({where: { id: order.profile_id}});
+            const client  = await models.User.findOne({
+                include: [{
+                  model : models.Profile,
+                  required: true,
+                  as: 'profile'
+                }],
+                where:{id:order.user_id}
+              });
+            await sendMail({
+                to: shop.email,
+                template: "order-notification",
+                subject:"estado de la orden",
+                content: {
+                    name:shop.name,
+                    last_name:shop.last_name,
+                    order_id:order.id,
+                    stage:order.stage,
+                },
+            });
+            await sendMail({
+                to: client.dataValues.profile.email,
+                template: "order-notification",
+                subject:"estado de la orden",
+                content: {
+                    name:client.dataValues.profile.name,
+                    last_name:client.dataValues.profile.last_name,
+                    order_id:order.id,
+                    stage:order.stage
+                },
+            });
+        }
         return res.status(200).send(order);
     }catch(error){
         return res.status(500).send(error);

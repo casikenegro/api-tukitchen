@@ -64,15 +64,15 @@ const objectToFormData = (item)=>{
     return form_data;
 }
 
-const sendMessage = async (user_id)=>{
+const sendMessage = async (user_id,name)=>{
     // Payload Notification
     try {
-    console.log(user_id);
     const channels = await models.Channels.findAll({where:{user_id}});
+    const message = name ? `Tienes un nuevo pedido de parte de ${name}` : `Tienes un nuevo pedido`;
     if(channels.length === 0) return null;
     const payload = JSON.stringify({
       title: "Ha recibido un pedido",
-      message:"Tienes un nuevo pedido" 
+      message
     });
     Promise.all(channels.map( async (item)=>{
         let data = await webPush.sendNotification({
@@ -103,10 +103,26 @@ const returnRole = async (req) => {
     return user.role;
   
 };
+const returnProfile = async (req) => {
+    let token = req.headers["x-access-token"];
+    const decoded = jwt.verify(token, constants.secretTokenKey);
+    const user = await models.User.findOne({
+        where: {id : decoded.id},
+        include: [{
+          model : models.Profile,
+          required: true,
+          as: 'profile'
+        }]
+      });
+    return user.dataValues.profile;
+  
+};
 module.exports = {
   paginate, 
   rad,
   objectToFormData, 
   sendMessage, 
-  returnExpIn
+  returnExpIn,
+  returnRole,
+  returnProfile,
 }

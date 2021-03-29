@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { validationResult } = require("express-validator");
 const emailValidator = require('email-validator');
-
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
+const { sendMail } = require('../utils/email') 
 
 const attributes = [ 
     "id", "name",
@@ -65,6 +65,15 @@ const create = async (req,res) => {
       let profile = await models.Profile.create({
         ...req.body,
         user_id: user.id,
+      });
+      await sendMail({
+        to: profile.email,
+        template: "welcome",
+        subject:"welcome",
+        content: {
+          name:profile.name,
+          last_name:profile.last_name
+        },
       });
       return res.send(profile);
     }

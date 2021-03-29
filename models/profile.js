@@ -56,18 +56,22 @@ module.exports = (Sequelize,DataTypes) => {
       foreignKey: "profile_id",
       as: "orders",
       onDelete: 'CASCADE'
-    })
-    Profile.hasMany(model.Cupons,{
+    }),
+    Profile.hasMany(model.Coupons,{
       foreignKey: "profile_id",
-      as: "cupons",
+      as: "coupons",
       onDelete: 'CASCADE'
-    })
+    }),
     Profile.hasMany(model.Product,{
       foreignKey: 'profile_id',
       as: 'products',
       onDelete: 'CASCADE'
+    }), 
+    Profile.hasMany(model.Inventories,{
+      foreignKey: 'profile_id',
+      as: 'inventories',
+      onDelete: 'CASCADE'
     })
   }
-  sequelizePaginate.paginate(Profile)
   return Profile;
 }

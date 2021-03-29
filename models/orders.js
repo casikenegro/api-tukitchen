@@ -22,6 +22,10 @@ module.exports = (Sequelize,DataTypes) => {
       defaultValue: "IN-PROGRESS",
       allowNull: false,
     },
+    delivery_date:{
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
     total:{
       type: DataTypes.DECIMAL(10,2),
       allowNull: false,

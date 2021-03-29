@@ -46,11 +46,6 @@ module.exports = (Sequelize,DataTypes) => {
       as: 'channels',
       onDelete: 'CASCADE'
     }),
-    User.hasMany(model.Inventaries,{
-      foreignKey: 'user_id',
-      as: 'inventaries',
-      onDelete: 'CASCADE'
-    }),
     User.hasMany(model.Carrier,{
       foreignKey: 'user_id',
       as: 'carriers',

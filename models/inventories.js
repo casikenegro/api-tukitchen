@@ -1,25 +1,17 @@
 'use strict';
-const sequelizePaginate = require('sequelize-paginate')
 const constants = require("../utils/constants");
+const sequelizePaginate = require('sequelize-paginate')
 
 module.exports = (Sequelize,DataTypes) => {
-  const Inventaries = Sequelize.define('inventaries',{
+  const Inventories = Sequelize.define('inventories',{
     product_id: DataTypes.INTEGER,
-    user_id :DataTypes.INTEGER,
+    profile_id :DataTypes.INTEGER,
     day:{
       type: DataTypes.ENUM(constants.days), 
       allowNull: false,
     },
     stock:{
       type: DataTypes.INTEGER,
-    },
-    time_init:{
-      type: DataTypes.TIME,
-      allowNull: false,
-    },
-    time_final:{
-      type: DataTypes.TIME,
-      allowNull: false,
     },
     is_repeat:{
       type: DataTypes.BOOLEAN,
@@ -36,17 +28,22 @@ module.exports = (Sequelize,DataTypes) => {
     }
   })
 
-  Inventaries.associate = model => {
-    Inventaries.belongsTo(model.Product,{
+  Inventories.associate = model => {
+    Inventories.belongsTo(model.Product,{
       foreignKey: "product_id",
       as: "product"
     });
-    Inventaries.belongsTo(model.User,{
-      foreignKey: "user_id",
-      as: "user"
+    Inventories.belongsTo(model.Profile,{
+      foreignKey: "profile_id",
+      as: "profile"
+    }),
+    Inventories.hasMany(model.InventoriesHours,{
+      foreignKey: "inventory_id",
+      as: "inventoriesHours",
+      onDelete: 'CASCADE'
     })
   }
-  sequelizePaginate.paginate(Inventaries)
+  sequelizePaginate.paginate(Inventories)
 
-  return Inventaries;
+  return Inventories;
 }

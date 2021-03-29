@@ -51,28 +51,32 @@ const get = async (req,res) => {
       include.push(categories);
     }
     let products;
-    let whereInventaries = {};
+    let whereInventories = {};
+    let includeInventories = [];
     if(days){
-      whereInventaries = {...whereInventaries,day:{ [models.Op.in]: days.split(',') } };
+      whereInventories = {...whereInventories,day:{ [models.Op.in]: days.split(',') } };
     } 
     if(time_final) {
       if(!time_init) return res.status(400).send({message:"time_init not define "});
-      whereInventaries = {
-        ...whereInventaries,
-        time_init: { 
-          [models.Op.between]: [time_init,time_final],
-        },
-      };
+      includeInventories.push(
+        {
+          model: models.InventoriesHours,
+          as: 'inventoriesHours',
+          where:{
+            id:1
+          }
+        }
+      );
     }
     include.push({
-      model: models.Inventaries,
-      as: 'inventaries',
-      where: { ...whereInventaries },
+      model: models.Inventories,
+      as: 'inventories',
+      where: { ...whereInventories },
+      include:includeInventories,
     });
     if(!!not_paginate){
       products = await models.Product.findAll({
       where : { ...whereProducts },
-      include,
     });
     }else{
       products = await paginate(models.Product,page,size,whereProducts,include);
