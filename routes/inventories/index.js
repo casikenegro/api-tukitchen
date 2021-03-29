@@ -9,6 +9,7 @@ const inventoriesController = require("../../controllers/inventories");
 router.get('/inventories',[
   verifyToken,
 ],inventoriesController.get);
+router.get('/test',inventoriesController.test);
 //router.get('/sell-in-week',inventoriesController.sellInWeek);
 
 router.post('/inventories',[
