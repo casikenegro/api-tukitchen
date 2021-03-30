@@ -120,8 +120,9 @@ const returnProfile = async (req) => {
 };
  const insertHours = async() => {
     let moment = moment().startOf('hour');
-    return moment ;
+    return moment;
  };
+ 
 module.exports = {
   paginate, 
   rad,
