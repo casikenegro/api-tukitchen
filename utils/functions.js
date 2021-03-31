@@ -98,7 +98,6 @@ const returnRole = async (req) => {
     const decoded = jwt.verify(token, constants.secretTokenKey);
     const user = await models.User.findOne({ where:{id: decoded.id}});
     return user.role;
-  
 };
 const returnProfile = async (req) => {
     let token = req.headers["x-access-token"];

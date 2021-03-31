@@ -1,12 +1,17 @@
 const { sendMail } = require('../utils/email');
-const { returnProfile } = require('../utils/functions');
+const { validationResult } = require("express-validator");
+const { returnProfile, returnRole } = require('../utils/functions');
 
 const sendMailTo = async (req,res) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).send({ errors: errors.array()})
     }
-    const profile  = returnProfile(req);
+    const role = await returnRole(req);
+    if(role === "COMPRADOR"){
+        return res.status(412).send({message: "forbidden"});
+    }
+    const profile  = await returnProfile(req);
     if(!profile) {
         return res.status(400).send({message: "profile not exist"});
     }

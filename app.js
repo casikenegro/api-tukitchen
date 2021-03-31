@@ -23,7 +23,7 @@ const profile = require('./routes/profile');
 const userAddress = require('./routes/user-addresses');
 const users = require('./routes/users');
 const channels = require('./routes/channels');
-
+const utils = require('./routes/utils-request');
 
 // Settings
 app.set("port", process.env.PORT || 4000);
@@ -77,5 +77,6 @@ app.use(profile);
 app.use(userAddress);
 app.use(users);
 app.use(channels);
+app.use(utils);
 
 module.exports = app;
