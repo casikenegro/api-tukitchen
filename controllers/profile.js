@@ -45,16 +45,14 @@ const create = async (req,res) => {
     }
     if(req.body.email){
       if(!emailValidator.validate(req.body.email)){
-        fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
+        fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`));
         return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
       }
     }
     const user = await returnUserByToken(req);
     let profile = await models.Profile.findOne({where: {user_id : user.id}});
-    if(user.role !== "COMPRADOR"){
-      if(!req.file) return res.status(400).send({message:"image is required"}); 
-    }
     if(user.role === "VENDEDOR"){
+      if(!req.file) return res.status(400).send({message:"image is required"}); 
       if(!req.body.api_key || !req.body.secret_key)
         return res.status(400).send({message: `api_key or secret_key not null`});
     }
@@ -66,6 +64,7 @@ const create = async (req,res) => {
         ...req.body,
         user_id: user.id,
       });
+      res.send(profile);
       await sendMail({
         to: profile.email,
         template: "welcome",
@@ -75,9 +74,10 @@ const create = async (req,res) => {
           last_name:profile.last_name
         },
       });
-      return res.send(profile);
     }
-    fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
+    if(!!req.file){
+      fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
+    }
     return res.status(400).send({message:"profile exist"}); 
   } catch (error) {
     return res.status(500).send(error);

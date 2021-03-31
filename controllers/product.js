@@ -1,16 +1,15 @@
 const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
-const profile = require("../models/profile");
 const { paginate } = require("../utils/functions");
-const user = require("../models/user");
-const { response } = require("express");
+const { searchHours } = require("../utils/validations");
+
 
 const get = async (req,res) => {
   try {
     const {
       not_paginate, status, stores, 
-      category_id , word, get_categories,days,time_init,time_final,
+      category_id , word, get_categories,days,time_final,time_init,
       page, id,is_premium,profile_id,
       size,maxPrice = 1000000,minPrice = 0 } = req.query;
   
@@ -52,29 +51,23 @@ const get = async (req,res) => {
     }
     let products;
     let whereInventories = {};
-    let includeInventories = [];
     if(days){
       whereInventories = {...whereInventories,day:{ [models.Op.in]: days.split(',') } };
     } 
-    if(time_final) {
-      if(!time_init) return res.status(400).send({message:"time_init not define "});
-      includeInventories.push(
-        {
-          model: models.InventoriesHours,
-          as: 'inventoriesHours',
-          where:{
-            hour : {
-              [models.Op.between] : [time_init,time_final]
-            }
-          }
-        }
-      );
+    if(time_final && time_init) {
+      whereInventoriesHours = searchHours(time_init,time_final,whereInventoriesHours);
     }
     include.push({
       model: models.Inventories,
       as: 'inventories',
       where: { ...whereInventories },
-      include:includeInventories,
+      include:[
+        {
+          model: models.InventoriesHours,
+          as: 'inventoriesHours',
+          where: { ... whereInventoriesHours}
+        }
+      ],
     });
     if(!!not_paginate){
       products = await models.Product.findAll({
