@@ -1,6 +1,6 @@
 const express = require('express');
 const { check } = require("express-validator");
-const { verifyToken, isAdmin } = require('../../middleware');
+const { verifyToken } = require('../../middleware');
 const router  = express.Router();
 
 const carrierController = require('../../controllers/carriers');

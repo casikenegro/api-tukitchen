@@ -2,8 +2,6 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const { paginate } = require("../utils/functions");
-const { searchHours } = require("../utils/validations");
-
 
 const get = async (req,res) => {
   try {
@@ -51,11 +49,21 @@ const get = async (req,res) => {
     }
     let products;
     let whereInventories = {};
+    let whereInventoriesHours = {};
     if(days){
       whereInventories = {...whereInventories,day:{ [models.Op.in]: days.split(',') } };
     } 
     if(time_final && time_init) {
-      whereInventoriesHours = searchHours(time_init,time_final,whereInventoriesHours);
+      if(time_final > time_init) {
+        whereInventoriesHours = { ...whereInventoriesHours,hour : { [models.Op.between] : [time_init,time_final] } };
+      }else{
+        whereInventoriesHours ={ ...whereInventoriesHours,
+          [models.Op.or]: [
+            { hour : {  [models.Op.between] : [time_init,'23:59']} },
+            { hour : {  [models.Op.between] : ['00:00',time_final]} },
+          ]
+        }
+      }
     }
     include.push({
       model: models.Inventories,
