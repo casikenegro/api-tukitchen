@@ -1,3 +1,5 @@
+const models = require('../models');
+
 const insertHours = async(init,final) => {
     const initArray = init.split(':');
     const finalArray = final.split(':'); 
@@ -6,6 +8,21 @@ const insertHours = async(init,final) => {
     }
  };
  
+const searchHours = async(init,final,where = {}) => {
+   let hour;
+   if(final > init) {
+      hour = { hour : { [models.Op.between] : [init,final] } };
+   }else{
+      hour ={ hour: {[models.Op.between] : [init,'23:59'],[models.Op.between] : ['00:00',final] }} ;
+   }
+
+ return {
+   ...where,
+   ...hour,
+ }
+};
+
 module.exports = {
-  insertHours
+  insertHours,
+  searchHours
 }

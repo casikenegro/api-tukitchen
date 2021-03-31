@@ -7,7 +7,7 @@ const get = async (req,res) => {
     try {
         const  profile = await returnProfile(req);
         const {  get_products , page, id} = req.query;
-        let include = []
+        let include = ['inventoriesHours']
         if(get_products){   
             include.push( {
                 model: models.Product,
@@ -42,8 +42,8 @@ const create = async (req,res) => {
             ...req.body,
             user_id:user.id
         }); 
-        await insertHours(req.body.time_init,req.body.time_final,inventory.id);
-        return res.status(200).send(inventory);
+        const hours = await insertHours(req.body.time_init,req.body.time_final,inventory.id);
+        return res.status(200).send({...inventory.dataValues,inventoriesHours:hours});
     } catch (error) {
         return res.status(500).send(error);
     }
@@ -57,8 +57,8 @@ const update =  async (req,res) => {
             ...req.body
         })
         inventory.save();
-        await insertHours(req.body.time_init,req.body.time_final,inventory.id);
-        return res.status(200).send(inventory);
+        const hours = await insertHours(req.body.time_init,req.body.time_final,inventory.id);
+        return res.status(200).send({...inventory.dataValues,inventoriesHours:hours});
     } catch (error) {
         return res.status(500).send(error);
     }

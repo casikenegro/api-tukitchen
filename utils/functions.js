@@ -136,13 +136,15 @@ const returnProfile = async (req) => {
                 }else{
                     init = `${ hour }:00`;
                 }
+                data.push({hour:init,inventory_id});
             }
         } 
         if(data.length === 0 ){
             data.push({hour:init,inventory_id})
         }
     }
-    await models.InventoriesHours.bulkCreate(data);
+    return await models.InventoriesHours.bulkCreate(data);
+    
  };
  
 module.exports = {
