@@ -18,10 +18,12 @@ const create = async (req,res) => {
     if(!errors.isEmpty()){
       return res.status(422).send({ errors: errors.array()})
     }
+    const profile = await models.Profile.findOne({where:{user_id:user.id}});
+    if(!profile) return res.status(400).send("profile not exist");
     const address = await models.UserAddress.create({
       ...req.body,
       user_id:user.id
-    });
+    })
     return res.status(200).send(address); 
   } catch (error) {
     return res.status(500).send(error)
