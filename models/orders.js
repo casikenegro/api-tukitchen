@@ -19,7 +19,7 @@ module.exports = (Sequelize,DataTypes) => {
     },
     stage:{
       type: DataTypes.ENUM(constants.orderStage),
-      defaultValue: "IN-PROGRESS",
+      defaultValue: "EN-PROGRESO",
       allowNull: false,
     },
     delivery_date:{

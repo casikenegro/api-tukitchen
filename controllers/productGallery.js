@@ -27,6 +27,7 @@ const create = async (req,res) => {
 
 const update =  async (req,res) => {
   try {
+    const { id } = req.params;
     let product = await models.ProductGallery.findOne({ where: { id } });
     if(req.file) {
     fs.unlinkSync(path.join(__dirname,`../public/uploads/${product.img_product}`))

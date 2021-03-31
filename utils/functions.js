@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const moment = require('moment'); // require
 const models = require('../models');
 const webPush = require('../webPush');
 const constants = require('./constants');
@@ -118,9 +117,37 @@ const returnProfile = async (req) => {
     return user.dataValues.profile;
   
 };
- const insertHours = async() => {
-    let moment = moment().startOf('hour');
-    return moment;
+ const insertHours = async(init,final,inventory_id) => {
+    let data  = [];
+    await models.InventoriesHours.destroy({where:{inventory_id}});
+    while (init <= final) { 
+        let hour = init.split(':')[0];
+        if(data.length != 0){
+            if(init.split(':')[1] < 15){
+                data.push({hour :`${hour}:15`,inventory_id});
+                init = `${hour}:15`;
+            }
+            if(init.split(':')[1] < 30){
+                data.push({hour :`${hour}:30`,inventory_id});
+                init = `${hour}:30`;
+            }
+            if(init.split(':')[1] < 45){
+                data.push({hour :`${init.split(':')[0]}:45`,inventory_id});
+                hour ++;
+                if(hour < 10){
+                    init = `0${ hour }:00`;
+                }else{
+                    init = `${ hour }:00`;
+                }
+            }
+        } 
+        if(data.length === 0 ){
+            data.push(hour)
+        }
+    }
+    const info = await models.InventoriesHours.bulkInsert(data);
+
+    return { info: info};
  };
  
 module.exports = {
