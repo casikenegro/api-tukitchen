@@ -48,7 +48,7 @@ const create = async (req,res) => {
 }
 
 const test = async (req,res) => {
-        const hours = await insertHours();
+        const hours = await insertHours("00:19","23:59",1);
         return res.status(200).send(hours);
 }
 
