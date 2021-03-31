@@ -2,8 +2,6 @@ const { validationResult } = require("express-validator");
 const models = require('../models');
 const { returnUserByToken } = require("../middleware");
 const { paginate } = require("../utils/functions");
-const { searchHours } = require("../utils/validations");
-
 
 const get = async (req,res) => {
   try {

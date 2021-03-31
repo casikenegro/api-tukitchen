@@ -8,15 +8,6 @@ const insertHours = async(init,final) => {
     }
  };
  
-const searchHours = (init,final,where = {}) => {
-   if(final > init) {
-      return { hour : { [models.Op.between] : [init,final] } };
-   }else{
-      return {hour: {[models.Op.between] : [init,'23:59'],[models.Op.between] : ['00:00',final] }} ;
-   }
-};
-
 module.exports = {
   insertHours,
-  searchHours
 }
