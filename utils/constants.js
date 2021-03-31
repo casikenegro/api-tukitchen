@@ -3,6 +3,6 @@ module.exports = {
    days: ["LUNES","MARTES","MIERCOLES","JUEVES","VIERNES","SABADO","DOMINGO"],
    roles: ['ADMINISTRADOR','VENDEDOR','COMPRADOR'],
    orderStatus:["IN-PROGRESS",'SUCCESS',"FAIL","REJECT"],
-   orderStage:["EN-PROGRESO","CREADO","ENVIADO","RECIBIDO"],
+   orderStage:["IN-PROGRESS","CREATED","IN-DELIVERY","RECEIVED"],
 
 }

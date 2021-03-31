@@ -37,21 +37,17 @@ const create = async (req,res) => {
         if(!errors.isEmpty()){
             return res.status(422).send({ errors: errors.array()})
         }
+        
         const inventory = await models.Inventories.create({
             ...req.body,
             user_id:user.id
-        });
+        }); 
+        await insertHours(req.body.time_init,req.body.time_final,inventory.id);
         return res.status(200).send(inventory);
     } catch (error) {
         return res.status(500).send(error);
     }
 }
-
-const test = async (req,res) => {
-        const hours = await insertHours("00:19","23:59",1);
-        return res.status(200).send(hours);
-}
-
 const update =  async (req,res) => {
     try {
         const { id } = req.params;
@@ -60,7 +56,8 @@ const update =  async (req,res) => {
         inventory.update({
             ...req.body
         })
-        inventory.save()
+        inventory.save();
+        await insertHours(req.body.time_init,req.body.time_final,inventory.id);
         return res.status(200).send(inventory);
     } catch (error) {
         return res.status(500).send(error);
@@ -83,5 +80,4 @@ module.exports = {
   create,
   update,
   destroy,
-  test
 }

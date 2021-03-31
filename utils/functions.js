@@ -52,9 +52,6 @@ const getOffset = (page, limit) => {
      }
      return page - 1;
  }
-const rad = (x)=>{
-    return (x * Math.PI) / 180;
-}
 const objectToFormData = (item)=>{
     var form_data = new FormData();
 
@@ -142,17 +139,14 @@ const returnProfile = async (req) => {
             }
         } 
         if(data.length === 0 ){
-            data.push(hour)
+            data.push({hour:init,inventory_id})
         }
     }
-    const info = await models.InventoriesHours.bulkInsert(data);
-
-    return { info: info};
+    await models.InventoriesHours.bulkCreate(data);
  };
  
 module.exports = {
   paginate, 
-  rad,
   objectToFormData, 
   sendMessage, 
   returnExpIn,
