@@ -116,7 +116,7 @@ const returnProfile = async (req) => {
  const insertHours = async(init,final,inventory_id) => {
     let data  = [];
     await models.InventoriesHours.destroy({where:{inventory_id}});
-    while (init <= final) { 
+    while (init < final) { 
         let hour = init.split(':')[0];
         if(data.length != 0){
             if(init.split(':')[1] < 15){
