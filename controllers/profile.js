@@ -51,6 +51,12 @@ const create = async (req,res) => {
     }
     const user = await returnUserByToken(req);
     let profile = await models.Profile.findOne({where: {user_id : user.id}});
+    if(profile){
+      if(!!req.file){
+        fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
+      }
+      return res.status(400).send({message:"profile exist"}); 
+    }
     if(user.role === "VENDEDOR"){
       if(!req.file) return res.status(400).send({message:"image is required"}); 
       if(!req.body.api_key || !req.body.secret_key)
@@ -59,26 +65,20 @@ const create = async (req,res) => {
     if(!!req.file) {
       req.body.img_profile = req.file.filename;
     }
-    if(!profile){
-      let profile = await models.Profile.create({
-        ...req.body,
-        user_id: user.id,
-      });
-      res.send(profile);
-      await sendMail({
-        to: profile.email,
-        template: "welcome",
-        subject:"welcome",
-        content: {
-          name:profile.name,
-          last_name:profile.last_name
-        },
-      });
-    }
-    if(!!req.file){
-      fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
-    }
-    return res.status(400).send({message:"profile exist"}); 
+    profile = await models.Profile.create({
+      ...req.body,
+      user_id: user.id,
+    });
+    res.send(profile);
+    await sendMail({
+      to: profile.email,
+      template: "welcome",
+      subject:"welcome",
+      content: {
+        name:profile.name,
+        last_name:profile.last_name
+      },
+    });
   } catch (error) {
     return res.status(500).send(error);
   }
