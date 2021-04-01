@@ -66,6 +66,7 @@ async function createByAdmin(req,res){
     if(!profile) return res.status(403).send({message:"profile not create"});
     const coupon = await models.Coupons.create({
       discount:req.body.discount /100,
+      name:req.body.name,
       profile_id: profile.id, 
       is_used:false,
     });
