@@ -183,6 +183,7 @@ const update =  async (req,res) => {
             ...req.body
         })
         order.save();
+        res.status(200).send(order);
         if(req.body.stage){
             const shop = await models.Profile.findOne({where: { id: order.profile_id}});
             const client  = await models.User.findOne({
@@ -204,19 +205,22 @@ const update =  async (req,res) => {
                     stage:order.stage,
                 },
             });
-            await sendMail({
-                to: client.dataValues.profile.email,
-                template: "order-notification",
-                subject:"estado de la orden",
-                content: {
-                    name:client.dataValues.profile.name,
-                    last_name:client.dataValues.profile.last_name,
-                    order_id:order.id,
-                    stage:order.stage
-                },
-            });
+            if(client){
+                if( client.dataValues.profile.email){
+                    await sendMail({
+                        to: client.dataValues.profile.email,
+                        template: "order-notification",
+                        subject:"estado de la orden",
+                        content: {
+                            name:client.dataValues.profile.name,
+                            last_name:client.dataValues.profile.last_name,
+                            order_id:order.id,
+                            stage:order.stage
+                        },
+                    });
+                }
+            }
         }
-        return res.status(200).send(order);
     }catch(error){
         return res.status(500).send(error);
     }
