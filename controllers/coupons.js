@@ -67,7 +67,6 @@ async function createByAdmin(req,res){
     const coupon = await models.Coupons.create({
       name: req.body.name,
       discount:req.body.discount /100,
-      name:req.body.name,
       profile_id: profile.id, 
       is_used:false,
     });
