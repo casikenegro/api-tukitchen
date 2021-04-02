@@ -45,7 +45,7 @@ async function create(req,res){
     }
     const profile = await models.Profile.findOne({where: {user_id: user.id }});
     if(!profile) return res.status(403).send({message:"profile not create"});
-    req.body.discount= req.body.discount /100;
+    req.body.discount= req.body.discount;
     req.body.profile_id = profile.id;
     const coupon = await models.Coupons.create({
      ...req.body
@@ -66,7 +66,7 @@ async function createByAdmin(req,res){
     if(!profile) return res.status(403).send({message:"profile not create"});
     const coupon = await models.Coupons.create({
       name: req.body.name,
-      discount:req.body.discount /100,
+      discount:req.body.discount,
       profile_id: profile.id, 
       is_used:false,
     });
