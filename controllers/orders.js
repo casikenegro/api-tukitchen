@@ -44,7 +44,13 @@ const get = async (req,res) => {
             model: models.OrderProducts,
             as: 'orderProducts',
             include : ['products']
-        }]
+        },
+        {
+            model: models.OrderCoupons,
+            as: 'orderCoupons',
+            include : ['coupons']
+        }
+        ]
         let orders;
         if(!!not_paginate){
             orders = await models.Orders.findAll({
