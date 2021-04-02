@@ -40,7 +40,7 @@ const get = async (req,res) => {
                 status,
             }
         }
-        const include = [{
+        const include = ['userAddress',{
             model: models.OrderProducts,
             as: 'orderProducts',
             include : ['products']
@@ -131,6 +131,9 @@ const create = async (req,res) => {
             if(coupon){
                 if(coupon.is_used) return res.status(400).send({message:"coupon used"});
             }        
+        }
+        if(!await models.UserAddress.findOne({where:{user_id:user.id,id:req.body.user_address_id}})){
+            return res.status(400).send({message:"invalid address"});
         }
         const product = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
         const { profile_id } = product.dataValues;

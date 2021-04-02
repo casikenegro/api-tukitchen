@@ -42,20 +42,28 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.ENUM("FLOW","CASH"),
       allowNull: false,
     },
+    user_address_id :{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    }
   })
   Orders.associate = model => {
     Orders.belongsTo(model.User,{
       foreignKey: "user_id",
       as: "user"
-    })
+    }),
     Orders.belongsTo(model.Profile,{
       foreignKey: "profile_id",
       as: "profile"
-    })
-
+    }),
     Orders.hasMany(model.OrderProducts,{
       foreignKey: "order_id",
       as: "orderProducts",
+      onDelete: 'CASCADE'
+    }),
+    Orders.belongsTo(model.UserAddress,{
+      foreignKey: "user_address_id",
+      as: "userAddress",
       onDelete: 'CASCADE'
     })
   }

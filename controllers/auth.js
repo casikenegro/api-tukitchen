@@ -9,8 +9,8 @@ const constants = require('../utils/constants');
 async function login(req,res){
   try {
     const { rut,password } = req.body;
-    const user = await models.User.findOne({ where: {rut}, include:['profile']});
-    if(!user)  return res.status(404).send({message:"User not exist"});
+    const user = await models.User.findOne({ where: {rut}, include:['profile','user_address']});
+    if(!user)  return res.status(404).send({message:"Rut no existe"});
     if(bcrypt.compareSync(password,user.password)){
       delete user.dataValues.password;
       const token = jwt.sign({ id: user.id},constants.secretTokenKey,{
@@ -24,7 +24,7 @@ async function login(req,res){
         expIn
       });
     }
-    return res.status(403).send({message:"Forbidden"});
+    return res.status(403).send({message:"clave invalida"});
   } catch (error) {
     return res.status(500).send(error);
   }

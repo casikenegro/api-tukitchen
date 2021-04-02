@@ -1,5 +1,5 @@
 module.exports = (Sequelize,DataTypes) => {
-  const UserAddress = Sequelize.define('user_address',{
+  const UserAddress = Sequelize.define('user_addresses',{
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -23,12 +23,25 @@ module.exports = (Sequelize,DataTypes) => {
     city : {
       type: DataTypes.STRING,
       allowNull: true,
+    }, 
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP()')
     }
   })
   UserAddress.associate = model => {
     UserAddress.belongsTo(model.User,{
       foreignKey: 'user_id',
       as : 'users'
+    }),
+    UserAddress.hasMany(model.Orders,{
+      foreignKey: "user_address_id",
+      as: "orders",
+      onDelete: 'CASCADE'
     })
   }
 
