@@ -26,8 +26,8 @@ const verifyToken = async (req, res, next) => {
   try {
     
     const user = await returnUserByToken(req);
-    if (!user) return res.status(401).json({ message: "No user found" });   
-    if (!user.status) return res.status(403).json({ message: "User not Activate" });   
+    if (!user) return res.status(401).json({ message: "Usuario o clave invalida" });   
+    if (!user.status) return res.status(403).json({ message: "Usuario desactivado" });   
 
     next();
   } catch (error) {
