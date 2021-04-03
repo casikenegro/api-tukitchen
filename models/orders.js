@@ -27,7 +27,11 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: true,
     },
     total:{
-      type: DataTypes.DECIMAL(10,2),
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    total_neto:{
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     reference: {
