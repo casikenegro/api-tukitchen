@@ -61,6 +61,11 @@ module.exports = (Sequelize,DataTypes) => {
       as: "orderProducts",
       onDelete: 'CASCADE'
     }),
+    Orders.hasMany(model.OrderCoupons,{
+      foreignKey: "order_id",
+      as: "orderCoupons",
+      onDelete: 'CASCADE'
+    }),
     Orders.belongsTo(model.UserAddress,{
       foreignKey: "user_address_id",
       as: "userAddress",
