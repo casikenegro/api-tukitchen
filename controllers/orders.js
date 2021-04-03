@@ -49,6 +49,10 @@ const get = async (req,res) => {
             model: models.OrderCoupons,
             as: 'orderCoupons',
             include : ['coupons'], 
+        },{
+            model: models.User,
+            as: 'user',
+            include : ['profile'], 
         }
         ]
         let orders;

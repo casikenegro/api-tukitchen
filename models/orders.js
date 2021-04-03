@@ -46,6 +46,10 @@ module.exports = (Sequelize,DataTypes) => {
       type: DataTypes.ENUM("FLOW","CASH"),
       allowNull: false,
     },
+    carrier_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     user_address_id :{
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -54,11 +58,13 @@ module.exports = (Sequelize,DataTypes) => {
   Orders.associate = model => {
     Orders.belongsTo(model.User,{
       foreignKey: "user_id",
-      as: "user"
+      as: "user",
+      onDelete: 'CASCADE'
     }),
     Orders.belongsTo(model.Profile,{
       foreignKey: "profile_id",
-      as: "profile"
+      as: "profile",
+      onDelete: 'CASCADE'
     }),
     Orders.hasMany(model.OrderProducts,{
       foreignKey: "order_id",
@@ -73,6 +79,11 @@ module.exports = (Sequelize,DataTypes) => {
     Orders.belongsTo(model.UserAddress,{
       foreignKey: "user_address_id",
       as: "userAddress",
+      onDelete: 'CASCADE'
+    }),
+    Orders.belongsTo(model.Carrier,{
+      foreignKey: "carrier_id",
+      as: "carrier",
       onDelete: 'CASCADE'
     })
   }
