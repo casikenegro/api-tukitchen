@@ -141,6 +141,9 @@ const create = async (req,res) => {
         if(!await models.UserAddress.findOne({where:{user_id:user.id,id:req.body.user_address_id}})){
             return res.status(400).send({message:"invalid address"});
         }
+        if(!req.body.total_neto){
+            req.body.total_neto = req.body.total;
+        }
         const product = await models.Product.findOne({where:{ id: req.body.products[0].product_id}});
         const { profile_id } = product.dataValues;
         const order = await models.Orders.create({

@@ -113,9 +113,8 @@ const returnProfile = async (req) => {
     return user.dataValues.profile;
   
 };
- const insertHours = async(init,final,inventory_id) => {
+const calculateHours = ( init, final) =>{
     let data  = [];
-    await models.InventoriesHours.destroy({where:{inventory_id}});
     while (init < final) { 
         let hour = init.split(':')[0];
         if(data.length != 0){
@@ -142,6 +141,14 @@ const returnProfile = async (req) => {
             data.push({hour:init,inventory_id})
         }
     }
+    return data;
+}
+const insertHours = async(init,final,inventory_id) => {
+    await models.InventoriesHours.destroy({where:{inventory_id}});
+    if (init > final){
+
+    }
+    
     return await models.InventoriesHours.bulkCreate(data);
     
  };
