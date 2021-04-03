@@ -8,7 +8,7 @@ module.exports = (Sequelize,DataTypes) => {
       allowNull: false,
       defaultValue: 1,
     },
-    price: DataTypes.DECIMAL(10,2)
+    price: DataTypes.INTEGER
   })
   orderProducts.associate = model => {
     orderProducts.belongsTo(model.Orders,{
