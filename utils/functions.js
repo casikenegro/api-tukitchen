@@ -113,9 +113,8 @@ const returnProfile = async (req) => {
     return user.dataValues.profile;
   
 };
- const insertHours = async(init,final,inventory_id) => {
+const calculateHours = ( init, final,inventory_id) =>{
     let data  = [];
-    await models.InventoriesHours.destroy({where:{inventory_id}});
     while (init < final) { 
         let hour = init.split(':')[0];
         if(data.length != 0){
@@ -135,6 +134,7 @@ const returnProfile = async (req) => {
                 }else{
                     init = `${ hour }:00`;
                 }
+                if(init != "24:00")
                 data.push({hour:init,inventory_id});
             }
         } 
@@ -142,8 +142,21 @@ const returnProfile = async (req) => {
             data.push({hour:init,inventory_id})
         }
     }
+    return data;
+}
+const insertHours = async(init, final,inventory_id) => {
+    await models.InventoriesHours.destroy({where:{inventory_id}});
+    let  data = [];
+    if (init > final){
+        let data2;
+        let data3;init,final,inventory_id
+        data2 = calculateHours(init,"23:45",inventory_id);
+        data3 = calculateHours("00:00",final,inventory_id);
+        data= [...data2, ...data3];
+    }else{
+        data = calculateHours(init,final,inventory_id);
+    }
     return await models.InventoriesHours.bulkCreate(data);
-    
  };
  
 module.exports = {
