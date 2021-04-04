@@ -18,7 +18,8 @@ const create = async (req,res) => {
       });
       return res.send(product);
     }
-    fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
+    if(req.file.filename)
+      fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`))
     return res.status(400).send({ message: "product not  exist"});
   } catch (error) {
     return res.status(500).send(error);
