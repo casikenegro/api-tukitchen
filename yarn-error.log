@@ -1,5 +1,5 @@
 Arguments: 
-  /home/casikenegro/.nvm/versions/node/v15.5.0/bin/node /usr/share/yarn/bin/yarn.js add web-push
+  /home/casikenegro/.nvm/versions/node/v15.5.0/bin/node /usr/share/yarn/bin/yarn.js add compressorjs
 
 PATH: 
   /home/casikenegro/.nvm/versions/node/v15.5.0/bin:/home/casikenegro/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
@@ -45,6 +45,7 @@ npm manifest:
       "helmet": "^4.4.1",
       "html-pdf": "^2.2.0",
       "jsonwebtoken": "^8.5.1",
+      "moment": "^2.29.1",
       "moment-timezone": "^0.5.32",
       "morgan": "^1.10.0",
       "multer": "^1.4.2",
@@ -1998,7 +1999,7 @@ Lockfile:
     dependencies:
       moment ">= 2.9.0"
   
-  "moment@>= 2.9.0", moment@^2.26.0:
+  "moment@>= 2.9.0", moment@^2.26.0, moment@^2.29.1:
     version "2.29.1"
     resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
     integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
