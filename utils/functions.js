@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const models = require('../models');
 const webPush = require('../webPush');
 const constants = require('./constants');
+const { sendMail } = require('./email');
 
 
 const paginate = async (model, currentPage = 1, pageLimit = 10,where,include,options = {}) => {
@@ -157,8 +158,59 @@ const insertHours = async(init, final,inventory_id) => {
         data = calculateHours(init,final,inventory_id);
     }
     return await models.InventoriesHours.bulkCreate(data);
- };
- 
+};
+const stageTranslate = (stage) =>{
+    if(stage == 'IN-PROGRESS'){
+        return "EN PROGRESO";
+    }
+    if(stage == 'CREATED'){
+        return "CREADA";
+    }
+    if(stage == 'IN-DELIVERY'){
+        return "EN CAMINO";
+    }
+    if(stage == 'RECEIVED'){
+        return "RECIBIDA";
+    }
+}
+const sendEmailOrderStage = async (orderStage,order_id,profile_id,user_id) => {
+    const stage = stageTranslate(orderStage);
+    if(profile_id){
+        const shop = await models.Profile.findOne({where: { id:profile_id}});
+        await sendMail({
+            to: shop.email,
+            template: "order-notification",
+            subject:"estado de la orden",
+            content: {
+                order_id,
+                stage,
+            },
+        });
+    }
+    if(user_id){
+        const client  = await models.User.findOne({
+            include: [{
+                model : models.Profile,
+                required: true,
+                as: 'profile'
+            }],
+            where:{id:user_id}
+            });
+        if(client){
+            if( client.dataValues.profile.email){
+                await sendMail({
+                    to: client.dataValues.profile.email,
+                    template: "order-notification",
+                    subject:"estado de la orden",
+                    content: {
+                        order_id,
+                        stage,
+                    },
+                });
+            }
+        }   
+    }
+}
 module.exports = {
   paginate, 
   objectToFormData, 
@@ -166,5 +218,7 @@ module.exports = {
   returnExpIn,
   returnRole,
   returnProfile,
-  insertHours
+  insertHours, 
+  stageTranslate, 
+  sendEmailOrderStage
 }

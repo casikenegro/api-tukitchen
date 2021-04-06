@@ -18,7 +18,7 @@ const send = async (options) =>{
           rejectUnauthorized: false
       }
     });
-    await transporter.sendMail({...options});
+   await transporter.sendMail({...options});
   }
   return null;
 };

@@ -10,12 +10,12 @@ const get = async (req,res) => {
       category_id , word, get_categories,days,time_final,time_init,
       page, id,is_premium,profile_id,
       size,maxPrice = 1000000,minPrice = 0 } = req.query;
-  
     let whereProducts = {
       status: status || 1,
     };
     let categories = null ; 
     let include = ['gallery','profile' ];
+    const order =[['id', 'DESC']];
     if(maxPrice || minPrice ){
       whereProducts = {
         ...whereProducts,
@@ -80,10 +80,11 @@ const get = async (req,res) => {
     if(!!not_paginate){
       products = await models.Product.findAll({
       where : { ...whereProducts },
-      include
+      include,
+      order
     });
     }else{
-      products = await paginate(models.Product,page,size,whereProducts,include);
+      products = await paginate(models.Product,page,size,whereProducts,include,{order});
     }
     return res.status(200).send(products);
   } catch (error) {

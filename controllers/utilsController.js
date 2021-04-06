@@ -15,7 +15,7 @@ const sendMailTo = async (req,res) =>{
         
         await sendMail({
             to:req.body.to,
-            template: "generic-mail",
+            template: "generic-email",
             subject:req.body.subject,
             content: {
                 message_1:req.body.title, 
