@@ -7,19 +7,19 @@ module.exports = {
       {
       name: "admin",
       last_name:"admin",
-      email:"admin@gmail.com",
+      email:"dramirez@suavit.cl",
       user_id:1,
       },
       {
         name: "user",
         last_name:"user",
-        email:"user@gmail.com",
+        email:"ortizjesusrivas@gmail.com",
         user_id:2,
       },
       {
         name: "user",
         last_name:"user",
-        email:"user@gmail.com",
+        email:"ortizjesusrivas@gmail.com",
         user_id:3,
       },
       {
