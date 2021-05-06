@@ -32,8 +32,6 @@ async function login(req,res){
 
 async function recover_password(req,res){
  try {
-    if(!emailValidator.validate(req.body.email))
-      res.status(422).json({message: "not found"})
     const user  = await models.User.findOne({
       include: [{
         model : models.Profile,
