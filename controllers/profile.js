@@ -43,6 +43,12 @@ const create = async (req,res) => {
     if(!errors.isEmpty()){
       return res.status(422).send({ errors: errors.array()})
     }
+    if(req.body.email){
+      if(!emailValidator.validate(req.body.email)){
+        fs.unlinkSync(path.join(__dirname,`../public/uploads/${req.file.filename}`));
+        return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
+      }
+    }
     const user = await returnUserByToken(req);
     let profile = await models.Profile.findOne({where: {user_id : user.id}});
     if(profile){
@@ -80,6 +86,11 @@ const create = async (req,res) => {
 
 async function update(req,res){
   try {
+    if(req.body.email){
+      if(!emailValidator.validate(req.body.email)){
+        return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
+      }
+    }
     const { id } = await returnUserByToken(req);
     let profile = await models.Profile.findOne({ where: { user_id: id } });
     if(!profile)  return res.status(404).send({message: "profile not exist"});
