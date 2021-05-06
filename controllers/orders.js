@@ -5,8 +5,7 @@ const { returnUserByToken } = require("../middleware");
 const { default: axios } = require("axios");
 const { objectToFormData } = require("../utils/functions");
 const crypto = require("crypto-js");
-const { paginate, sendMessage} = require("../utils/functions");
-const { sendMail } = require('../utils/email');
+const { paginate, sendMessage,sendEmailOrderStage} = require("../utils/functions");
 
 const get = async (req,res) => { 
     try {
@@ -183,6 +182,7 @@ const create = async (req,res) => {
             if(userProfile){
                 name = userProfile.name;
             }
+            await sendEmailOrderStage(order.stage,order.id,profile.id,user.id);
             await sendMessage(profile.user_id,name);
         }
     }catch(error){
@@ -201,41 +201,7 @@ const update =  async (req,res) => {
         order.save();
         res.status(200).send(order);
         if(req.body.stage){
-            const shop = await models.Profile.findOne({where: { id: order.profile_id}});
-            const client  = await models.User.findOne({
-                include: [{
-                  model : models.Profile,
-                  required: true,
-                  as: 'profile'
-                }],
-                where:{id:order.user_id}
-              });
-            await sendMail({
-                to: shop.email,
-                template: "order-notification",
-                subject:"estado de la orden",
-                content: {
-                    name:shop.name,
-                    last_name:shop.last_name,
-                    order_id:order.id,
-                    stage:order.stage,
-                },
-            });
-            if(client){
-                if( client.dataValues.profile.email){
-                    await sendMail({
-                        to: client.dataValues.profile.email,
-                        template: "order-notification",
-                        subject:"estado de la orden",
-                        content: {
-                            name:client.dataValues.profile.name,
-                            last_name:client.dataValues.profile.last_name,
-                            order_id:order.id,
-                            stage:order.stage
-                        },
-                    });
-                }
-            }
+            await sendEmailOrderStage(order.stage,order.id,order.profile_id,order.user_id);
         }
     }catch(error){
         return res.status(500).send(error);

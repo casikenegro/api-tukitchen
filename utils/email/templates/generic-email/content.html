@@ -138,14 +138,8 @@
       .pc-sm-p-20 {
         padding: 20px !important
       }
-      .pc-sm-p-30-20 {
-        padding: 30px 20px !important
-      }
-      .pc-sm-fs-30 {
-        font-size: 30px !important
-      }
-      .pc-sm-fs-18 {
-        font-size: 18px !important
+      .pc-sm-p-35-30 {
+        padding: 35px 30px !important
       }
       .pc-sm-p-21-10-14 {
         padding: 21px 10px 14px !important
@@ -163,11 +157,14 @@
       .pc-xs-p-10 {
         padding: 10px !important
       }
-      .pc-xs-p-25-10 {
-        padding: 25px 10px !important
+      .pc-xs-p-25-20 {
+        padding: 25px 20px !important
       }
-      .pc-xs-fs-16 {
-        font-size: 16px !important
+      .pc-xs-fs-30 {
+        font-size: 30px !important
+      }
+      .pc-xs-lh-42 {
+        line-height: 42px !important
       }
       .pc-xs-br-disabled br {
         display: none !important
@@ -234,7 +231,7 @@
                                     <tbody>
                                       <tr>
                                         <td align="center" valign="top" style="padding: 10px;">
-                                          <img src="{{logo}}" width="300" height="157" alt="" style="height: auto; max-width: 100%; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff; font-size: 14px;">
+                                          <a href="{{}}" style="text-decoration: none;"><img src="{{logo}}" width="300" height="157" alt="" style="height: auto; max-width: 100%; border: 0; line-height: 100%; outline: 0; -ms-interpolation-mode: bicubic; color: #ffffff; font-size: 14px;"></a>
                                         </td>
                                       </tr>
                                     </tbody>
@@ -244,58 +241,33 @@
                             </tbody>
                           </table>
                          
-                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                             <tbody>
                               <tr>
-                                <td class="pc-sm-p-30-20 pc-xs-p-25-10" style="padding: 0px 30px 30px 30px; background: #ffffff;" bgcolor="#ffffff" valign="top">
-                                  <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                <td class="pc-sm-p-35-30 pc-xs-p-25-20" style="padding: 0px 0px 20px 0px; background-color: #ffffff;" valign="top" bgcolor="#ffffff">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                                     <tbody>
                                       <tr>
                                         <td class="pc-xs-fs-30 pc-xs-lh-42 pc-fb-font" style="font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 36px; font-weight: 900; line-height: 46px; letter-spacing: -0.6px; color: #151515; text-align: center;" valign="top">
                                           <font style="vertical-align: inherit;">
-                                            <font style="vertical-align: inherit;">¡Gracias por su compra!</font>
+                                            <font style="vertical-align: inherit;">{{message_1}}</font>
                                           </font>
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td height="15" style="line-height: 1px; font-size: 1px;">&nbsp;</td>
+                                        <td height="10" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
                                       </tr>
                                     </tbody>
                                     <tbody>
                                       <tr>
-                                        <td class="pc-sm-fs-18 pc-xs-fs-16 pc-fb-font pc-xs-br-disabled" style="font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 20px; line-height: 30px; letter-spacing: -0.2px; color: #9B9B9B; padding: 0 10px; " valign="top">
-                                          <div style="text-align: center;"><span style="font-size: 38px; color: #020202;"><span style="vertical-align: inherit;"><span style="vertical-align: inherit;"><span style="vertical-align: inherit;"><span style="vertical-align: inherit; font-size: 24px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Pedido Nº: {{order_notification_meesage_1}}</font></font></span></span>
-                                          </div>
+                                        <td class="pc-fb-font" style="font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 300; line-height: 28px; color: #9B9B9B; text-align: center;" valign="top">
+                                          <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">{{message_2}}</font>
+                                          </font>
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td height="25" style="line-height: 1px; font-size: 1px;">&nbsp;</td>
-                                      </tr>
-                                    </tbody>
-                                    <tbody>
-                                      <tr>
-                                        <td style="padding: 0 10px;" valign="top">
-                                          <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
-                                            <tbody>
-                                              <tr>
-                                                <th class="pc-fb-font" style="letter-spacing: -0.2px; line-height: 26px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 16px; padding: 10px 10px 10px 0; border-bottom: 1px solid #E5E5E5; width: 400px; color: #151515;" align="left">
-                                                  <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;">
-                                                      Estado
-                                                    </font>
-                                                  </font>
-                                                </th>
-                                                <th class="pc-fb-font" style="letter-spacing: -0.2px; line-height: 26px; font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 16px; padding: 10px 10px 10px 0; border-bottom: 1px solid #E5E5E5; width: 44px; color: #151515;" align="right">
-                                                  <font style="vertical-align: inherit;">
-                                                    <font style="vertical-align: inherit;">
-                                                      {{order_notification_meesage_2}}
-                                                    </font>
-                                                  </font>
-                                                </th>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
+                                        <td height="11" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
                                       </tr>
                                     </tbody>
                                   </table>
@@ -303,6 +275,7 @@
                               </tr>
                             </tbody>
                           </table>
+                          
                           <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                             <tbody>
                               <tr>
@@ -317,7 +290,7 @@
                                                 <td class="pc-fb-font" style="font-family: 'Fira Sans', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; letter-spacing: -0.2px; color: #D8D8D8;" valign="top">
                                                   <div style="text-align: center;">
                                                     <font style="vertical-align: inherit;">
-                                                      <font style="vertical-align: inherit;">Copyright &copy; 2021 Voraz. Todos los derechos reservados. </font>
+                                                      <font style="vertical-align: inherit;">Copyright &copy; 2021 Voraz. Todos los derechos reservados.</font>
                                                     </font>
                                                   </div>
                                                 </td>

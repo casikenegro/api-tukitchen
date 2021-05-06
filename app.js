@@ -56,6 +56,8 @@ app.use(express.json({limit:'5mb'}));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public/uploads')));
+app.use(express.static(path.join(__dirname, 'public/assets')));
+
 // Welcome Routes
 app.get("/", (req, res) => {
   res.json({
