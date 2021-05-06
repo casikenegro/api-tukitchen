@@ -7,11 +7,11 @@ module.exports ={
   ...orderNotificationCopy,
   ...passwordResetCopy,
   ...welcomeCopy,
-  product_name: "Borage",
+  product_name: "Voraz",
   address_1: "Ubicacion 2",
   address_2: "ubicacion 1",
-  support_email: "contacto@borage.com",
-  copyright: `© ${new Date().getFullYear()} Borage. Todos los derechos reservados.`,
+  support_email: "contacto@voraz.com",
+  copyright: `© ${new Date().getFullYear()} Voraz. Todos los derechos reservados.`,
   logo: `${process.env.STATIC_URL}/logo@3x-bDh.png`
 
 };
