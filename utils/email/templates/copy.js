@@ -10,5 +10,5 @@ module.exports ={
   address_1: "Ubicacion 2",
   address_2: "ubicacion 1",
   support_email: "contacto@borage.com",
-  copyright: `© ${new Date().getFullYear()} Borage. Todos los derechos reservados.`,
+  copyright: `© ${new Date().getFullYear()} Voraz. Todos los derechos reservados.`,
 };
