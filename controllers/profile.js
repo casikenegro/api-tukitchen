@@ -88,8 +88,7 @@ async function update(req,res){
   try {
     if(req.body.email){
       if(!emailValidator.validate(req.body.email)){
-        res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
-        return
+        return res.status(422).json({message: "El email proporcionado no posee formato de correo valido"})
       }
     }
     const { id } = await returnUserByToken(req);
