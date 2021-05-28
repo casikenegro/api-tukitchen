@@ -9,39 +9,9 @@ module.exports = {
       last_name:"admin",
       email:"dramirez@suavit.cl",
       user_id:1,
+      address:"iquique",
+      phone:"+569-84766696"
       },
-      {
-        name: "user",
-        last_name:"user",
-        email:"ortizjesusrivas@gmail.com",
-        user_id:2,
-      },
-      {
-        name: "user",
-        last_name:"user",
-        email:"ortizjesusrivas@gmail.com",
-        user_id:3,
-      },
-      {
-        name: "Tina",
-        last_name:"Burner",
-        name_store: "Mc Donals",
-        email:"mcdonals@gmail.com",
-        user_id:4,
-        phone: 123456,
-        address: "California USA",
-        api_key: 123456
-      },
-      {
-        name: "King",
-        last_name:"Barrymore",
-        email:"burguerking@gmail.com",
-        name_store: "Burguer King",
-        user_id:5,
-        phone: 123456,
-        address: "California USA",
-        api_key: 123456
-      }
     ], {});
    
   },

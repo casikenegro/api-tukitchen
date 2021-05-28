@@ -8,36 +8,6 @@ module.exports = {
         rut: "123456-1",
         password:  bcrypt.hashSync("123456",10),
         role: "ADMINISTRADOR",
-      },
-      {
-        rut: "123456-2",
-        password:  bcrypt.hashSync("123456",10),
-        role: "COMPRADOR",
-      },      
-      {
-        rut: "123456-3",
-        password:  bcrypt.hashSync("123456",10),
-        role: "VENDEDOR",
-      },
-      {
-        rut: "123456-4",
-        password:  bcrypt.hashSync("123456",10),
-        role: "VENDEDOR",
-      },
-      {
-        rut: "123456-5",
-        password:  bcrypt.hashSync("123456",10),
-        role: "VENDEDOR",
-      },
-      {
-        rut: "123456-6",
-        password:  bcrypt.hashSync("123456",10),
-        role: "VENDEDOR",
-      },
-      {
-        rut: "123456-7",
-        password:  bcrypt.hashSync("123456",10),
-        role: "COMPRADOR",
       }
     ], 
     {
