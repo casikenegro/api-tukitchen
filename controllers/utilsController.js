@@ -1,16 +1,16 @@
 const { sendMail } = require('../utils/email');
 const { validationResult } = require("express-validator");
-const {  returnRole } = require('../utils/functions');
+// const {  returnRole } = require('../utils/functions');
 
 const sendMailTo = async (req,res) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(422).send({ errors: errors.array()})
     }
-    const role = await returnRole(req);
-    if(role === "COMPRADOR"){
-        return res.status(412).send({message: "forbidden"});
-    }
+    // const role = await returnRole(req);
+    // if(role === "COMPRADOR"){
+    //     return res.status(412).send({message: "forbidden"});
+    // }
     try {
         
         await sendMail({
